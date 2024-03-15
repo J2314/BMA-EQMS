@@ -2,17 +2,17 @@
   <ion-menu content-id="main-content">
     <ion-header>
       <ion-toolbar>
-        <ion-title class="title">E-QMS</ion-title>
+        <ion-title class="title"><strong>E-QMS</strong></ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-list class="SideList">
-      <ion-item router-link="/your-route"><strong> Dashboard </strong></ion-item>
-      <ion-item router-link="/your-route"><strong> Forms </strong></ion-item>
-      <ion-item router-link="/your-route"><strong> Departments </strong></ion-item>
-      <ion-item router-link="/your-route"><strong> Reports </strong></ion-item>
-      <ion-item router-link="/your-route"><strong> Etc.. </strong></ion-item>
+      <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
+      <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Forms </strong></ion-item>
+      <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Departments </strong></ion-item>
+      <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Reports </strong></ion-item>
+      <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Damn </strong></ion-item>
     </ion-list>
-    <ion-button shape="round">Logout</ion-button>
+    <ion-button shape="round" class="btn logout" color="success"><strong>Logout</strong></ion-button>
   </ion-menu>
   <ion-page id="main-content">
     <ion-header>
@@ -20,8 +20,9 @@
         <ion-buttons slot="start">
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
-        <ion-title>Menu</ion-title>
-        <ion-searchbar slot="end" class="search"></ion-searchbar>
+        <ion-title slot="start"><strong>BALIWAG MARTIME ACADEMY</strong></ion-title>
+        <ion-searchbar class="search"></ion-searchbar>
+        <ion-title slot="end"><strong>Admin</strong></ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding"> Tap the button in the toolbar to open the menu. </ion-content>
@@ -48,11 +49,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.search {
-  flex: 1;
-  max-width: 400px;
-  margin-right: 300px;
-}
 
 .title {
   text-align: center;
@@ -61,5 +57,17 @@ export default defineComponent({
 .SideList {
   flex:1;
   margin-right: 15px;
+  margin-left: 10px;
 }
+
+.itemsK{
+  margin-bottom: 5px;
+}
+
+.logout {
+  margin-right: 15px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
 </style>
