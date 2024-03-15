@@ -7,11 +7,11 @@
       </ion-toolbar>
     </ion-header>
     <ion-list class="SideList">
-      <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
+      <ion-item router-link="/dashboard" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
       <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Policy Documents </strong></ion-item>
       <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Procedures </strong></ion-item>
       <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Work Instructions </strong></ion-item>
-      <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Forms </strong></ion-item>
+      <ion-item router-link="/dashboard/addForm" color="success" class="itemsK"><strong> Forms </strong></ion-item>
       <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Departments </strong></ion-item>
       <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Records </strong></ion-item>
     </ion-list>
@@ -27,8 +27,9 @@
         <ion-title slot="start">
           <strong>BALIWAG MARITIME ACADEMY</strong>
         </ion-title>
-        <ion-searchbar class="search"></ion-searchbar>
+        <ion-searchbar class="search" ></ion-searchbar>
         <ion-title slot="end"><strong>Admin</strong></ion-title>
+        <img src="@/assets/marine.png" alt="BMA Logo" class="logo3" slot="end" shape="round">
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding"> Tap the button in the toolbar to open the menu. </ion-content>
@@ -89,6 +90,12 @@ export default defineComponent({
   height: 50px;
   margin:5px;
   margin-right: -10px;
+}
+
+.logo3 {
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
 }
 
 </style>
