@@ -2,10 +2,17 @@
   <ion-menu content-id="main-content">
     <ion-header>
       <ion-toolbar>
-        <ion-title>Menu Content</ion-title>
+        <ion-title class="title">e-QMS</ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-content class="ion-padding">This is the menu content.</ion-content>
+    <ion-list class="SideList">
+      <ion-item router-link="/your-route"><strong> Dashboard </strong></ion-item>
+      <ion-item router-link="/your-route"><strong> Forms </strong></ion-item>
+      <ion-item router-link="/your-route"><strong> Departments </strong></ion-item>
+      <ion-item router-link="/your-route"><strong> Reports </strong></ion-item>
+      <ion-item router-link="/your-route"><strong> Etc.. </strong></ion-item>
+    </ion-list>
+    <ion-button shape="round">Logout</ion-button>
   </ion-menu>
   <ion-page id="main-content">
     <ion-header>
@@ -21,28 +28,38 @@
   </ion-page>
 </template>
 
-<script lang="ts">
-  import { IonButtons, IonContent, IonHeader, IonMenu, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
-  import { defineComponent } from 'vue';
+<script>
+import { IonButtons, IonContent, IonHeader, IonMenu, IonMenuButton, IonPage, IonTitle, IonToolbar, IonItem } from '@ionic/vue';
+import { defineComponent } from 'vue';
 
-  export default defineComponent({
-    components: {
-      IonButtons,
-      IonContent,
-      IonHeader,
-      IonMenu,
-      IonMenuButton,
-      IonPage,
-      IonTitle,
-      IonToolbar,
-    },
-  });
+export default defineComponent({
+  components: {
+    IonButtons,
+    IonContent,
+    IonHeader,
+    IonMenu,
+    IonMenuButton,
+    IonPage,
+    IonTitle,
+    IonToolbar,
+    IonItem
+  },
+});
 </script>
 
 <style scoped>
 .search {
-  flex:1;
+  flex: 1;
   max-width: 400px;
   margin-right: 300px;
+}
+
+.title {
+  text-align: center;
+}
+
+.SideList {
+  flex:1;
+  margin-right: 15px;
 }
 </style>
