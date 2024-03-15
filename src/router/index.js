@@ -1,18 +1,22 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import Dashboard from '../views/Dashboard.vue'
-import AddForm from '../views/AddForm.vue'
 
 const routes = [
   {
-    path: '/dashboard',
-    name: 'dashboard',
-    component: Dashboard,
+    path: '/',
+    name: 'main-layout',
+    component: () => import('@/views/MainLayout.vue'),
     children: [
       {
-        path: '/addForm', 
-        name: 'addForm',
-        component: AddForm,
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: Dashboard,
       },
+      {
+        path: '/addForm',
+        name: 'Add Form',
+        component: () => import('@/views/forms/AddForm.vue')
+      }
     ]
   }
 ]
@@ -20,6 +24,6 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes
-}); 
+});
 
 export default router

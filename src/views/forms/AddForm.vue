@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <ion-content class="ion-padding">
     <div class="content-wrapper">
       <form @submit.prevent="submitForm" class="add-form">
         <h1 class="form-title">Add Forms</h1>
@@ -8,21 +8,25 @@
             <tr>
               <td>
                 <label for="departmentName" class="form-label">Add Name</label>
-                <input type="text" id="departmentName" class="form-control" v-model="file_name" placeholder="Enter name">
+                <input type="text" id="departmentName" class="form-control" v-model="file_name"
+                  placeholder="Enter name">
               </td>
               <td>
                 <label for="departmentCode" class="form-label">Code</label>
-                <input type="text" id="departmentCode" class="form-control" v-model="file_code" placeholder="Enter code">
+                <input type="text" id="departmentCode" class="form-control" v-model="file_code"
+                  placeholder="Enter code">
               </td>
               <td>
                 <label for="departmentDescription" class="form-label">Description</label>
-                <input type="text" id="departmentDescription" class="form-control" v-model="description" placeholder="Enter Description">
+                <input type="text" id="departmentDescription" class="form-control" v-model="description"
+                  placeholder="Enter Description">
               </td>
               <td>
                 <label for="departmentId" class="form-label">Department</label>
                 <select id="departmentId" class="form-control" v-model="department_id">
                   <option value="">Select Department</option>
-                  <option v-for="(department, index) in departments" :key="index" :value="department.id">{{ department.name }}</option>
+                  <option v-for="(department, index) in departments" :key="index" :value="department.id">{{
+        department.name }}</option>
                 </select>
               </td>
               <td class="button-cell">
@@ -35,42 +39,52 @@
         <span v-if="submitError" class="error-message">{{ submitError }}</span>
       </form>
       <table class="form-summary-table">
-      <thead>
-        <tr>
-          <th>Form Name</th>
-          <th>Description</th>
-          <th>Department</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="form in forms" :key="form.id">
-          <td>
-            <router-link
-        id="uploadForm"
-        :to="{ name: 'uploadForm', params: { formId: form.id, departmentName: form.department.name, fileName: form.file_name } }"
-        @click="logFormData(form.id, form.department.name, form.department_id)"
-      >
-        {{ form.file_name }}
-      </router-link>
-          </td>
-          <td>{{ form.description }}</td>
-          <td>{{ form.department.name }}</td>
-          <td>
-            <button @click="deleteDepartment(form.id)" class="btn btn-danger">Archive</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+        <thead>
+          <tr>
+            <th>Form Name</th>
+            <th>Description</th>
+            <th>Department</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="form in forms" :key="form.id">
+            <td>
+              <router-link id="uploadForm"
+                :to="{ name: 'uploadForm', params: { formId: form.id, departmentName: form.department.name, fileName: form.file_name } }"
+                @click="logFormData(form.id, form.department.name, form.department_id)">
+                {{ form.file_name }}
+              </router-link>
+            </td>
+            <td>{{ form.description }}</td>
+            <td>{{ form.department.name }}</td>
+            <td>
+              <button @click="deleteDepartment(form.id)" class="btn btn-danger">Archive</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-  </div>
+  </ion-content>
 </template>
 
 <script>
 import axios from 'axios';
+import { IonApp, IonRouterOutlet, IonButtons, IonContent, IonHeader, IonMenu, IonMenuButton, IonPage, IonTitle, IonToolbar, IonItem } from '@ionic/vue';
 
 export default {
   name: 'AddFormPage',
+  components: {
+    IonButtons,
+    IonContent,
+    IonHeader,
+    IonMenu,
+    IonMenuButton,
+    IonPage,
+    IonTitle,
+    IonToolbar,
+    IonItem
+  },
   data() {
     return {
       file_name: '',
@@ -88,7 +102,7 @@ export default {
       console.log('Department ID:', department_id);
       console.log('Department Name:', departmentName);
     },
-    
+
     submitForm() {
       if (!this.file_name || !this.file_code || !this.department_id || !this.description) {
         this.submitError = 'Please fill out all fields.';
@@ -96,13 +110,13 @@ export default {
       }
 
       axios.post('http://127.0.0.1:8000/api/form', {
-          file_name: this.file_name,
-          file_code: this.file_code,
-          description: this.description, 
-          department_id: this.department_id,
+        file_name: this.file_name,
+        file_code: this.file_code,
+        description: this.description,
+        department_id: this.department_id,
       })
         .then(() => {
-          this.file_name = ''; 
+          this.file_name = '';
           this.file_code = '';
           this.description = '';
           this.department_id = '';
@@ -119,7 +133,7 @@ export default {
     },
     fetchDepartments() {
       axios.get('http://127.0.0.1:8000/api/retrieve')
-        .then(response => { 
+        .then(response => {
           this.departments = response.data.filter(department => department.is_Active === true || department.is_Active === 1);
         })
         .catch(error => {
@@ -148,8 +162,8 @@ export default {
       }
     },
     getDepartmentName(departmentId) {
-    const department = this.departments.find(dep => dep.id === departmentId);
-    return department ? department.name : 'Unknown';
+      const department = this.departments.find(dep => dep.id === departmentId);
+      return department ? department.name : 'Unknown';
     },
   },
   mounted() {
@@ -276,9 +290,7 @@ export default {
   width: 110%;
 }
 
-#uploadForm{
+#uploadForm {
   text-decoration: none;
 }
-
-
 </style>

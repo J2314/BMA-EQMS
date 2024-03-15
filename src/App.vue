@@ -1,9 +1,15 @@
 <template>
   <ion-app>
-    <ion-router-outlet />
+    <main-layout></main-layout>
   </ion-app>
 </template>
 
-<script setup>
+<script>
+import MainLayout from '@/views/MainLayout.vue'
 import { IonApp, IonRouterOutlet } from '@ionic/vue';
+export default {
+  components:{
+    MainLayout
+  }
+}
 </script>
