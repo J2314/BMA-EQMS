@@ -35,7 +35,7 @@
                 <img src="@/assets/marine.png" alt="BMA Logo" class="logo3" slot="end" shape="round">
             </ion-toolbar>
         </ion-header>
-        <router-view></router-view>
+       <router-view></router-view>
     </ion-page>
 </template>
 
