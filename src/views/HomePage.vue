@@ -2,7 +2,7 @@
   <ion-menu content-id="main-content">
     <ion-header>
       <ion-toolbar>
-        <ion-title class="title">e-QMS</ion-title>
+        <ion-title class="title">E-QMS</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-list class="SideList">
