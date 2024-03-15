@@ -8,10 +8,12 @@
     </ion-header>
     <ion-list class="SideList">
       <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
+      <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Policy Documents </strong></ion-item>
+      <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Procedures </strong></ion-item>
+      <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Work Instructions </strong></ion-item>
       <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Forms </strong></ion-item>
       <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Departments </strong></ion-item>
-      <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Reports </strong></ion-item>
-      <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Damn </strong></ion-item>
+      <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Records </strong></ion-item>
     </ion-list>
     <ion-button shape="round" class="btn logout" color="success"><strong>Logout</strong></ion-button>
   </ion-menu>
@@ -60,7 +62,7 @@ export default defineComponent({
 
 .SideList {
   flex:1;
-  margin-right: 15px;
+  margin-right: 12px;
   margin-left: 10px;
 }
 
@@ -69,7 +71,7 @@ export default defineComponent({
 }
 
 .logout {
-  margin-right: 15px;
+  margin-right: 12px;
   margin-left: 10px;
   margin-bottom: 10px;
 }
