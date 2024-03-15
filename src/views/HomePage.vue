@@ -2,7 +2,8 @@
   <ion-menu content-id="main-content">
     <ion-header>
       <ion-toolbar>
-        <ion-title class="title"><strong>E-QMS</strong></ion-title>
+        <img src="@/assets/bma.png" alt="BMA Logo" class="logo1" slot="start">
+        <ion-title class="title" slot="start"><strong>E-QMS</strong></ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-list class="SideList">
@@ -20,7 +21,10 @@
         <ion-buttons slot="start">
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
-        <ion-title slot="start"><strong>BALIWAG MARTIME ACADEMY</strong></ion-title>
+        <img src="@/assets/bma.png" alt="BMA Logo" class="logo2" slot="start">
+        <ion-title slot="start">
+          <strong>BALIWAG MARITIME ACADEMY</strong>
+        </ion-title>
         <ion-searchbar class="search"></ion-searchbar>
         <ion-title slot="end"><strong>Admin</strong></ion-title>
       </ion-toolbar>
@@ -68,6 +72,21 @@ export default defineComponent({
   margin-right: 15px;
   margin-left: 10px;
   margin-bottom: 10px;
+}
+
+.logo1 {
+  width: 50px;
+  height: 50px;
+  margin: 5px;
+  margin-left: 50px;
+  margin-right: -20px;
+}
+
+.logo2 {
+  width: 50px;
+  height: 50px;
+  margin:5px;
+  margin-right: -10px;
 }
 
 </style>
