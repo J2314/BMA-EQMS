@@ -17,6 +17,31 @@ const routes = [
         path: '/addForm',
         name: 'Add Form',
         component: () => import('@/views/forms/AddForm.vue')
+      },
+      {
+        path: '/addPolicy',
+        name: 'Add Policy',
+        component: () => import('@/views/policy/AddPolicy.vue')
+      },
+      {
+        path: '/addProcedures',
+        name: 'Add Procedures',
+        component: () => import('@/views/procedures/AddProcedures.vue')
+      },
+      {
+        path: '/addWorkInstructions',
+        name: 'Add Work Instructions',
+        component: () => import('@/views/instruction/AddWorkInstruction.vue')
+      },
+      {
+        path: '/addRecords',
+        name: 'Add Records',
+        component: () => import('@/views/records/AddRecords.vue')
+      },
+      {
+        path: '/addDepartments',
+        name: 'Add Departments',
+        component: () => import('@/views/departments/AddDepartments.vue')
       }
     ]
   }

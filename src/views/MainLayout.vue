@@ -1,4 +1,4 @@
-<template>
+<<template>
     <ion-menu content-id="main-content">
       <ion-header>
         <ion-toolbar>
@@ -8,15 +8,14 @@
       </ion-header>
       <ion-list class="SideList">
         <ion-item router-link="/dashboard" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
-        <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Policy Documents
-            </strong></ion-item>
-        <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Procedures </strong></ion-item>
-        <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Work Instructions
+        <ion-item router-link="/addPolicy" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
+        <ion-item router-link="/addProcedures" color="success" class="itemsK"><strong> Procedures </strong></ion-item>
+        <ion-item router-link="/addWorkInstruction" color="success" class="itemsK"><strong> Work Instructions
             </strong></ion-item>
         <ion-item router-link="/addForm" color="success" class="itemsK"><strong> Forms
             </strong></ion-item>
-        <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Departments </strong></ion-item>
-        <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Records </strong></ion-item>
+        <ion-item router-link="/addDepartments" color="success" class="itemsK"><strong> Departments </strong></ion-item>
+        <ion-item router-link="/addRecords" color="success" class="itemsK"><strong> Records </strong></ion-item>
       </ion-list>
       <ion-button shape="round" class="btn logout" color="success"><strong>Logout</strong></ion-button>
     </ion-menu>
@@ -102,4 +101,4 @@
     margin-right: 15px;
   }
   </style>
-  
+  >
