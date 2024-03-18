@@ -1,174 +1,143 @@
 <template>
-  <ion-content class="ion-padding">
-    <div class="content-wrapper">
-      <form @submit.prevent="submitForm" class="add-form">
-        <h1 class="form-title">Add Forms</h1>
-        <div class="form-table-container">
-          <table class="form-table">
-            <tr>
-              <td>
-                <label for="departmentName" class="form-label">Add Name</label>
-                <input type="text" id="departmentName" class="form-control" v-model="file_name"
-                  placeholder="Enter name">
-              </td>
-              <td>
-                <label for="departmentCode" class="form-label">Code</label>
-                <input type="text" id="departmentCode" class="form-control" v-model="file_code"
-                  placeholder="Enter code">
-              </td>
-              <td>
-                <label for="departmentDescription" class="form-label">Description</label>
-                <input type="text" id="departmentDescription" class="form-control" v-model="description"
-                  placeholder="Enter Description">
-              </td>
-              <td>
-                <label for="departmentId" class="form-label">Department</label>
-                <select id="departmentId" class="form-control" v-model="department_id">
-                  <option value="">Select Department</option>
-                  <option v-for="(department, index) in departments" :key="index" :value="department.id">{{
-        department.name }}</option>
-                </select>
-              </td>
-              <td class="button-cell">
-                <button type="submit" class="btn btn-primary">Add</button>
-              </td>
-            </tr>
+  <ion-content>
+  <div class="content-wrapper">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="add-form">
+          <form @submit.prevent="submitForm">
+            <h1 class="form-title">Policy Documents</h1>
+            <div class="form-group">
+              <label for="documentType" class="form-label">Document Type:</label>
+              <select id="documentType" class="form-control" v-model="document_type">
+                <option value="" disabled selected>Select Document Type</option>
+                <option value="Quality Policy">Quality Policy</option>
+                <option value="Environmental Policy">Environmental Policy</option>
+                <option value="Health and Safety Policy">Health and Safety Policy</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="documentName" class="form-label">Document Name:</label>
+              <input type="text" id="documentName" class="form-control" v-model="document_name"
+                placeholder="Enter document name">
+            </div>
+            <div class="form-group">
+              <label for="file" class="form-label">Choose File:</label>
+              <input class="form-control form-control-lg me-3" id="formFileLg" type="file" @change="fileSelected"
+                ref="file">
+            </div>
+            <div class="d-flex">
+              <button type="submit" class="btn btn-primary btn-lg">Upload</button>
+            </div>
+          </form>
+        </div>
+        <div id="cusTable" class="table-wrapper mt-3">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th id="documentType" scope="col">Document Type</th>
+                <th id="documentName" scope="col">Document Name</th>
+                <th id="filePath" scope="col">File Path</th>
+                <th id="actions" scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(policy, index) in policies" :key="index">
+                <td>{{ index + 1 }}</td>
+                <td>{{ policy.document_type }}</td>
+                <td>{{ policy.document_name }}</td>
+                <td>{{ policy.file_path }}</td>
+                <td><button id="btnView" type="button" class="btn btn-secondary" @click="openPdf(policy.id)">View</button></td>
+              </tr>
+            </tbody>
           </table>
         </div>
-        <span v-if="submitSuccess" class="success-message">Form submitted successfully!</span>
-        <span v-if="submitError" class="error-message">{{ submitError }}</span>
-      </form>
-      <table class="form-summary-table">
-        <thead>
-          <tr>
-            <th>Form Name</th>
-            <th>Description</th>
-            <th>Department</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="form in forms" :key="form.id">
-            <td>
-              <router-link id="uploadForm"
-                :to="{ name: 'uploadForm', params: { formId: form.id, departmentName: form.department.name, fileName: form.file_name } }"
-                @click="logFormData(form.id, form.department.name, form.department_id)">
-                {{ form.file_name }}
-              </router-link>
-            </td>
-            <td>{{ form.description }}</td>
-            <td>{{ form.department.name }}</td>
-            <td>
-              <button @click="deleteDepartment(form.id)" class="btn btn-danger">Archive</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      </div>
+      <div class="col-md-6">
+        <div class="pdf-viewer-container">
+          <iframe id="pdfViewer" class="pdf-viewer" ref="pdfViewer" height="100%"></iframe>
+        </div>
+      </div>
     </div>
-  </ion-content>
+  </div>
+</ion-content>
 </template>
 
 <script>
 import axios from 'axios';
-import { IonApp, IonRouterOutlet, IonButtons, IonContent, IonHeader, IonMenu, IonMenuButton, IonPage, IonTitle, IonToolbar, IonItem } from '@ionic/vue';
 
 export default {
-  name: 'AddFormPage',
-  components: {
-    IonButtons,
-    IonContent,
-    IonHeader,
-    IonMenu,
-    IonMenuButton,
-    IonPage,
-    IonTitle,
-    IonToolbar,
-    IonItem
-  },
+  name: 'AddPolicyPage',
   data() {
     return {
-      file_name: '',
-      file_code: '',
-      description: '',
-      department_id: '',
-      submitError: '',
-      departments: [],
-      forms: [],
+      document_type: '',
+      document_name: '',
+      policies: [],
     };
   },
   methods: {
-    logFormData(formId, departmentName, department_id) {
-      console.log('Form ID:', formId);
-      console.log('Department ID:', department_id);
-      console.log('Department Name:', departmentName);
-    },
+    openPdf(polId) {
+      axios.get(`http://127.0.0.1:8000/api/retrieve-policies/${polId}`)
+        .then(response => {
+          const fileContent = response.data.policy.file_path;
+          const pdfViewer = this.$refs.pdfViewer;
 
+          pdfViewer.src = fileContent;
+        })
+        .catch(error => {
+          console.error('Error fetching file content:', error);
+        });
+    },
     submitForm() {
-      if (!this.file_name || !this.file_code || !this.department_id || !this.description) {
-        this.submitError = 'Please fill out all fields.';
+      if (!this.document_type || !this.document_name || !this.$refs.file.files[0]) {
+        alert('Please fill out all fields and select a file.');
         return;
       }
 
-      axios.post('http://127.0.0.1:8000/api/form', {
-        file_name: this.file_name,
-        file_code: this.file_code,
-        description: this.description,
-        department_id: this.department_id,
-      })
-        .then(() => {
-          this.file_name = '';
-          this.file_code = '';
-          this.description = '';
-          this.department_id = '';
-          this.submitError = '';
-          this.fetchForms();
-        })
-        .catch(error => {
-          if (error.response && error.response.data && error.response.data.message) {
-            this.submitError = error.response.data.message;
-          } else {
-            this.submitError = 'An error occurred.';
-          }
-        });
-    },
-    fetchDepartments() {
-      axios.get('http://127.0.0.1:8000/api/retrieve')
-        .then(response => {
-          this.departments = response.data.filter(department => department.is_Active === true || department.is_Active === 1);
-        })
-        .catch(error => {
-          console.error('Error fetching departments:', error);
-        });
-    },
-    fetchForms() {
-      axios.get('http://127.0.0.1:8000/api/retrieve-forms')
-        .then(response => {
-          this.forms = response.data;
-        })
-        .catch(error => {
-          console.error('Error fetching forms:', error);
-        });
-    },
-    async deleteDepartment(formId) {
-      try {
-        console.log('Deleting form with ID:', formId);
+      let formData = new FormData();
+      formData.append('file', this.$refs.file.files[0]);
+      formData.append('document_type', this.document_type);
+      formData.append('document_name', this.document_name);
 
-        await axios.put(`http://127.0.0.1:8000/api/archive-forms/${formId}`);
-        alert('Form archived successfully');
-        this.fetchForms();
-      } catch (error) {
-        console.error('Error archiving form:', error.message);
-        alert('Error archiving form: ' + error.message);
-      }
+      axios.post('http://127.0.0.1:8000/api/upload-policy', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+        .then(response => {
+          if (response.status === 200) {
+            alert('File uploaded successfully.');
+            this.document_type = '';
+            this.document_name = '';
+            this.$refs.file.value = null;
+            this.fetchPolicies();
+          } else {
+            alert('Error uploading file.');
+          }
+        })
+        .catch(error => {
+          console.error('Error uploading file:', error);
+          alert('Error uploading file.');
+        });
     },
-    getDepartmentName(departmentId) {
-      const department = this.departments.find(dep => dep.id === departmentId);
-      return department ? department.name : 'Unknown';
+    fetchPolicies() {
+      axios.get('http://127.0.0.1:8000/api/retrieve-policies')
+        .then(response => {
+          this.policies = response.data;
+        })
+        .catch(error => {
+          console.error('Error fetching policies:', error);
+        });
+    },
+    fileSelected(event) {
+      const files = event.target.files;
+      if (files.length > 0) {
+        this.form.file = files[0];
+      }
     },
   },
   mounted() {
-    this.fetchDepartments();
-    this.fetchForms();
+    this.fetchPolicies();
   }
 }
 </script>
@@ -177,11 +146,12 @@ export default {
 .content-wrapper {
   padding: 20px;
   margin-top: 60px;
+  overflow-y: auto;
 }
 
 .add-form {
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 700px;
+  margin-left: 0; /* Adjusted */
 }
 
 .form-label {
@@ -201,7 +171,7 @@ export default {
 }
 
 .btn-primary {
-  margin-top: 10px;
+  margin-top: 22px;
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -210,87 +180,58 @@ export default {
   cursor: pointer;
   transition: background-color 0.3s;
   font-size: 16px;
-  width: 100%;
+  margin-bottom: 12px;
 }
 
 .btn-primary:hover {
   background-color: #0056b3;
 }
 
-.success-message,
-.error-message {
-  display: block;
-  margin-top: 12px;
-  font-size: 16px;
-  color: #28a745;
+.table-wrapper {
+  max-width: 700px;
+  margin-left: -1%; 
+  margin-right: auto;
 }
 
-.error-message {
-  color: #dc3545;
-}
-
-.form-title {
-  font-size: 32px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 30px;
-}
-
-.form-table-container {
-  overflow-x: auto;
-}
-
-.form-table {
+.table-hover {
   width: 100%;
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-.form-table tr {
-  border-bottom: 1px solid #ccc;
-}
-
-.form-table td {
-  padding: 15px;
-}
-
-.button-cell {
-  text-align: right;
-}
-
-.form-summary-table {
-  width: 65%;
-  margin-top: 30px;
-  margin-left: 18%;
+  margin-top: 0;
   border-collapse: collapse;
 }
 
-.form-summary-table th,
-.form-summary-table td {
+.table-hover th,
+.table-hover td {
   border: 1px solid #ccc;
   padding: 10px;
   text-align: center;
+  vertical-align: middle;
 }
 
-.form-summary-table th {
+.table-hover th {
   background-color: #f0f0f0;
 }
 
-.btn-danger {
-  background-color: gray;
-  border-style: none;
+.form-control-lg {
+  width: 100%;
+  flex: 1;
 }
 
-.btn-danger:hover {
-  background-color: lightgray;
-  color: black;
+.align-items-center {
+  width: 100%;
 }
 
-#departmentId {
-  width: 110%;
+.pdf-viewer-container {
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 650px;
+  height: 600px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-#uploadForm {
-  text-decoration: none;
+.pdf-viewer {
+  width: 100%;
+  height: 100%;
 }
 </style>

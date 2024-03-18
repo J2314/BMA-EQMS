@@ -1,10 +1,10 @@
 <template>
   <ion-content>
     <div class="additional-buttons">
-      <ion-button @click="navigateTo('statistics')">Statistics</ion-button>
-      <ion-button @click="navigateTo('announcements')">Announcements</ion-button>
-      <ion-button @click="navigateTo('monitoring')">Monitoring</ion-button>
-      <ion-button @click="navigateTo('calendar')">Calendar</ion-button>
+      <ion-button router-link="/dashboard"><strong>Statistics</strong></ion-button>
+      <ion-button router-link="/dashboard"><strong>Announcements</strong></ion-button>
+      <ion-button router-link="/dashboard"><strong>Monitoring</strong></ion-button>
+      <ion-button router-link="/dashboard"><strong>Calendar</strong></ion-button>
     </div>
     <TheStats />
   </ion-content>
