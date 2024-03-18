@@ -13,7 +13,7 @@
         <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Procedures </strong></ion-item>
         <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Work Instructions
             </strong></ion-item>
-        <ion-item router-link="addForm" color="success" class="itemsK"><strong> Forms
+        <ion-item router-link="/addForm" color="success" class="itemsK"><strong> Forms
             </strong></ion-item>
         <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Departments </strong></ion-item>
         <ion-item router-link="/your-route" color="success" class="itemsK"><strong> Records </strong></ion-item>

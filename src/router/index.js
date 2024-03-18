@@ -5,7 +5,7 @@ import Dashboard from '../views/Dashboard.vue';
 const routes = [
   {
     path: '/',
-    redirect: '/dashboard', 
+    redirect: '/dashboard',
     component: MainLayout,
     children: [
       {

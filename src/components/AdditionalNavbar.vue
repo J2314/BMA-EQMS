@@ -1,37 +1,28 @@
 <template>
-  <div>
-    <nav class="additional-navbar" v-if="!removeAddNav">
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <router-link to="/dashboard/statistics" class="navbar-link">Statistics</router-link>
-          </div>
-          <div class="col">
-            <router-link to="/dashboard/announcements" class="navbar-link">Announcements</router-link>
-          </div>
-          <div class="col">
-            <router-link to="/dashboard/monitoring" class="navbar-link">Monitoring</router-link>
-          </div>
-          <div class="col">
-            <router-link to="/dashboard/calendar" class="navbar-link">Calendar</router-link>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </div>
+  <ion-content>
+    <div class="additional-navbar">
+      <ion-button @click="navigateTo('statistics')" class="navbar-link">Statistics</ion-button>
+      <ion-button @click="navigateTo('announcements')" class="navbar-link">Announcements</ion-button>
+      <ion-button @click="navigateTo('monitoring')" class="navbar-link">Monitoring</ion-button>
+      <ion-button @click="navigateTo('calendar')" class="navbar-link">Calendar</ion-button>
+    </div>
+    <TheStats />
+  </ion-content>
 </template>
 
 <script>
+import { IonContent, IonButton } from '@ionic/vue';
+import TheStats from '@/components/TheStats.vue';
+
 export default {
-  computed: {
-    removeAddNav() {
-      return (
-        this.$route.name === 'addForm' ||
-        this.$route.name === 'addDepartment' ||
-        this.$route.name === 'uploadForm' ||
-        this.$route.name === 'addPolicy' ||
-        this.$route.name === 'addProcedures'
-      );
+  components: {
+    IonContent,
+    IonButton,
+    TheStats,
+  },
+  methods: {
+    navigateTo(route) {
+      console.log(`Navigating to ${route}`);
     },
   },
 };
@@ -48,18 +39,17 @@ export default {
 }
 
 .navbar-link {
-  color: #fff;
+  color: #fff !important; /* Use !important to ensure styles are applied */
   text-decoration: none;
   font-size: 22px;
-  transition: color 0.3s;
+  transition: font-weight 0.3s;
   display: block;
   text-align: center;
   position: relative;
   font-weight: normal;
 }
 
-.navbar-link:hover,
-.navbar-link:focus {
+.navbar-link:hover {
   font-weight: bold;
 }
 
@@ -75,8 +65,7 @@ export default {
   transition: background-color 0.3s, width 0.3s, height 0.3s;
 }
 
-.navbar-link:hover::after,
-.navbar-link:focus::after {
+.navbar-link:hover::after {
   background-color: #ffd700;
   width: 70%;
   height: 6px;
