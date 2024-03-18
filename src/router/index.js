@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
-import Dashboard from '../views/Dashboard.vue'
+import MainLayout from '../views/MainLayout.vue';
+import Dashboard from '../views/Dashboard.vue';
 
 const routes = [
   {
     path: '/',
-    name: 'main-layout',
-    component: () => import('@/views/MainLayout.vue'),
+    redirect: '/dashboard', 
+    component: MainLayout,
     children: [
       {
         path: '/dashboard',
@@ -19,11 +20,11 @@ const routes = [
       }
     ]
   }
-]
+];
 
 const router = createRouter({
   history: createWebHistory(),
   routes
 });
 
-export default router
+export default router;

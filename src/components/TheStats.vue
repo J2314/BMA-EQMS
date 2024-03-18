@@ -1,64 +1,50 @@
 <template>
-    <ion-content class="ion-padding">
-      <ion-router-outlet id="main-content"></ion-router-outlet>
-      <div class="container">
-        <div class="chart-container">
-          <div class="chart">
-            <h3>Form Viewing Count</h3>
-            <canvas ref="formViewCountChart" width="300" height="150"></canvas>
-          </div>
-          <div class="chart">
-            <h3>Downloading Count</h3>
-            <canvas ref="downloadingCountChart" width="300" height="150"></canvas>
-          </div>
-          <div class="chart">
-            <h3>Monthly Trends</h3>
-            <canvas ref="monthlyTrendsChart" width="300" height="150"></canvas>
-          </div>
-          <div class="chart">
-            <h3>Distribution</h3>
-            <canvas ref="distributionChart" width="300" height="150"></canvas>
-          </div>
-        </div>
-        <div class="data-table">
-          <h3>Data Table</h3>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Month</th>
-                <th>Form Views</th>
-                <th>Downloads</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(data, index) in monthlyTrendsData" :key="index">
-                <td>{{ data.month }}</td>
-                <td>{{ data.formViews }}</td>
-                <td>{{ data.downloads }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+  <div class="container">
+    <div class="chart-container">
+      <div class="chart">
+        <h3>Form Viewing Count</h3>
+        <canvas ref="formViewCountChart" width="300" height="150"></canvas>
       </div>
-    </ion-content>
+      <div class="chart">
+        <h3>Downloading Count</h3>
+        <canvas ref="downloadingCountChart" width="300" height="150"></canvas>
+      </div>
+      <div class="chart">
+        <h3>Monthly Trends</h3>
+        <canvas ref="monthlyTrendsChart" width="300" height="150"></canvas>
+      </div>
+      <div class="chart">
+        <h3>Distribution</h3>
+        <canvas ref="distributionChart" width="300" height="150"></canvas>
+      </div>
+    </div>
+    <div class="data-table">
+      <h3>Data Table</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>Form Views</th>
+            <th>Downloads</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(data, index) in monthlyTrendsData" :key="index">
+            <td>{{ data.month }}</td>
+            <td>{{ data.formViews }}</td>
+            <td>{{ data.downloads }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </template>
 
 <script>
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonMenuButton, IonRouterOutlet } from '@ionic/vue';
 import Chart from 'chart.js/auto';
 
 export default {
   name: 'MonitoringPage',
-  components: {
-    IonPage,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    IonButtons,
-    IonMenuButton,
-    IonRouterOutlet
-  },
   data() {
     return {
       formViewCounts: [100, 200, 300, 400, 500],
@@ -181,7 +167,7 @@ export default {
 }
 
 .chart-container {
-  margin-top: 15%;
+  margin-top: -5%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
