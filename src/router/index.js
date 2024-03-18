@@ -1,47 +1,62 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import MainLayout from '../views/MainLayout.vue';
 import Dashboard from '../views/Dashboard.vue';
+import Login from '../views/Login.vue';
+import AddForm from '../views/forms/AddForm.vue';
+import AddPolicy from '../views/policy/AddPolicy.vue';
+import AddProcedures from '../views/procedures/AddProcedures.vue';
+import AddWorkInstruction from '../views/instruction/AddWorkInstruction.vue';
+import AddRecords from '../views/records/AddRecords.vue';
+import AddDepartments from '../views/departments/AddDepartments.vue';
 
 const routes = [
   {
     path: '/',
-    redirect: '/dashboard',
+    redirect: '/login'
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/dashboard',
     component: MainLayout,
     children: [
       {
-        path: '/dashboard',
+        path: '',
         name: 'Dashboard',
         component: Dashboard,
       },
       {
         path: '/addForm',
         name: 'Add Form',
-        component: () => import('@/views/forms/AddForm.vue')
+        component: AddForm
       },
       {
         path: '/addPolicy',
         name: 'Add Policy',
-        component: () => import('@/views/policy/AddPolicy.vue')
+        component: AddPolicy
       },
       {
         path: '/addProcedures',
         name: 'Add Procedures',
-        component: () => import('@/views/procedures/AddProcedures.vue')
+        component: AddProcedures
       },
       {
         path: '/addWorkInstructions',
         name: 'Add Work Instructions',
-        component: () => import('@/views/instruction/AddWorkInstruction.vue')
+        component: AddWorkInstruction
       },
       {
         path: '/addRecords',
         name: 'Add Records',
-        component: () => import('@/views/records/AddRecords.vue')
+        component: AddRecords
       },
       {
         path: '/addDepartments',
         name: 'Add Departments',
-        component: () => import('@/views/departments/AddDepartments.vue')
+        component: AddDepartments
       }
     ]
   }

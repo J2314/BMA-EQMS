@@ -17,7 +17,7 @@
         <ion-item router-link="/addDepartments" color="success" class="itemsK"><strong> Departments </strong></ion-item>
         <ion-item router-link="/addRecords" color="success" class="itemsK"><strong> Records </strong></ion-item>
       </ion-list>
-      <ion-button shape="round" class="btn logout" color="success"><strong>Logout</strong></ion-button>
+      <ion-button @click="logout" shape="round" class="btn logout" color="success"><strong>Logout</strong></ion-button>
     </ion-menu>
     <ion-page>
       <ion-header>
@@ -41,8 +41,22 @@
   <script>
   import { IonMenu, IonHeader, IonToolbar, IonTitle, IonButton, IonList, IonItem, IonRouterOutlet, IonPage, IonButtons, IonMenuButton } from '@ionic/vue';
   import { defineComponent } from 'vue';
+  import { useRouter } from 'vue-router'; // Import useRouter from Vue Router
   
   export default defineComponent({
+    setup() {
+      const router = useRouter(); // Initialize router
+      
+      // Define method for handling logout
+      const logout = () => {
+        // Redirect to login page
+        router.push({ name: 'Login' });
+      };
+
+      return {
+        logout // Expose the logout method to the template
+      };
+    },
     components: {
       IonMenu,
       IonHeader,
