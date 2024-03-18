@@ -10,7 +10,7 @@
         <ion-item router-link="/dashboard" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
         <ion-item router-link="/addPolicy" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
         <ion-item router-link="/addProcedures" color="success" class="itemsK"><strong> Procedures </strong></ion-item>
-        <ion-item router-link="/addWorkInstruction" color="success" class="itemsK"><strong> Work Instructions
+        <ion-item router-link="/addWorkInstructions" color="success" class="itemsK"><strong> Work Instructions
             </strong></ion-item>
         <ion-item router-link="/addForm" color="success" class="itemsK"><strong> Forms
             </strong></ion-item>

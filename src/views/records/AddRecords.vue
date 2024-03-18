@@ -5,11 +5,11 @@
     <div class="col-md-6">
       <div class="add-form">
         <form @submit.prevent="submitForm">
-          <h1 class="form-title">Procedures</h1>
+          <h1 class="form-title">Add Records</h1>
           <div class="form-group">
-            <label for="documentType" class="form-label">Procedure Type:</label>
+            <label for="documentType" class="form-label">Record Type:</label>
             <select id="documentType" class="form-control" v-model="document_type">
-              <option value="" disabled selected>Select Procedure Type</option>
+              <option value="" disabled selected>Select Record Type</option>
               <option value="Document Control Procedure">Document Control Procedure</option>
               <option value="Corrective and Preventive Action (CAPA) Procedure">Corrective and Preventive Action (CAPA) Procedure</option>
               <option value="Internal Audit Procedure">Internal Audit Procedure</option>
@@ -18,9 +18,9 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="departmentalProcedure" class="form-label">Departmental Procedure:</label>
+            <label for="departmentalProcedure" class="form-label">Record Name:</label>
             <input type="text" id="departmentalProcedure" class="form-control" v-model="departmental_procedure"
-              placeholder="Enter departmental procedure">
+              placeholder="Enter record name">
           </div>
           <div class="form-group">
             <label for="documentName" class="form-label">Document Name:</label>
@@ -161,7 +161,7 @@ overflow-y: auto;
 
 .add-form {
 max-width: 700px;
-margin-left: 1%;
+margin-left: 15%;
 margin-right: auto;
 }
 
@@ -200,7 +200,7 @@ background-color: #0056b3;
 
 .table-wrapper {
 max-width: 700px;
-margin-left: 1%;
+margin-left: 15%;
 margin-right: auto;
 }
 
@@ -233,8 +233,8 @@ width: 100%;
 
 .pdf-viewer-container {
 margin-top: 20px;
-width: 650px;
-height: 600px;
+width: 800px;
+height: 700px;
 border: 1px solid #ccc;
 box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }

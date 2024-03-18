@@ -201,7 +201,7 @@ export default {
 }
 
 .btn-primary {
-  margin-top: 10px;
+  margin-top: 16px;
   background-color: #007bff;
   color: #fff;
   border: none;

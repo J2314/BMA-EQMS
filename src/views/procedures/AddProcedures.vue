@@ -5,7 +5,7 @@
       <div class="col-md-6">
         <div class="add-form">
           <form @submit.prevent="submitForm">
-            <h1 class="form-title">Procedures</h1>
+            <h1 class="form-title">Add Procedures</h1>
             <div class="form-group">
               <label for="documentType" class="form-label">Procedure Type:</label>
               <select id="documentType" class="form-control" v-model="document_type">
@@ -161,7 +161,7 @@ export default {
 
 .add-form {
   max-width: 700px;
-  margin-left: 1%;
+  margin-left: 15%;
   margin-right: auto;
 }
 
@@ -200,7 +200,7 @@ export default {
 
 .table-wrapper {
   max-width: 700px;
-  margin-left: 1%;
+  margin-left: 15%;
   margin-right: auto;
 }
 
@@ -233,8 +233,8 @@ export default {
 
 .pdf-viewer-container {
   margin-top: 20px;
-  width: 650px;
-  height: 600px;
+  width: 800px;
+  height: 700px;
   border: 1px solid #ccc;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
