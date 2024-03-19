@@ -13,24 +13,18 @@
         <ion-item router-link="/addPolicy" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
         <ion-item router-link="/addProcedures" color="success" class="itemsK"><strong> Procedures </strong></ion-item>
         <ion-item router-link="/addWorkInstructions" color="success" class="itemsK"><strong> Work Instructions </strong></ion-item>
-        <ion-item @click="toggleFormsDropdown" color="success">
-          <strong> Forms </strong>
-          <ion-icon slot="end" :icon="showGeneralForms ? chevronUp : chevronDown"></ion-icon>
-        </ion-item>
-        <ion-list v-show="showGeneralForms" class="subList">
-          <ion-item router-link="/addForm" color="success" class="itemsK subItem"><strong> General Forms </strong></ion-item>
-          <ion-item router-link="/addDepartments" color="success" class="itemsK subItem"><strong> Department Forms </strong></ion-item>
-        </ion-list>
+        <ion-item router-link="/addForm" color="success" class="itemsK"><strong> Forms </strong></ion-item>
+        <ion-item router-link="/addDepartments" color="success" class="itemsK"><strong> Deparments </strong></ion-item>
         <ion-item router-link="/addRecords" color="success" class="itemsK"><strong> Records </strong></ion-item>
       </template>
       <!-- Show these items for user role -->
       <template v-else-if="$route.path.startsWith('/userdashboard') || $route.matched.some(record => record.path.startsWith('/userdashboard'))">
         <ion-item router-link="/userdashboard" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
-        <ion-item @click="toggleFormsDropdown" color="success">
+        <ion-item @click="toggleUserFormsDropdown" color="success">
           <strong> Forms </strong>
-          <ion-icon slot="end" :icon="showGeneralForms ? chevronUp : chevronDown"></ion-icon>
+          <ion-icon slot="end" :icon="showUserForms ? chevronUp : chevronDown"></ion-icon>
         </ion-item>
-        <ion-list v-show="showGeneralForms" class="subList">
+        <ion-list v-show="showUserForms" class="subList">
           <ion-item router-link="/generalForms" color="success" class="itemsK subItem"><strong> General Forms </strong></ion-item>
           <ion-item router-link="/departmentForms" color="success" class="itemsK subItem"><strong> Department Forms </strong></ion-item>
         </ion-list>
@@ -51,7 +45,8 @@
         </ion-title>
         <ion-searchbar class="search"></ion-searchbar>
         <!-- Change title based on the route -->
-        <ion-title slot="end"><strong>{{ $route.path.startsWith('/userdashboard') ? 'User' : 'Admin' }}</strong></ion-title>
+        <ion-title slot="end"><strong>{{ $route.path.startsWith('/userdashboard') || $route.path.startsWith('/generalForms') || $route.path.startsWith('/departmentForms') ? 'User' : 'Admin' }}</strong></ion-title>
+
         <img src="@/assets/marine.png" alt="BMA Logo" class="logo3" slot="end" shape="round">
       </ion-toolbar>
     </ion-header>
@@ -72,16 +67,16 @@ export default defineComponent({
       router.push({ name: 'Login' });
     };
 
-    const showGeneralForms = ref(false);
+    const showUserForms = ref(false);
 
-    const toggleFormsDropdown = () => {
-      showGeneralForms.value = !showGeneralForms.value;
+    const toggleUserFormsDropdown = () => {
+      showUserForms.value = !showUserForms.value;
     };
 
     return {
       logout,
-      showGeneralForms,
-      toggleFormsDropdown
+      showUserForms,
+      toggleUserFormsDropdown
     };
   },
   components: {
