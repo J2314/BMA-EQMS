@@ -1,118 +1,145 @@
-<<template>
-    <ion-menu content-id="main-content">
-      <ion-header>
-        <ion-toolbar>
-          <img src="@/assets/bma.png" alt="BMA Logo" class="logo1" slot="start">
-          <ion-title class="title" slot="start"><strong>E-QMS</strong></ion-title>
-        </ion-toolbar>
-      </ion-header>
-      <ion-list class="SideList">
+<template>
+  <ion-menu content-id="main-content">
+    <ion-header>
+      <ion-toolbar>
+        <img src="@/assets/bma.png" alt="BMA Logo" class="logo1" slot="start">
+        <ion-title class="title" slot="start"><strong>E-QMS</strong></ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-list class="SideList">
+      <!-- Show these items for admin role -->
+      <template v-if="$route.path.startsWith('/dashboard') || $route.matched.some(record => record.path.startsWith('/dashboard'))">
         <ion-item router-link="/dashboard" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
         <ion-item router-link="/addPolicy" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
         <ion-item router-link="/addProcedures" color="success" class="itemsK"><strong> Procedures </strong></ion-item>
         <ion-item router-link="/addWorkInstructions" color="success" class="itemsK"><strong> Work Instructions
             </strong></ion-item>
-        <ion-item router-link="/addForm" color="success" class="itemsK"><strong> Forms
-            </strong></ion-item>
-        <ion-item router-link="/addDepartments" color="success" class="itemsK"><strong> Departments </strong></ion-item>
+        <ion-item @click="toggleFormsDropdown" color="success">
+          <strong> Forms </strong>
+          <ion-icon slot="end" :icon="showGeneralForms ? 'chevron-up' : 'chevron-down'"></ion-icon>
+        </ion-item>
+        <ion-list v-show="showGeneralForms">
+          <ion-item router-link="/addForm" color="success" class="itemsK"><strong> General Forms </strong></ion-item>
+          <ion-item router-link="/addDepartments" color="success" class="itemsK"><strong> Department Forms </strong></ion-item>
+        </ion-list>
         <ion-item router-link="/addRecords" color="success" class="itemsK"><strong> Records </strong></ion-item>
-      </ion-list>
-      <ion-button @click="logout" shape="round" class="btn logout" color="success"><strong>Logout</strong></ion-button>
-    </ion-menu>
-    <ion-page>
-      <ion-header>
-        <ion-toolbar>
-          <ion-buttons slot="start">
-            <ion-menu-button></ion-menu-button>
-          </ion-buttons>
-          <img src="@/assets/bma.png" alt="BMA Logo" class="logo2" slot="start">
-          <ion-title slot="start">
-            <strong>BALIWAG MARITIME ACADEMY</strong>
-          </ion-title>
-          <ion-searchbar class="search"></ion-searchbar>
-          <ion-title slot="end"><strong>Admin</strong></ion-title>
-          <img src="@/assets/marine.png" alt="BMA Logo" class="logo3" slot="end" shape="round">
-        </ion-toolbar>
-      </ion-header>
-      <ion-router-outlet id="main-content"></ion-router-outlet>
-    </ion-page>
-  </template>
-  
-  <script>
-  import { IonMenu, IonHeader, IonToolbar, IonTitle, IonButton, IonList, IonItem, IonRouterOutlet, IonPage, IonButtons, IonMenuButton } from '@ionic/vue';
-  import { defineComponent } from 'vue';
-  import { useRouter } from 'vue-router'; // Import useRouter from Vue Router
-  
-  export default defineComponent({
-    setup() {
-      const router = useRouter(); // Initialize router
-      
-      // Define method for handling logout
-      const logout = () => {
-        // Redirect to login page
-        router.push({ name: 'Login' });
-      };
+      </template>
+      <!-- Show these items for user role -->
+      <template v-else-if="$route.path.startsWith('/userdashboard') || $route.matched.some(record => record.path.startsWith('/userdashboard'))">
+        <ion-item router-link="/userdashboard" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
+        <ion-item @click="toggleFormsDropdown" color="success">
+          <strong> Forms </strong>
+          <ion-icon slot="end" :icon="showGeneralForms ? 'chevron-up' : 'chevron-down'"></ion-icon>
+        </ion-item>
+        <ion-list v-show="showGeneralForms">
+          <ion-item router-link="/generalForms" color="success" class="itemsK"><strong> General Forms </strong></ion-item>
+          <ion-item router-link="/departmentForms" color="success" class="itemsK"><strong> Department Forms </strong></ion-item>
+        </ion-list>
+      </template>
+    </ion-list>
+    <ion-button @click="logout" shape="round" class="btn logout" color="success"><strong>Logout</strong></ion-button>
+  </ion-menu>
+  <ion-page>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <img src="@/assets/bma.png" alt="BMA Logo" class="logo2" slot="start">
+        <ion-title slot="start">
+          <strong>BALIWAG MARITIME ACADEMY</strong>
+        </ion-title>
+        <ion-searchbar class="search"></ion-searchbar>
+        <!-- Change title based on the route -->
+        <ion-title slot="end"><strong>{{ $route.path.startsWith('/userdashboard') ? 'User' : 'Admin' }}</strong></ion-title>
+        <img src="@/assets/marine.png" alt="BMA Logo" class="logo3" slot="end" shape="round">
+      </ion-toolbar>
+    </ion-header>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-page>
+</template>
 
-      return {
-        logout // Expose the logout method to the template
-      };
-    },
-    components: {
-      IonMenu,
-      IonHeader,
-      IonToolbar,
-      IonTitle,
-      IonButton,
-      IonList,
-      IonItem,
-      IonRouterOutlet,
-      IonPage,
-      IonButtons,
-      IonMenuButton
-    },
-  });
-  </script>
-  
-  <style scoped>
-  .title {
-    text-align: center;
-  }
-  
-  .SideList {
-    flex: 1;
-    margin-right: 12px;
-    margin-left: 10px;
-  }
-  
-  .itemsK {
-    margin-bottom: 5px;
-  }
-  
-  .logout {
-    margin-right: 12px;
-    margin-left: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .logo1 {
-    width: 50px;
-    height: 50px;
-    margin: 5px;
-    margin-left: 50px;
-    margin-right: -20px;
-  }
-  
-  .logo2 {
-    width: 50px;
-    height: 50px;
-    margin: 5px;
-    margin-right: -10px;
-  }
-  
-  .logo3 {
-    width: 50px;
-    height: 50px;
-    margin-right: 15px;
-  }
-  </style>
-  >
+<script>
+import { IonMenu, IonHeader, IonToolbar, IonTitle, IonButton, IonList, IonItem, IonRouterOutlet, IonPage, IonButtons, IonMenuButton } from '@ionic/vue';
+import { defineComponent } from 'vue';
+import { useRouter } from 'vue-router'; 
+
+export default defineComponent({
+  setup() {
+    const router = useRouter();
+    const logout = () => {
+      router.push({ name: 'Login' });
+    };
+
+    // Variable to control the visibility of the dropdown
+    let showGeneralForms = false;
+
+    // Function to toggle the visibility of the dropdown
+    const toggleFormsDropdown = () => {
+      showGeneralForms = !showGeneralForms;
+    };
+
+    return {
+      logout,
+      showGeneralForms,
+      toggleFormsDropdown
+    };
+  },
+  components: {
+    IonMenu,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButton,
+    IonList,
+    IonItem,
+    IonRouterOutlet,
+    IonPage,
+    IonButtons,
+    IonMenuButton
+  },
+});
+</script>
+
+<style scoped>
+.title {
+  text-align: center;
+}
+
+.SideList {
+  flex: 1;
+  margin-right: 12px;
+  margin-left: 10px;
+}
+
+.itemsK {
+  margin-bottom: 5px;
+}
+
+.logout {
+  margin-right: 12px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+.logo1 {
+  width: 50px;
+  height: 50px;
+  margin: 5px;
+  margin-left: 50px;
+  margin-right: -20px;
+}
+
+.logo2 {
+  width: 50px;
+  height: 50px;
+  margin: 5px;
+  margin-right: -10px;
+}
+
+.logo3 {
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+}
+</style>

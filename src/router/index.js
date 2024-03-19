@@ -59,7 +59,19 @@ const routes = [
         component: AddDepartments
       }
     ]
-  }
+  },
+  {
+    path: '/userdashboard',
+    name: 'User Dashboard',
+    component: () => import('@/views/ClientSide/UserDashboard.vue'),
+    children: [
+      {
+        path: '/forms',
+        name: 'Forms',
+        component: () => import('@/views/ClientSide/Forms.vue'),
+      },
+    ]
+  },
 ];
 
 const router = createRouter({
