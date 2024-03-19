@@ -12,15 +12,14 @@
         <ion-item router-link="/dashboard" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
         <ion-item router-link="/addPolicy" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
         <ion-item router-link="/addProcedures" color="success" class="itemsK"><strong> Procedures </strong></ion-item>
-        <ion-item router-link="/addWorkInstructions" color="success" class="itemsK"><strong> Work Instructions
-            </strong></ion-item>
+        <ion-item router-link="/addWorkInstructions" color="success" class="itemsK"><strong> Work Instructions </strong></ion-item>
         <ion-item @click="toggleFormsDropdown" color="success">
           <strong> Forms </strong>
-          <ion-icon slot="end" :icon="showGeneralForms ? 'chevron-up' : 'chevron-down'"></ion-icon>
+          <ion-icon slot="end" :icon="showGeneralForms ? chevronUp : chevronDown"></ion-icon>
         </ion-item>
-        <ion-list v-show="showGeneralForms">
-          <ion-item router-link="/addForm" color="success" class="itemsK"><strong> General Forms </strong></ion-item>
-          <ion-item router-link="/addDepartments" color="success" class="itemsK"><strong> Department Forms </strong></ion-item>
+        <ion-list v-show="showGeneralForms" class="subList">
+          <ion-item router-link="/addForm" color="success" class="itemsK subItem"><strong> General Forms </strong></ion-item>
+          <ion-item router-link="/addDepartments" color="success" class="itemsK subItem"><strong> Department Forms </strong></ion-item>
         </ion-list>
         <ion-item router-link="/addRecords" color="success" class="itemsK"><strong> Records </strong></ion-item>
       </template>
@@ -29,12 +28,13 @@
         <ion-item router-link="/userdashboard" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
         <ion-item @click="toggleFormsDropdown" color="success">
           <strong> Forms </strong>
-          <ion-icon slot="end" :icon="showGeneralForms ? 'chevron-up' : 'chevron-down'"></ion-icon>
+          <ion-icon slot="end" :icon="showGeneralForms ? chevronUp : chevronDown"></ion-icon>
         </ion-item>
-        <ion-list v-show="showGeneralForms">
-          <ion-item router-link="/generalForms" color="success" class="itemsK"><strong> General Forms </strong></ion-item>
-          <ion-item router-link="/departmentForms" color="success" class="itemsK"><strong> Department Forms </strong></ion-item>
+        <ion-list v-show="showGeneralForms" class="subList">
+          <ion-item router-link="/generalForms" color="success" class="itemsK subItem"><strong> General Forms </strong></ion-item>
+          <ion-item router-link="/departmentForms" color="success" class="itemsK subItem"><strong> Department Forms </strong></ion-item>
         </ion-list>
+        <!-- Add other sidebar items for userdashboard here -->
       </template>
     </ion-list>
     <ion-button @click="logout" shape="round" class="btn logout" color="success"><strong>Logout</strong></ion-button>
@@ -60,9 +60,10 @@
 </template>
 
 <script>
-import { IonMenu, IonHeader, IonToolbar, IonTitle, IonButton, IonList, IonItem, IonRouterOutlet, IonPage, IonButtons, IonMenuButton } from '@ionic/vue';
-import { defineComponent } from 'vue';
+import { IonMenu, IonHeader, IonToolbar, IonTitle, IonButton, IonList, IonItem, IonRouterOutlet, IonPage, IonButtons, IonMenuButton, IonIcon } from '@ionic/vue';
+import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router'; 
+import { chevronDown, chevronUp } from 'ionicons/icons';
 
 export default defineComponent({
   setup() {
@@ -71,12 +72,10 @@ export default defineComponent({
       router.push({ name: 'Login' });
     };
 
-    // Variable to control the visibility of the dropdown
-    let showGeneralForms = false;
+    const showGeneralForms = ref(false);
 
-    // Function to toggle the visibility of the dropdown
     const toggleFormsDropdown = () => {
-      showGeneralForms = !showGeneralForms;
+      showGeneralForms.value = !showGeneralForms.value;
     };
 
     return {
@@ -96,8 +95,15 @@ export default defineComponent({
     IonRouterOutlet,
     IonPage,
     IonButtons,
-    IonMenuButton
+    IonMenuButton,
+    IonIcon
   },
+  data() {
+    return {
+      chevronDown,
+      chevronUp
+    };
+  }
 });
 </script>
 
@@ -114,6 +120,15 @@ export default defineComponent({
 
 .itemsK {
   margin-bottom: 5px;
+}
+
+.subItem {
+  font-size: 0.9em; 
+}
+
+.subList {
+  width: 100%;
+  margin-left: 20px;
 }
 
 .logout {

@@ -66,9 +66,14 @@ const routes = [
     component: () => import('@/views/ClientSide/UserDashboard.vue'),
     children: [
       {
-        path: '/forms',
-        name: 'Forms',
-        component: () => import('@/views/ClientSide/Forms.vue'),
+        path: '/departmentForms', 
+        name: 'Department Forms',
+        component: () => import('@/views/ClientSide/form/DepartmentForms.vue'),
+      },
+      {
+        path: '/generalForms', 
+        name: 'General Forms',
+        component: () => import('@/views/ClientSide/form/GeneralForms.vue'),
       },
     ]
   },
