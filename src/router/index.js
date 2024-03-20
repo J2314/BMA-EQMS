@@ -62,23 +62,27 @@ const routes = [
   },
   {
     path: '/userdashboard',
-    name: 'User Dashboard',
-    component: () => import('@/views/ClientSide/UserDashboard.vue'),
+    component: MainLayout,
     children: [
       {
-        path: '/departmentForms', 
-        name: 'Department Forms',
-        component: () => import('@/views/ClientSide/form/DepartmentForms.vue'),
+        path: '',
+        name: 'User Dashboard',
+        component: () => import('@/views/ClientSide/UserDashboard.vue'),
       },
       {
-        path: '/generalForms', 
+        path: '/generalForms', // Placed under UserDashboard
         name: 'General Forms',
         component: () => import('@/views/ClientSide/form/GeneralForms.vue'),
       },
       {
-        path: '/policy', 
+        path: '/policy', // Placed under UserDashboard
         name: 'Policy Documents',
         component: () => import('@/views/ClientSide/policy/Policy.vue'),
+      },
+      {
+        path: '/departmentForms',
+        name: 'Department Forms',
+        component: () => import('@/views/ClientSide/form/DepartmentForms.vue'),
       },
     ]
   },
