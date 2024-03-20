@@ -14,12 +14,12 @@
         <ion-item router-link="/addProcedures" color="success" class="itemsK"><strong> Procedures </strong></ion-item>
         <ion-item router-link="/addWorkInstructions" color="success" class="itemsK"><strong> Work Instructions </strong></ion-item>
         <ion-item router-link="/addForm" color="success" class="itemsK"><strong> Forms </strong></ion-item>
-        <ion-item router-link="/addDepartments" color="success" class="itemsK"><strong> Deparments </strong></ion-item>
         <ion-item router-link="/addRecords" color="success" class="itemsK"><strong> Records </strong></ion-item>
       </template>
       <!-- Show these items for user role -->
       <template v-else-if="$route.path.startsWith('/userdashboard') || $route.matched.some(record => record.path.startsWith('/userdashboard'))">
         <ion-item router-link="/userdashboard" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
+        <ion-item router-link="/policy" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
         <ion-item @click="toggleUserFormsDropdown" color="success">
           <strong> Forms </strong>
           <ion-icon slot="end" :icon="showUserForms ? chevronUp : chevronDown"></ion-icon>
@@ -45,7 +45,7 @@
         </ion-title>
         <ion-searchbar class="search"></ion-searchbar>
         <!-- Change title based on the route -->
-        <ion-title slot="end"><strong>{{ $route.path.startsWith('/userdashboard') || $route.path.startsWith('/generalForms') || $route.path.startsWith('/departmentForms') ? 'User' : 'Admin' }}</strong></ion-title>
+        <ion-title slot="end"><strong>{{ $route.path.startsWith('/userdashboard') || $route.path.startsWith('/generalForms') || $route.path.startsWith('/departmentForms') || $route.path.startsWith('/policy') ? 'User' : 'Admin' }}</strong></ion-title>
 
         <img src="@/assets/marine.png" alt="BMA Logo" class="logo3" slot="end" shape="round">
       </ion-toolbar>

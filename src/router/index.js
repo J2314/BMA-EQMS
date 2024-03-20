@@ -75,6 +75,11 @@ const routes = [
         name: 'General Forms',
         component: () => import('@/views/ClientSide/form/GeneralForms.vue'),
       },
+      {
+        path: '/policy', 
+        name: 'Policy Documents',
+        component: () => import('@/views/ClientSide/policy/Policy.vue'),
+      },
     ]
   },
 ];
