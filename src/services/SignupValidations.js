@@ -26,10 +26,12 @@ export default class SignupValidations {
         switch (errorCode) {
             case 'EMAIL_EXISTS':
                 return 'Email already exists';
-            case 'INVALID_LOGIN_CREDENTIALS':
-                return 'Invalid email/password'
+            case 'EMAIL_NOT_FOUND':
+                return 'Email Not Found';
+            case 'INVALID_PASSWORD':
+                return 'Invalid Password';
             default:
-                return 'An error occured. Please try again later.'
+                return 'Unexpected error occurred. Please try again';
         }
     }
 }

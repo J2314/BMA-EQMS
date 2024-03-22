@@ -8,13 +8,13 @@
     </ion-header>
     <ion-list class="SideList">
       <!-- Show these items for admin role -->
-      <template v-if="$route.path.startsWith('/dashboard') || $route.matched.some(record => record.path.startsWith('/dashboard'))">
-        <ion-item router-link="/dashboard" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
-        <ion-item router-link="/addPolicy" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
-        <ion-item router-link="/addProcedures" color="success" class="itemsK"><strong> Procedures </strong></ion-item>
-        <ion-item router-link="/addWorkInstructions" color="success" class="itemsK"><strong> Work Instructions </strong></ion-item>
-        <ion-item router-link="/addForm" color="success" class="itemsK"><strong> Forms </strong></ion-item>
-        <ion-item router-link="/addRecords" color="success" class="itemsK"><strong> Records </strong></ion-item>
+      <template v-if="$route.path.startsWith('/admin/dashboard') || $route.matched.some(record => record.path.startsWith('/admin/dashboard'))">
+        <ion-item router-link="/admin/dashboard" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
+        <ion-item router-link="/admin/addPolicy" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
+        <ion-item router-link="/admin/addProcedures" color="success" class="itemsK"><strong> Procedures </strong></ion-item>
+        <ion-item router-link="/admin/addWorkInstructions" color="success" class="itemsK"><strong> Work Instructions </strong></ion-item>
+        <ion-item router-link="/admin/addForm" color="success" class="itemsK"><strong> Forms </strong></ion-item>
+        <ion-item router-link="/admin/addRecords" color="success" class="itemsK"><strong> Records </strong></ion-item>
       </template>
       <!-- Show these items for user role -->
       <template v-else-if="$route.path.startsWith('/userdashboard') || $route.matched.some(record => record.path.startsWith('/userdashboard'))">
@@ -34,7 +34,7 @@
     <ion-button @click="logout" shape="round" class="btn logout" color="success"><strong>Logout</strong></ion-button>
   </ion-menu>
   <ion-page>
-    <ion-header>
+    <ion-header v-if="showNavigation">
       <ion-toolbar>
         <ion-buttons slot="start">
           <ion-menu-button></ion-menu-button>
@@ -61,6 +61,11 @@ import { useRouter } from 'vue-router';
 import { chevronDown, chevronUp } from 'ionicons/icons';
 
 export default defineComponent({
+  computed: {
+    showNavigation() {
+    return !['/login', '/signup'].includes(this.$route.path);
+  }
+},
   setup() {
     const router = useRouter();
     const logout = () => {

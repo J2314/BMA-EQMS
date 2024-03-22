@@ -1,220 +1,155 @@
 <template>
-    <ion-content>
-  <div class="login-page" >
-    <div class="login-container">
-      <div class="logo">
-        <img src="../assets/bma.png" alt="Logo" class="logo-image">
+  <ion-content>
+    <div class="row justify-content-center">
+      <div class="col-md-4">
+        <div class="login-form">
+          <div class="text-center mb-4">
+            <img src="../assets/bma.png" alt="Logo" class="logo-image-small">
+            <h2 class="mb-0"><strong style="font-family: 'Arial Black', sans-serif; font-size: 28px;">BMA e-QMS</strong>
+            </h2>
+          </div>
+
+          <div>
+            <h3 style="font-family: 'Arial', sans-serif; font-size: 20px; font-weight: bold;">Login</h3>
+            <hr class="login-divider" />
+          </div>
+          <div class="alert alert-danger" v-if="error" style="font-family: 'Arial', sans-serif; font-size: 14px;">
+            {{ error }}
+          </div>
+          <form @submit.prevent="onLogin()" class="mt-4">
+            <div class="form-group">
+              <label for="email" style="font-family: 'Arial', sans-serif;">Email</label>
+              <input type="email" class="form-control" id="email" v-model.trim="formData.email"
+                placeholder="Enter your email" style="font-family: 'Arial', sans-serif; border-color: #b2d8b2;" />
+              <div class="error" v-if="errors.email" style="font-size: 0.9rem;">
+                {{ errors.email }}
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="password" style="font-family: 'Arial', sans-serif;">Password</label>
+              <input type="password" class="form-control" id="password" v-model.trim="formData.password"
+                placeholder="Enter your password" style="font-family: 'Arial', sans-serif; border-color: #b2d8b2;" />
+              <div class="error" v-if="errors.password" style="font-size: 0.9rem;">
+                {{ errors.password }}
+              </div>
+            </div>
+            <div class="text-center my-3">
+              <button type="submit" class="btn btn-primary login-btn" style="font-family: 'Arial', sans-serif;">
+                <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span v-else>Login</span>
+              </button>
+            </div>
+          </form>
+
+          <div class="text-center">
+            <p style="font-family: 'Arial', sans-serif;">Don't have an account? <router-link to="/signup"
+                class="signup-link" style="font-family: 'Arial', sans-serif;">Signup</router-link></p>
+          </div>
+        </div>
       </div>
-      <h1 class="page-title">BMA E-QMS</h1>
-      <p class="login-label">Login</p>
-      <div class="alert alert-danger" v-if="error">{{ error }}</div>
-      <form class="login-form" @submit.prevent="onLogin()">
-        <div class="form-group">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" id="email" placeholder="Enter your email" class="input-field" v-model.trim="email">
-          <div class="error" v-if="errors.email">{{ errors.email }}</div>
-        </div>
-        <div class="form-group">
-          <label for="password" class="form-label">Password</label>
-          <input type="password" id="password" placeholder="Enter your password" class="input-field"
-            v-model.trim="password">
-          <div class="error" v-if="errors.password">{{ errors.password }}</div>
-        </div>
-        <div class="additional-options">
-          <label for="remember-me" class="remember-checkbox" style="margin-top: 5px;">
-            <input id="remember-me" type="checkbox"> Remember Me
-          </label>
-          <a href="#" class="forgot-password">Forgot Password?</a>
-        </div>
-        <button type="submit" class="login-button">Login</button>
-        <div class="signup-section">
-          <p>Don't have an account? <router-link to="/signup" class="signup-link">Sign up</router-link></p>
-        </div>
-      </form>
     </div>
-  </div>
-</ion-content>
+  </ion-content>
 </template>
 
-
 <script>
-import { mapMutations } from 'vuex';
-import SignupValidations from '../services/SignupValidations';
-import { LOADING_SPINNER_SHOW_MUTATION } from '../store/storeconstants';
 import axios from 'axios';
+import { mapActions, mapMutations } from 'vuex';
+import { LOADING_SPINNER_SHOW_MUTATION, LOGIN_ACTION } from '../store/storeconstants';
 
 export default {
-  name: 'LoginPage',
   data() {
     return {
-      email: '',
-      password: '',
+      formData: {
+        email: '',
+        password: '',
+      },
       errors: [],
       error: '',
+      loading: false,
     };
   },
   methods: {
+    ...mapActions('auth', {
+      login: LOGIN_ACTION,
+    }),
     ...mapMutations({
       showLoading: LOADING_SPINNER_SHOW_MUTATION,
     }),
     async onLogin() {
-      let validations = new SignupValidations(
-        this.email,
-        this.password,
-      );
-
-      this.errors = validations.checkValidations();
-      if (this.errors.length) {
-        return false;
-      }
-      this.error = '';
-      this.showLoading(true);
-      const data = {
-        email: this.email,
-        password: this.password
-      }
-      console.log(data)
       try {
-        await axios.post('http://127.0.0.1:8000/api/login', data);
-        this.$router.push('/dashboard');
-      } catch (error) {
-        if (error.response && error.response.data && error.response.data.message) {
-          this.error = error.response.data.message;
-        } else {
-          this.error = 'An error occurred while logging in.';
+        /* let response = await axios.post('http://127.0.0.1:8000/api/login', { email: this.formData.email, password: this.formData.password });
+        console.log(response.data);
+        let tokenData = {
+          email: this.formData.email,
+          password: this.formData.password,
+          token: response.data.token,
+        };
+        console.log(this.formData);
+        console.log(tokenData)
+        localStorage.setItem('userData', JSON.stringify(tokenData)); */
+        const data = {
+          email: this.formData.email,
+          password: this.formData.password
         }
+        console.log(data)
+        await this.login(data);
+        this.$router.push('/admin/dashboard');
+      } catch (error) {
+        this.error = error.message || 'An error occurred while logging in';
+      } finally {
+        this.loading = false;
       }
-      this.showLoading(false);
     },
   },
 };
 </script>
 
 <style scoped>
-.login-page {
-  margin-top: 1.5%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: calc(100vh - 30px);
-}
-
-.login-container {
-  border-radius: 15px;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  width: 400px;
-  background-color: #fff;
-}
-
-.logo {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.logo-image {
-  width: 120px;
-}
-
-.page-title {
-  font-family: 'Merriweather', serif;
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #087f23;
-  text-align: center;
-}
-
-.login-label {
-  color: #555;
-  text-align: center;
-  margin-bottom: 20px;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 20px;
-}
-
 .login-form {
-  width: 100%;
+  margin-top: 30%;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  padding: 30px;
 }
 
-.form-group {
-  margin-bottom: 20px;
+.login-divider {
+  border-top: 1px solid #ccc;
 }
 
-.form-label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 10px;
-  font-size: 16px;
-  color: #333;
-}
-
-.input-field {
-  padding: 12px;
-  width: 100%;
-  border: 2px solid #4CAF50;
-  border-radius: 8px;
-  font-size: 16px;
-}
-
-.input-field:focus {
-  outline: none;
-  border-color: #087f23;
-}
-
-.remember-checkbox {
-  margin-right: 10px;
-  font-size: 16px;
-}
-
-.additional-options {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.forgot-password {
-  color: #087f23;
-  text-decoration: none;
-  font-size: 16px;
-}
-
-.forgot-password:hover {
-  text-decoration: underline;
-}
-
-.login-button {
-  padding: 14px 24px;
-  background-color: #087f23;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 18px;
-  transition: background-color 0.3s ease;
-}
-
-.login-button:hover {
-  background-color: #005711;
-}
-
-.signup-section {
-  text-align: center;
-  margin-top: 20px;
+.error {
+  color: #dc3545;
 }
 
 .signup-link {
-  color: #087f23;
-  text-decoration: none;
-  font-size: 16px;
-}
-
-.signup-link:hover {
+  color: #007bff;
+  cursor: pointer;
   text-decoration: underline;
 }
 
-p {
-  font-size: 16px;
+.logo-image-small {
+  max-width: 100px;
+}
+
+.form-control:focus {
+  border-color: #4caf50 !important;
+  box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+}
+
+.login-btn {
+  width: 100%;
+  background-color: #4caf50;
+}
+
+.login-btn:hover {
+  background-color: #388e3c;
+}
+
+.login-btn:focus {
+  background-color: #0056b3;
+}
+
+.form-control {
+  margin-bottom: 10px;
 }
 </style>

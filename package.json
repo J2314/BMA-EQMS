@@ -23,11 +23,12 @@
     "bootstrap": "^5.3.3",
     "bootstrap-vue": "^2.23.1",
     "chart.js": "^4.4.2",
+    "core-js": "^3.6.5",
     "ionicons": "^7.0.0",
-    "vue": "^3.4.21",
+    "vue": "^3.0.0",
     "vue-pdf": "^4.3.0",
-    "vue-router": "^4.3.0",
-    "vuex": "^4.1.0"
+    "vue-router": "^4.0.0-rc.4",
+    "vuex": "^4.0.0-rc.1"
   },
   "devDependencies": {
     "@capacitor/cli": "5.7.2",
