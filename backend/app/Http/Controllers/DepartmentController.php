@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Department;
 
-class DepartmentRegistration extends Controller
-{  
+class DepartmentController extends Controller
+{
     public function addDepartment(Request $request)
     {
         $validatedData = $request->validate([
@@ -35,5 +35,12 @@ class DepartmentRegistration extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to add department'], 500);
         }
+    }
+
+    public function getDepartments()
+    {
+        $departments = Department::where('is_Active', true)->get();
+        
+        return response()->json($departments);
     }
 }

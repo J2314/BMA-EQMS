@@ -3,35 +3,74 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\FormFiles;
 
 class FileController extends Controller
 {
-    public function upload(Request $request)
-    {
-        // Validate the request
-        $request->validate([
-            'file' => 'required|file|mimes:pdf,doc,docx|max:10240', // Adjust max file size as needed
-        ]);
+    // public function upload(Request $request)
+    // {
+    //     $request->validate([
+    //         'file' => 'required|file|mimes:pdf,doc,docx|max:10240', 
+    //     ]);
 
-        // Store the file
-        $uploadedFile = $request->file('file');
-        $fileName = $uploadedFile->getClientOriginalName(); // You can customize the file name if needed
-        $uploadedFile->storeAs('uploads', $fileName); // Store the file in the storage/app/uploads directory
+    //     $uploadedFile = $request->file('file');
+    //     $fileName = $uploadedFile->getClientOriginalName(); 
+    //     $uploadedFile->storeAs('uploads', $fileName); 
 
-        // Save file information to the database
-        $submittedFile = new SubmittedFile();
-        $submittedFile->name = $fileName;
-        $submittedFile->uploaded_by = auth()->user()->name; // Assuming you have authentication set up
-        $submittedFile->save();
+    //     $submittedFile = new SubmittedFile();
+    //     $submittedFile->name = $fileName;
+    //     $submittedFile->uploaded_by = auth()->user()->name; 
+    //     $submittedFile->save();
 
-        return response()->json(['message' => 'File uploaded successfully']);
-    }
+    //     return response()->json(['message' => 'File uploaded successfully']);
+    // }
 
     public function submittedFiles()
     {
-        // Fetch submitted files from the database
         $files = SubmittedFile::all();
 
         return response()->json($files);
+    }
+
+    public function upload(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:txt,doc,docx,pdf|max:10240',
+            'form_id' => 'required|string|max:255',
+        ]);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            if ($file->getSize() === 0) {
+                return response()->json(['error' => 'The uploaded file is empty.'], 422);
+            }
+
+            $filename = $file->getClientOriginalName();
+            $path = 'uploads/' . $filename;
+
+            $existingRecord = FormFiles::where('form_id', $request->input('form_id'))
+                ->where('file_path', $path)
+                ->first();
+
+            Storage::disk('public')->put($path, fopen($request->file('file'), 'r+'));
+            $path = URL::to('/') .'/storage/'. $path;
+
+            $fileRecord = new FormFiles();
+            $fileRecord->form_id = $request->input('form_id');
+            $fileRecord->file_path = $path;
+            $fileRecord->is_active = true;
+            $fileRecord->save();
+
+            return response()->json(['message' => 'File uploaded successfully', 'file_id' => $fileRecord->id]);
+        }
+
+        return response()->json(['error' => 'File upload failed'], 422);
+    }
+
+    public function retrieveUploads($formId)
+    {
+        $uploads = FormFiles::where('form_id', $formId)->select('id','form_id', 'file_path', 'created_at')->get();
+        return response()->json($uploads);
     }
 }

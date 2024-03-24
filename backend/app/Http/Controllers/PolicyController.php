@@ -4,11 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Policies;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\URL;
 
-class PolicyUpload extends Controller
+class PolicyController extends Controller
 {
+    public function getPolicies()
+    {
+        $policies = Policies::where('is_active', true)->select('id', 'document_type', 'document_name', 'file_path')->get();
+
+        return response()->json($policies);
+    }
+
     public function upload(Request $request)
     {
         $request->validate([
