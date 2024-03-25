@@ -13,15 +13,41 @@ import AddProcedures from '../views/procedures/AddProcedures.vue';
 import AddWorkInstruction from '../views/instruction/AddWorkInstruction.vue';
 import AddRecords from '../views/records/AddRecords.vue';
 import AddDepartments from '../views/departments/AddDepartments.vue';
+import UserDash from '../views/ClientSide/UserDashboard.vue'
+import UserPolicy from '../views/ClientSide/policy/Policy.vue'
+import UserGenForm from '../views/ClientSide/form/GeneralForms.vue'
+import UserDeptForm from '../views/ClientSide/form/DepartmentForms.vue'
+
+const userSide = (props) => [
+        {
+          path: 'policy',
+          name: 'User Policy',
+          component: UserPolicy,
+          meta: { auth: false, userType: 'user' },
+        },
+        {
+            path: 'generalForms',
+            name: 'User General Form',
+            component: UserGenForm,
+            meta: { auth: false, userType: 'user' },
+        },
+        {
+            path: 'departmentForms',
+            name: 'User Department Form',
+            component: UserDeptForm,
+            meta: { auth: false, userType: 'user' },
+        },
+]
+
 const adminSide = (props) => [
     {
-        path: '/dashboard',
+        path: 'dashboard',
         name: props + '.dashboard',
         meta: { auth: true, userType: 'admin' },
         component: Dashboard
     },
     {
-        path: '/addForm',
+        path: 'addForm',
         name: 'Add Form',
         meta: { auth: true, userType: 'admin' },
         component: AddForm
@@ -41,28 +67,29 @@ const adminSide = (props) => [
     {
         path: '/addWorkInstructions',
         name: 'Add Work Instructions',
-        meta: { auth: true, userType: 'admin' },
+        meta: { auth: false, userType: 'admin' },
         component: AddWorkInstruction
     },
     {
         path: '/addRecords',
         name: 'Add Records',
-        meta: { auth: true, userType: 'admin' },
+        meta: { auth: false, userType: 'admin' },
         component: AddRecords
     },
     {
         path: '/addDepartments',
         name: 'Add Departments',
-        meta: { auth: true, userType: 'admin' },
+        meta: { auth: false, userType: 'admin' },
         component: AddDepartments
     }
 
 ]
 
 const routes = [
-    { path: '', redirect: '/login' },
+    { path: '', redirect: '/login' },   
     { path: '/login', component: Login, meta: { auth: false } },
     { path: '/signup', component: Signup, meta: { auth: false } },
+    { path: '/userdashboard', component: UserDash, children: userSide('user') },
     { path: '/admin', component: MainLayout, children: adminSide('admin') },
 ];
 

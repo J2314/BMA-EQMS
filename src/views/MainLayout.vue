@@ -8,7 +8,7 @@
     </ion-header>
     <ion-list class="SideList">
       <!-- Show these items for admin role -->
-      <template v-if="$route.path.startsWith('/admin/dashboard') || $route.matched.some(record => record.path.startsWith('/admin/dashboard'))">
+      <template v-if="$route.path.startsWith('/admin/')">
         <ion-item router-link="/admin/dashboard" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
         <ion-item router-link="/admin/addPolicy" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
         <ion-item router-link="/admin/addProcedures" color="success" class="itemsK"><strong> Procedures </strong></ion-item>
@@ -17,16 +17,16 @@
         <ion-item router-link="/admin/addRecords" color="success" class="itemsK"><strong> Records </strong></ion-item>
       </template>
       <!-- Show these items for user role -->
-      <template v-else-if="$route.path.startsWith('/userdashboard') || $route.matched.some(record => record.path.startsWith('/userdashboard'))">
+      <template v-if="$route.path.startsWith('/userdashboard')">
         <ion-item router-link="/userdashboard" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
-        <ion-item router-link="/policy" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
+        <ion-item router-link="/userdashboard/policy" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
         <ion-item @click="toggleUserFormsDropdown" color="success">
           <strong> Forms </strong>
           <ion-icon slot="end" :icon="showUserForms ? chevronUp : chevronDown"></ion-icon>
         </ion-item>
         <ion-list v-show="showUserForms" class="subList">
-          <ion-item router-link="/generalForms" color="success" class="itemsK subItem"><strong> General Forms </strong></ion-item>
-          <ion-item router-link="/departmentForms" color="success" class="itemsK subItem"><strong> Department Forms </strong></ion-item>
+          <ion-item router-link="/userdashboard/generalForms" color="success" class="itemsK subItem"><strong> General Forms </strong></ion-item>
+          <ion-item router-link="/userdashboard/departmentForms" color="success" class="itemsK subItem"><strong> Department Forms </strong></ion-item>
         </ion-list>
         <!-- Add other sidebar items for userdashboard here -->
       </template>

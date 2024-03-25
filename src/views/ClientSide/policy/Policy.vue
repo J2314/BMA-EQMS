@@ -7,10 +7,13 @@
         <div v-html="policyContent"></div>
       </div>
     </div>
+    <<router-view></router-view>>
+    <ion-router-outlet id="policy"></ion-router-outlet>
 </ion-content>
   </template>
   
   <script>
+  import {IonRouterOutlet} from '@ionic/vue';
   export default {
     data() {
       return {
