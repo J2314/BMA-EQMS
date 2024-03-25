@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log; 
-class UserLogin extends Controller
+
+class UserController extends Controller
 {
     public function login(Request $request)
     {
@@ -31,5 +32,21 @@ class UserLogin extends Controller
         Log::info('Login failed for email: ' . $credentials['email']); 
 
         return response()->json(['error' => 'Invalid credentials'], 401);
+    }
+
+    public function register(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+        ]);
+
+
+        $user = User::create([
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        return response()->json(['message' => 'User registered successfully'], 200);
     }
 }
