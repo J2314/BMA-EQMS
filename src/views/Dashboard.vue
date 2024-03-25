@@ -8,6 +8,7 @@
     </div>
     <TheStats />
   </ion-content>
+  <router-view></router-view>
 </template>
 
 <script>
