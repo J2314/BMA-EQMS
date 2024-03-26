@@ -60,7 +60,7 @@
             </div>
 
             <div class="text-center my-3">
-              <button type="submit" class="btn btn-primary signup-btn" style="font-family: 'Arial', sans-serif;" @click="reloadPage">
+              <button type="submit" class="btn btn-primary signup-btn" style="font-family: 'Arial', sans-serif;">
                 <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 <span v-else>Signup</span>
               </button>
@@ -124,8 +124,7 @@ export default {
           password: this.password,
         });
         console.log(response.data);
-        window.location.reload(); // Reload the page after successful signup
-        // this.$router.push('/login'); // You can also use router navigation if needed
+        this.$router.push('/login');
       } catch (error) {
         this.error = error.message || 'An error occurred while signing up';
       } finally {
@@ -133,7 +132,7 @@ export default {
       }
     },
     reloadPage() {
-      window.location.reload(); // Reload the page after clicking signup button or login router link
+      window.location.reload(); // Reload the page after clicking the login link
     }
   },
 };
@@ -167,7 +166,6 @@ export default {
 }
 
 .signup-btn:focus {
- 
   background-color: #0056b3;
 }
 
