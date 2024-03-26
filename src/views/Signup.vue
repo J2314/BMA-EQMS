@@ -67,7 +67,7 @@
             </div>
 
             <div class="text-center">
-              <p style="font-family: 'Arial', sans-serif;">Already have an account? <router-link to="/login" class="login-link" style="font-family: 'Arial', sans-serif;">Login</router-link></p>
+              <p style="font-family: 'Arial', sans-serif;">Already have an account? <router-link to="/login" class="login-link" style="font-family: 'Arial', sans-serif;" @click="reloadPage">Login</router-link></p>
             </div>
           </form>
         </div>
@@ -131,6 +131,9 @@ export default {
         this.loading = false;
       }
     },
+    reloadPage() {
+      window.location.reload(); // Reload the page after clicking the login link
+    }
   },
 };
 </script>

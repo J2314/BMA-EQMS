@@ -16,7 +16,7 @@
           <div class="alert alert-danger" v-if="error" style="font-family: 'Arial', sans-serif; font-size: 14px;">
             {{ error }}
           </div>
-          <form @submit.prevent="onLogin()" class="mt-4">
+          <form @submit.prevent="onLogin()" class="mt-4" ref="loginForm">
             <div class="form-group">
               <label for="email" style="font-family: 'Arial', sans-serif;">Email</label>
               <input type="email" class="form-control" id="email" v-model.trim="formData.email"
@@ -34,7 +34,7 @@
               </div>
             </div>
             <div class="text-center my-3">
-              <button type="submit" class="btn btn-primary login-btn" style="font-family: 'Arial', sans-serif;">
+              <button type="submit" class="btn btn-primary login-btn" style="font-family: 'Arial', sans-serif;" :disabled="loading">
                 <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 <span v-else>Login</span>
               </button>
@@ -43,7 +43,7 @@
 
           <div class="text-center">
             <p style="font-family: 'Arial', sans-serif;">Don't have an account? <router-link to="/signup"
-                class="signup-link" style="font-family: 'Arial', sans-serif;">Signup</router-link></p>
+                class="signup-link" style="font-family: 'Arial', sans-serif;" @click="reloadPage">Signup</router-link></p>
           </div>
         </div>
       </div>
@@ -77,29 +77,22 @@ export default {
     }),
     async onLogin() {
       try {
-        /* let response = await axios.post('http://127.0.0.1:8000/api/login', { email: this.formData.email, password: this.formData.password });
-        console.log(response.data);
-        let tokenData = {
-          email: this.formData.email,
-          password: this.formData.password,
-          token: response.data.token,
-        };
-        console.log(this.formData);
-        console.log(tokenData)
-        localStorage.setItem('userData', JSON.stringify(tokenData)); */
         const data = {
           email: this.formData.email,
           password: this.formData.password
         }
         console.log(data)
         await this.login(data);
-        this.$router.push('/admin/dashboard');
+        this.$router.push('/admin/dashboard'); 
       } catch (error) {
         this.error = error.message || 'An error occurred while logging in';
       } finally {
         this.loading = false;
       }
     },
+    reloadPage() {
+      window.location.reload(); // Reload the page after clicking the signup link
+    }
   },
 };
 </script>

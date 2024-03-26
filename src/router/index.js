@@ -57,6 +57,7 @@ const adminSide = (props) => [{
         name: props + '.dashboard',
         meta: {
             auth: true,
+            user: 'admin',
             userType: 'admin'
         },
         component: Dashboard
@@ -66,6 +67,7 @@ const adminSide = (props) => [{
         name: props + '.dashboard',
         meta: {
             auth: true,
+            user: 'admin',
             userType: 'admin'
         },
         component: Dashboard
@@ -75,51 +77,57 @@ const adminSide = (props) => [{
         name: 'Add Form',
         meta: {
             auth: true,
+            user: 'admin',
             userType: 'admin'
         },
         component: AddForm
     },
     {
-        path: '/addPolicy',
+        path: 'addPolicy',
         name: 'Add Policy',
         meta: {
             auth: true,
+            user: 'admin',
             userType: 'admin'
         },
         component: AddPolicy
     },
     {
-        path: '/addProcedures',
+        path: 'addProcedures',
         name: 'Add Procedures',
         meta: {
             auth: true,
+            user: 'admin',
             userType: 'admin'
         },
         component: AddProcedures
     },
     {
-        path: '/addWorkInstructions',
+        path: 'addWorkInstructions',
         name: 'Add Work Instructions',
         meta: {
-            auth: false,
+            auth: true,
+            user: 'admin',
             userType: 'admin'
         },
         component: AddWorkInstruction
     },
     {
-        path: '/addRecords',
+        path: 'addRecords',
         name: 'Add Records',
         meta: {
-            auth: false,
+            auth: true,
+            user: 'admin',
             userType: 'admin'
         },
         component: AddRecords
     },
     {
-        path: '/addDepartments',
+        path: 'addDepartments',
         name: 'Add Departments',
         meta: {
-            auth: false,
+            auth: true,
+            user: 'admin',
             userType: 'admin'
         },
         component: AddDepartments
@@ -135,14 +143,16 @@ const routes = [{
         path: '/login',
         component: Login,
         meta: {
-            auth: false
+            auth: false,
+            user: 'guest'
         }
     },
     {
         path: '/signup',
         component: Signup,
         meta: {
-            auth: false
+            auth: false,
+            user: 'guest'
         }
     },
     {
@@ -161,20 +171,56 @@ const router = createRouter({
     history: createWebHistory("/"),
     routes,
 });
-
+// Middleware
+function userMiddleware(to, from, next) {
+    // Admin user middleware logic
+    // console.log('Applicant user middleware')
+    if (to.meta.user !== 'admin') {
+        next('/admin/dashboard')
+    } else {
+        next()
+    }
+}
+// Middleware for client
+function clientMiddleware(to, from, next) {
+    // Admin user middleware logic
+    // console.log('Applicant user middleware')
+    if (to.meta.user !== 'client') {
+        next('/client/dashboard')
+    } else {
+        next()
+    }
+}
 router.beforeEach((to, from, next) => {
+
+    // Check if the user is Autheticated
+    const isAuth = store.getters[`auth/${IS_USER_AUTHENTICATE_GETTER}`]
+    console.log(isAuth)
+    /*
+    if (isAuth) {
+        userMiddleware(to, from, next)
+    } else {
+        if (to.meta.user !== 'guest') {
+            next('/')
+        } else {
+            next()
+        }
+    } */
+    /*  if (isAuth) {
+         next()
+     } else {
+         if (to.meta.user !== 'guest') {
+             next('/')
+         } else {
+             next()
+         }
+     } */
     if (
         'auth' in to.meta &&
         to.meta.auth &&
         !store.getters[`auth/${IS_USER_AUTHENTICATE_GETTER}`]
     ) {
         next('/login');
-    } else if (
-        'auth' in to.meta &&
-        !to.meta.auth &&
-        store.getters[`auth/${IS_USER_AUTHENTICATE_GETTER}`]
-    ) {
-        next('/admin/dashboard');
     } else {
         next();
     }
