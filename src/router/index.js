@@ -43,41 +43,41 @@ const adminSide = (props) => [
     {
         path: 'dashboard',
         name: props + '.dashboard',
-        meta: { auth: true, userType: 'admin' },
+        meta: { auth: false, userType: 'admin' },
         component: Dashboard
     },
     {
         path: 'addForm',
         name: 'Add Form',
-        meta: { auth: true, userType: 'admin' },
+        meta: { auth: false, userType: 'admin' },
         component: AddForm
     },
     {
-        path: '/addPolicy',
+        path: 'addPolicy',
         name: 'Add Policy',
-        meta: { auth: true, userType: 'admin' },
+        meta: { auth: false, userType: 'admin' },
         component: AddPolicy
     },
     {
-        path: '/addProcedures',
+        path: 'addProcedures',
         name: 'Add Procedures',
-        meta: { auth: true, userType: 'admin' },
+        meta: { auth: false, userType: 'admin' },
         component: AddProcedures
     },
     {
-        path: '/addWorkInstructions',
+        path: 'addWorkInstructions',
         name: 'Add Work Instructions',
         meta: { auth: false, userType: 'admin' },
         component: AddWorkInstruction
     },
     {
-        path: '/addRecords',
+        path: 'addRecords',
         name: 'Add Records',
         meta: { auth: false, userType: 'admin' },
         component: AddRecords
     },
     {
-        path: '/addDepartments',
+        path: 'addDepartments',
         name: 'Add Departments',
         meta: { auth: false, userType: 'admin' },
         component: AddDepartments
