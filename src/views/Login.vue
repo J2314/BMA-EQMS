@@ -16,7 +16,7 @@
           <div class="alert alert-danger" v-if="error" style="font-family: 'Arial', sans-serif; font-size: 14px;">
             {{ error }}
           </div>
-          <form @submit.prevent="onLogin()" class="mt-4">
+          <form @submit.prevent="onLogin()" class="mt-4" ref="loginForm">
             <div class="form-group">
               <label for="email" style="font-family: 'Arial', sans-serif;">Email</label>
               <input type="email" class="form-control" id="email" v-model.trim="formData.email"
@@ -34,7 +34,7 @@
               </div>
             </div>
             <div class="text-center my-3">
-              <button type="submit" class="btn btn-primary login-btn" style="font-family: 'Arial', sans-serif;">
+              <button type="submit" class="btn btn-primary login-btn" style="font-family: 'Arial', sans-serif;" :disabled="loading">
                 <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 <span v-else>Login</span>
               </button>
@@ -43,7 +43,7 @@
 
           <div class="text-center">
             <p style="font-family: 'Arial', sans-serif;">Don't have an account? <router-link to="/signup"
-                class="signup-link" style="font-family: 'Arial', sans-serif;">Signup</router-link></p>
+                class="signup-link" style="font-family: 'Arial', sans-serif;" @click="reloadPage">Signup</router-link></p>
           </div>
         </div>
       </div>
@@ -93,13 +93,17 @@ export default {
         }
         console.log(data)
         await this.login(data);
-        this.$router.push('/admin/dashboard');
+        window.location.reload(); // Reload the page after successful login
+        // this.$router.push('/admin/dashboard'); // You can also use router navigation if needed
       } catch (error) {
         this.error = error.message || 'An error occurred while logging in';
       } finally {
         this.loading = false;
       }
     },
+    reloadPage() {
+      window.location.reload(); // Reload the page after clicking signup link
+    }
   },
 };
 </script>

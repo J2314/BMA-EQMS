@@ -30,7 +30,7 @@
         </ion-list>
       </template>
     </ion-list>
-    <ion-button @click="logout" shape="round" class="btn logout" color="success"><strong>Logout</strong></ion-button>
+    <ion-button @click="onLogout()" shape="round" class="btn logout" color="success" v-if="isAuthenticated"><strong>Logout</strong></ion-button>
   </ion-menu>
   <ion-page>
     <ion-header v-if="showNavigation">
@@ -58,13 +58,30 @@ import { IonMenu, IonHeader, IonToolbar, IonTitle, IonButton, IonList, IonItem, 
 import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router'; 
 import { chevronDown, chevronUp } from 'ionicons/icons';
+import { mapActions, mapGetters } from 'vuex';
+import {
+    IS_USER_AUTHENTICATE_GETTER,
+    LOGOUT_ACTION,
+} from '../store/storeconstants';
 
 export default defineComponent({
   computed: {
     showNavigation() {
       return !['/login', '/signup'].includes(this.$route.path);
-    }
+    },
+    ...mapGetters('auth', {
+            isAuthenticated: IS_USER_AUTHENTICATE_GETTER,
+        }),
   },
+  methods: {
+        ...mapActions('auth', {
+            logout: LOGOUT_ACTION,
+        }),
+        onLogout() {
+            this.logout();
+            this.$router.replace('/login');
+        },
+    },
   setup() {
     const router = useRouter();
     const logout = () => {

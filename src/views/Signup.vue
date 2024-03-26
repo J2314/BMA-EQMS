@@ -60,14 +60,14 @@
             </div>
 
             <div class="text-center my-3">
-              <button type="submit" class="btn btn-primary signup-btn" style="font-family: 'Arial', sans-serif;">
+              <button type="submit" class="btn btn-primary signup-btn" style="font-family: 'Arial', sans-serif;" @click="reloadPage">
                 <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 <span v-else>Signup</span>
               </button>
             </div>
 
             <div class="text-center">
-              <p style="font-family: 'Arial', sans-serif;">Already have an account? <router-link to="/login" class="login-link" style="font-family: 'Arial', sans-serif;">Login</router-link></p>
+              <p style="font-family: 'Arial', sans-serif;">Already have an account? <router-link to="/login" class="login-link" style="font-family: 'Arial', sans-serif;" @click="reloadPage">Login</router-link></p>
             </div>
           </form>
         </div>
@@ -124,13 +124,17 @@ export default {
           password: this.password,
         });
         console.log(response.data);
-        this.$router.push('/login');
+        window.location.reload(); // Reload the page after successful signup
+        // this.$router.push('/login'); // You can also use router navigation if needed
       } catch (error) {
         this.error = error.message || 'An error occurred while signing up';
       } finally {
         this.loading = false;
       }
     },
+    reloadPage() {
+      window.location.reload(); // Reload the page after clicking signup button or login router link
+    }
   },
 };
 </script>
@@ -163,6 +167,7 @@ export default {
 }
 
 .signup-btn:focus {
+ 
   background-color: #0056b3;
 }
 

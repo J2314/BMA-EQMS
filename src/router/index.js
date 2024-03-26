@@ -3,7 +3,7 @@ import store from '../store/store';
 import { IS_USER_AUTHENTICATE_GETTER } from '../store/storeconstants';
 
 const Login = () =>
-    import(/* webpackChunkName: "Login" */ '../views/Login.vue');
+import(/* webpackChunkName: "Login" */ '../views/Login.vue');
 const Signup = () => import('../views/Signup.vue');
 const MainLayout = () => import('../views/MainLayout.vue');
 const Dashboard = () => import('../views/Dashboard.vue');
@@ -43,43 +43,43 @@ const adminSide = (props) => [
     {
         path: 'dashboard',
         name: props + '.dashboard',
-        meta: { auth: false, userType: 'admin' },
+        meta: { auth: true, userType: 'admin' },
         component: Dashboard
     },
     {
         path: 'addForm',
         name: 'Add Form',
-        meta: { auth: false, userType: 'admin' },
+        meta: { auth: true, userType: 'admin' },
         component: AddForm
     },
     {
         path: 'addPolicy',
         name: 'Add Policy',
-        meta: { auth: false, userType: 'admin' },
+        meta: { auth: true, userType: 'admin' },
         component: AddPolicy
     },
     {
         path: 'addProcedures',
         name: 'Add Procedures',
-        meta: { auth: false, userType: 'admin' },
+        meta: { auth: true, userType: 'admin' },
         component: AddProcedures
     },
     {
         path: 'addWorkInstructions',
         name: 'Add Work Instructions',
-        meta: { auth: false, userType: 'admin' },
+        meta: { auth: true, userType: 'admin' },
         component: AddWorkInstruction
     },
     {
         path: 'addRecords',
         name: 'Add Records',
-        meta: { auth: false, userType: 'admin' },
+        meta: { auth: true, userType: 'admin' },
         component: AddRecords
     },
     {
         path: 'addDepartments',
         name: 'Add Departments',
-        meta: { auth: false, userType: 'admin' },
+        meta: { auth: true, userType: 'admin' },
         component: AddDepartments
     }
 
