@@ -26,7 +26,7 @@ class UserController extends Controller
 
             Log::info('Login successful for user: ' . $user->email); 
 
-            return response()->json(['message' => 'Login successful', 'token' => $token], 200);
+            return response()->json(['message' => 'Login successful', 'token' => $user], 200);
         }
 
         Log::info('Login failed for email: ' . $credentials['email']); 

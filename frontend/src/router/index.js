@@ -22,7 +22,7 @@ const userSide = (props) => [
         path: '', 
         name: props + '.dashboard',
         meta: {
-            auth: false,
+            auth: true,
             user: 'user',
             userType: 'user'
         },
@@ -32,7 +32,7 @@ const userSide = (props) => [
         path: 'dashboard',
         name: props + '.dashboard',
         meta: {
-            auth: false,
+            auth: true,
             user: 'user',
             userType: 'user'
         },
@@ -43,7 +43,7 @@ const userSide = (props) => [
         name: 'User Policy',
         component: UserPolicy,
         meta: {
-            auth: false,
+            auth: true,
             userType: 'user'
         },
     },
@@ -52,7 +52,7 @@ const userSide = (props) => [
         name: 'User General Form',
         component: UserGenForm,
         meta: {
-            auth: false,
+            auth: true,
             userType: 'user'
         },
     },
@@ -61,7 +61,7 @@ const userSide = (props) => [
         name: 'User Department Form',
         component: UserDeptForm,
         meta: {
-            auth: false,
+            auth: true,
             userType: 'user'
         },
     },
@@ -72,7 +72,7 @@ const adminSide = (props) => [
         path: '',
         name: props + '.dashboard',
         meta: {
-            auth: false,
+            auth: true,
             user: 'admin',
             userType: 'admin'
         },
@@ -82,7 +82,7 @@ const adminSide = (props) => [
         path: 'dashboard',
         name: props + '.dashboard',
         meta: {
-            auth: false,
+            auth: true,
             user: 'admin',
             userType: 'admin'
         },
@@ -92,7 +92,7 @@ const adminSide = (props) => [
         path: 'addForm',
         name: 'Add Form',
         meta: {
-            auth: false,
+            auth: true,
             user: 'admin',
             userType: 'admin'
         },
@@ -102,7 +102,7 @@ const adminSide = (props) => [
         path: 'addPolicy',
         name: 'Add Policy',
         meta: {
-            auth: false,
+            auth: true,
             user: 'admin',
             userType: 'admin'
         },
@@ -112,7 +112,7 @@ const adminSide = (props) => [
         path: 'addProcedures',
         name: 'Add Procedures',
         meta: {
-            auth: false,
+            auth: true,
             user: 'admin',
             userType: 'admin'
         },
@@ -122,7 +122,7 @@ const adminSide = (props) => [
         path: 'addWorkInstructions',
         name: 'Add Work Instructions',
         meta: {
-            auth: false,
+            auth: true,
             user: 'admin',
             userType: 'admin'
         },
@@ -132,7 +132,7 @@ const adminSide = (props) => [
         path: 'addRecords',
         name: 'Add Records',
         meta: {
-            auth: false,
+            auth: true,
             user: 'admin',
             userType: 'admin'
         },
@@ -142,7 +142,7 @@ const adminSide = (props) => [
         path: 'addDepartments',
         name: 'Add Departments',
         meta: {
-            auth: false,
+            auth: true,
             user: 'admin',
             userType: 'admin'
         },
@@ -201,8 +201,8 @@ function userMiddleware(to, from, next) {
 }
 // Middleware for client
 function clientMiddleware(to, from, next) {
-    // Admin user middleware logic
-    // console.log('Applicant user middleware')
+        // Admin user middleware logic
+        // console.log('Applicant user middleware')
     if (to.meta.user !== 'user') {
         next('/user/dashboard')
     } else {
@@ -214,26 +214,8 @@ router.beforeEach((to, from, next) => {
     // Check if the user is Autheticated
     const isAuth = store.getters[`auth/${IS_USER_AUTHENTICATE_GETTER}`]
     console.log(isAuth)
-    /*
-    if (isAuth) {
-        userMiddleware(to, from, next)
-    } else {
-        if (to.meta.user !== 'guest') {
-            next('/')
-        } else {
-            next()
-        }
-    } */
-    /*  if (isAuth) {
-         next()
-     } else {
-         if (to.meta.user !== 'guest') {
-             next('/')
-         } else {
-             next()
-         }
-     } */
-    if (
+    console.log(IS_USER_AUTHENTICATE_GETTER)
+    /* if (
         'auth' in to.meta &&
         to.meta.auth &&
         !store.getters[`auth/${IS_USER_AUTHENTICATE_GETTER}`]
@@ -241,7 +223,19 @@ router.beforeEach((to, from, next) => {
         next('/login');
     } else {
         next();
-    }
+    } */
+        if (isAuth) {
+         if (to.meta.user == 'admin')
+         {
+            userMiddleware(to, from, next)
+         }
+     } else {
+         if (to.meta.user !== 'guest') {
+             next('/')
+         } else {
+             next()
+         }
+     } 
 });
 
 export default router;

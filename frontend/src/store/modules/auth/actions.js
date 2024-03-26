@@ -33,7 +33,7 @@ export default {
     async [LOGIN_ACTION](context, payload) {
         return context.dispatch(AUTH_ACTION, {
             ...payload,
-            url: `http://127.0.0.1:7000/api/login`,
+            url: `http://127.0.0.1:8000/api/login`,
         });
     },
 
@@ -66,7 +66,7 @@ export default {
                 email: response.data.email, // Kindly Replace the Student Model
                 token: response.data.token,
                 userId: response.data.localId,
-                userName: response.data.first_name
+                userName: response.data.name
             };
             console.log(tokenData)
             localStorage.setItem('userData', JSON.stringify(tokenData));

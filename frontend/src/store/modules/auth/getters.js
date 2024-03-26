@@ -9,6 +9,7 @@ export default {
     },
 
     [IS_USER_AUTHENTICATE_GETTER](state) {
+        console.log('gettermodule'+state)
         return !!state.token;
     },
 };
