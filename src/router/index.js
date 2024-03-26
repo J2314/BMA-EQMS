@@ -1,9 +1,14 @@
-import { createRouter, createWebHistory } from '@ionic/vue-router';
+import {
+    createRouter,
+    createWebHistory
+} from '@ionic/vue-router';
 import store from '../store/store';
-import { IS_USER_AUTHENTICATE_GETTER } from '../store/storeconstants';
+import {
+    IS_USER_AUTHENTICATE_GETTER
+} from '../store/storeconstants';
 
 const Login = () =>
-    import(/* webpackChunkName: "Login" */ '../views/Login.vue');
+    import( /* webpackChunkName: "Login" */ '../views/Login.vue');
 const Signup = () => import('../views/Signup.vue');
 const MainLayout = () => import('../views/MainLayout.vue');
 const Dashboard = () => import('../views/Dashboard.vue');
@@ -18,83 +23,142 @@ import UserPolicy from '../views/ClientSide/policy/Policy.vue'
 import UserGenForm from '../views/ClientSide/form/GeneralForms.vue'
 import UserDeptForm from '../views/ClientSide/form/DepartmentForms.vue'
 
-const userSide = (props) => [
-        {
-          path: 'policy',
-          name: 'User Policy',
-          component: UserPolicy,
-          meta: { auth: false, userType: 'user' },
+const userSide = (props) => [{
+        path: 'policy',
+        name: 'User Policy',
+        component: UserPolicy,
+        meta: {
+            auth: false,
+            userType: 'user'
         },
-        {
-            path: 'generalForms',
-            name: 'User General Form',
-            component: UserGenForm,
-            meta: { auth: false, userType: 'user' },
+    },
+    {
+        path: 'generalForms',
+        name: 'User General Form',
+        component: UserGenForm,
+        meta: {
+            auth: false,
+            userType: 'user'
         },
-        {
-            path: 'departmentForms',
-            name: 'User Department Form',
-            component: UserDeptForm,
-            meta: { auth: false, userType: 'user' },
+    },
+    {
+        path: 'departmentForms',
+        name: 'User Department Form',
+        component: UserDeptForm,
+        meta: {
+            auth: false,
+            userType: 'user'
         },
+    },
 ]
 
-const adminSide = (props) => [
-    {
-        path: 'dashboard',
+const adminSide = (props) => [{
+        path: '',
         name: props + '.dashboard',
-        meta: { auth: true, userType: 'admin' },
+        meta: {
+            auth: true,
+            userType: 'admin'
+        },
         component: Dashboard
     },
     {
-        path: 'addForm',
+        path: '/dashboard',
+        name: props + '.dashboard',
+        meta: {
+            auth: true,
+            userType: 'admin'
+        },
+        component: Dashboard
+    },
+    {
+        path: '/addForm',
         name: 'Add Form',
-        meta: { auth: true, userType: 'admin' },
+        meta: {
+            auth: true,
+            userType: 'admin'
+        },
         component: AddForm
     },
     {
         path: '/addPolicy',
         name: 'Add Policy',
-        meta: { auth: true, userType: 'admin' },
+        meta: {
+            auth: true,
+            userType: 'admin'
+        },
         component: AddPolicy
     },
     {
         path: '/addProcedures',
         name: 'Add Procedures',
-        meta: { auth: true, userType: 'admin' },
+        meta: {
+            auth: true,
+            userType: 'admin'
+        },
         component: AddProcedures
     },
     {
         path: '/addWorkInstructions',
         name: 'Add Work Instructions',
-        meta: { auth: false, userType: 'admin' },
+        meta: {
+            auth: false,
+            userType: 'admin'
+        },
         component: AddWorkInstruction
     },
     {
         path: '/addRecords',
         name: 'Add Records',
-        meta: { auth: false, userType: 'admin' },
+        meta: {
+            auth: false,
+            userType: 'admin'
+        },
         component: AddRecords
     },
     {
         path: '/addDepartments',
         name: 'Add Departments',
-        meta: { auth: false, userType: 'admin' },
+        meta: {
+            auth: false,
+            userType: 'admin'
+        },
         component: AddDepartments
     }
 
 ]
 
-const routes = [
-    { path: '', redirect: '/login' },   
-    { path: '/login', component: Login, meta: { auth: false } },
-    { path: '/signup', component: Signup, meta: { auth: false } },
-    { path: '/userdashboard', component: UserDash, children: userSide('user') },
-    { path: '/admin', component: MainLayout, children: adminSide('admin') },
+const routes = [{
+        path: '',
+        redirect: '/login'
+    },
+    {
+        path: '/login',
+        component: Login,
+        meta: {
+            auth: false
+        }
+    },
+    {
+        path: '/signup',
+        component: Signup,
+        meta: {
+            auth: false
+        }
+    },
+    {
+        path: '/userdashboard',
+        component: UserDash,
+        children: userSide('user')
+    },
+    {
+        path: '/admin',
+        component: MainLayout,
+        children: adminSide('admin')
+    },
 ];
 
 const router = createRouter({
-    history: createWebHistory("/"), 
+    history: createWebHistory("/"),
     routes,
 });
 

@@ -37,7 +37,7 @@ export default {
     async [LOGIN_ACTION](context, payload) {
         return context.dispatch(AUTH_ACTION, {
             ...payload,
-            url: `http://127.0.0.1:8000/api/login`,
+            url: `http://127.0.0.1:7000/api/student/login`,
         });
     },
 
@@ -66,22 +66,23 @@ export default {
         };
         try {
             let response = await Axios.post(payload.url, postData);
+            /*   console.log(response) */
             let tokenData = {
-                email: response.data.email,
-                token: response.data.idToken,
-                expiresIn: response.data.expiresIn ? response.data.expiresIn * 1000 : 0,
-                refreshToken: response.data.refreshToken,
-                userId: response.data.localId,
+                email: response.data.student.email, // Kindly Replace the Student Model
+                token: response.data.token,
+                userId: response.data.student.id,
+                userName: response.data.student.first_name
             };
-            context.commit(SET_USER_TOKEN_DATA_MUTATION, tokenData);
+            console.log(tokenData)
             localStorage.setItem('userData', JSON.stringify(tokenData));
-            Axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.idToken}`;
-            if (tokenData.expiresIn > 0) {
-                timer = setTimeout(() => {
-                    context.dispatch(AUTO_LOGOUT_ACTION);
-                }, tokenData.expiresIn);
-            }
-            return response; 
+            context.commit(SET_USER_TOKEN_DATA_MUTATION, tokenData);
+            /*  Axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.idToken}`;
+             if (tokenData.expiresIn > 0) {
+                 timer = setTimeout(() => {
+                     context.dispatch(AUTO_LOGOUT_ACTION);
+                 }, tokenData.expiresIn);
+             }
+             return response; */
         } catch (error) {
             let errorMessage = error.response ? SignupValidations.getErrorMessageFromCode(error.response.data.error.errors[0].message) : 'An error occurred while logging in';
             throw errorMessage;
