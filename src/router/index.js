@@ -90,7 +90,7 @@ const routes = [
     { path: '/login', component: Login, meta: { auth: false } },
     { path: '/signup', component: Signup, meta: { auth: false } },
     { path: '/userdashboard', component: UserDash, children: userSide('user') },
-    { path: '/admin', component: MainLayout, children: adminSide('admin') },
+    { path: '/admin', component: MainLayout, children: adminSide('admin'), redirect: '/admin/dashboard' },
 ];
 
 const router = createRouter({

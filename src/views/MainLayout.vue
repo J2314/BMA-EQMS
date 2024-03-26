@@ -9,26 +9,25 @@
     <ion-list class="SideList">
       <!-- Show these items for admin role -->
       <template v-if="$route.path.startsWith('/admin/')">
-        <ion-item router-link="/admin/dashboard" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
-        <ion-item router-link="/admin/addPolicy" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
-        <ion-item router-link="/admin/addProcedures" color="success" class="itemsK"><strong> Procedures </strong></ion-item>
-        <ion-item router-link="/admin/addWorkInstructions" color="success" class="itemsK"><strong> Work Instructions </strong></ion-item>
-        <ion-item router-link="/admin/addForm" color="success" class="itemsK"><strong> Forms </strong></ion-item>
-        <ion-item router-link="/admin/addRecords" color="success" class="itemsK"><strong> Records </strong></ion-item>
+        <ion-item @click="reloadPage('/admin/dashboard')" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
+        <ion-item @click="reloadPage('/admin/addPolicy')" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
+        <ion-item @click="reloadPage('/admin/addProcedures')" color="success" class="itemsK"><strong> Procedures </strong></ion-item>
+        <ion-item @click="reloadPage('/admin/addWorkInstructions')" color="success" class="itemsK"><strong> Work Instructions </strong></ion-item>
+        <ion-item @click="reloadPage('/admin/addForm')" color="success" class="itemsK"><strong> Forms </strong></ion-item>
+        <ion-item @click="reloadPage('/admin/addRecords')" color="success" class="itemsK"><strong> Records </strong></ion-item>
       </template>
       <!-- Show these items for user role -->
       <template v-if="$route.path.startsWith('/userdashboard')">
-        <ion-item router-link="/userdashboard" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
-        <ion-item router-link="/userdashboard/policy" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
+        <ion-item @click="reloadPage('/userdashboard')" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
+        <ion-item @click="reloadPage('/userdashboard/policy')" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
         <ion-item @click="toggleUserFormsDropdown" color="success">
           <strong> Forms </strong>
           <ion-icon slot="end" :icon="showUserForms ? chevronUp : chevronDown"></ion-icon>
         </ion-item>
         <ion-list v-show="showUserForms" class="subList">
-          <ion-item router-link="/userdashboard/generalForms" color="success" class="itemsK subItem"><strong> General Forms </strong></ion-item>
-          <ion-item router-link="/userdashboard/departmentForms" color="success" class="itemsK subItem"><strong> Department Forms </strong></ion-item>
+          <ion-item @click="reloadPage('/userdashboard/generalForms')" color="success" class="itemsK subItem"><strong> General Forms </strong></ion-item>
+          <ion-item @click="reloadPage('/userdashboard/departmentForms')" color="success" class="itemsK subItem"><strong> Department Forms </strong></ion-item>
         </ion-list>
-        <!-- Add other sidebar items for userdashboard here -->
       </template>
     </ion-list>
     <ion-button @click="logout" shape="round" class="btn logout" color="success"><strong>Logout</strong></ion-button>
@@ -63,9 +62,9 @@ import { chevronDown, chevronUp } from 'ionicons/icons';
 export default defineComponent({
   computed: {
     showNavigation() {
-    return !['/login', '/signup'].includes(this.$route.path);
-  }
-},
+      return !['/login', '/signup'].includes(this.$route.path);
+    }
+  },
   setup() {
     const router = useRouter();
     const logout = () => {
@@ -78,10 +77,17 @@ export default defineComponent({
       showUserForms.value = !showUserForms.value;
     };
 
+    const reloadPage = (path) => {
+      router.push(path).then(() => {
+        window.location.reload();
+      });
+    };
+
     return {
       logout,
       showUserForms,
-      toggleUserFormsDropdown
+      toggleUserFormsDropdown,
+      reloadPage
     };
   },
   components: {
