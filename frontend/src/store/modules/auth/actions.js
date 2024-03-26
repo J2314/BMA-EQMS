@@ -63,9 +63,9 @@ export default {
             let response = await Axios.post(payload.url, postData);
             console.log(response) 
             let tokenData = {
-                email: response.data.email, // Kindly Replace the Student Model
+                email: response.data.user.email, // Kindly Replace the Student Model
                 token: response.data.token,
-                userId: response.data.localId,
+                userId: response.data.user.id,
                 userName: response.data.name
             };
             console.log(tokenData)

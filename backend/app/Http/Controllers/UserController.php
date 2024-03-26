@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log; 
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -24,12 +24,12 @@ class UserController extends Controller
             $user = User::where('email', $credentials['email'])->first();
             $token = $user->createToken('myapptoken')->plainTextToken;
 
-            Log::info('Login successful for user: ' . $user->email); 
+            Log::info('Login successful for user: ' . $user->email);
 
-            return response()->json(['message' => 'Login successful', 'token' => $user], 200);
+            return response()->json(['message' => 'Login successful', 'user' => $user, 'token' => $token], 200);
         }
 
-        Log::info('Login failed for email: ' . $credentials['email']); 
+        Log::info('Login failed for email: ' . $credentials['email']);
 
         return response()->json(['error' => 'Invalid credentials'], 401);
     }
