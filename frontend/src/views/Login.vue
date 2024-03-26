@@ -91,7 +91,7 @@ export default {
       }
     },
     reloadPage() {
-      window.location.reload(); // Reload the page after clicking the signup link
+      window.location.reload(); 
     }
   },
 };

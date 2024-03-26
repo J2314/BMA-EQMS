@@ -1,14 +1,8 @@
-import {
-    createRouter,
-    createWebHistory
-} from '@ionic/vue-router';
+import { createRouter, createWebHistory } from '@ionic/vue-router';
 import store from '../store/store';
-import {
-    IS_USER_AUTHENTICATE_GETTER
-} from '../store/storeconstants';
+import { IS_USER_AUTHENTICATE_GETTER } from '../store/storeconstants';
 
-const Login = () =>
-    import( /* webpackChunkName: "Login" */ '../views/Login.vue');
+const Login = () => import( /* webpackChunkName: "Login" */ '../views/Login.vue');
 const Signup = () => import('../views/Signup.vue');
 const MainLayout = () => import('../views/MainLayout.vue');
 const Dashboard = () => import('../views/Dashboard.vue');
@@ -23,7 +17,28 @@ import UserPolicy from '../views/ClientSide/policy/Policy.vue'
 import UserGenForm from '../views/ClientSide/form/GeneralForms.vue'
 import UserDeptForm from '../views/ClientSide/form/DepartmentForms.vue'
 
-const userSide = (props) => [{
+const userSide = (props) => [
+    { 
+        path: '', 
+        name: props + '.dashboard',
+        meta: {
+            auth: false,
+            user: 'user',
+            userType: 'user'
+        },
+        component: UserDash,
+    },
+    {
+        path: 'dashboard',
+        name: props + '.dashboard',
+        meta: {
+            auth: false,
+            user: 'user',
+            userType: 'user'
+        },
+        component: UserDash,
+    },
+    {
         path: 'policy',
         name: 'User Policy',
         component: UserPolicy,
@@ -52,31 +67,32 @@ const userSide = (props) => [{
     },
 ]
 
-const adminSide = (props) => [{
+const adminSide = (props) => [
+    {
         path: '',
         name: props + '.dashboard',
         meta: {
-            auth: true,
+            auth: false,
             user: 'admin',
             userType: 'admin'
         },
-        component: Dashboard
+        component: Dashboard,
     },
     {
-        path: '/dashboard',
+        path: 'dashboard',
         name: props + '.dashboard',
         meta: {
-            auth: true,
+            auth: false,
             user: 'admin',
             userType: 'admin'
         },
         component: Dashboard
     },
     {
-        path: '/addForm',
+        path: 'addForm',
         name: 'Add Form',
         meta: {
-            auth: true,
+            auth: false,
             user: 'admin',
             userType: 'admin'
         },
@@ -86,7 +102,7 @@ const adminSide = (props) => [{
         path: 'addPolicy',
         name: 'Add Policy',
         meta: {
-            auth: true,
+            auth: false,
             user: 'admin',
             userType: 'admin'
         },
@@ -96,7 +112,7 @@ const adminSide = (props) => [{
         path: 'addProcedures',
         name: 'Add Procedures',
         meta: {
-            auth: true,
+            auth: false,
             user: 'admin',
             userType: 'admin'
         },
@@ -106,7 +122,7 @@ const adminSide = (props) => [{
         path: 'addWorkInstructions',
         name: 'Add Work Instructions',
         meta: {
-            auth: true,
+            auth: false,
             user: 'admin',
             userType: 'admin'
         },
@@ -116,7 +132,7 @@ const adminSide = (props) => [{
         path: 'addRecords',
         name: 'Add Records',
         meta: {
-            auth: true,
+            auth: false,
             user: 'admin',
             userType: 'admin'
         },
@@ -126,13 +142,12 @@ const adminSide = (props) => [{
         path: 'addDepartments',
         name: 'Add Departments',
         meta: {
-            auth: true,
+            auth: false,
             user: 'admin',
             userType: 'admin'
         },
         component: AddDepartments
     }
-
 ]
 
 const routes = [{
@@ -141,6 +156,7 @@ const routes = [{
     },
     {
         path: '/login',
+        name: 'Login',
         component: Login,
         meta: {
             auth: false,
@@ -156,13 +172,15 @@ const routes = [{
         }
     },
     {
-        path: '/userdashboard',
-        component: UserDash,
+        path: '/user',
+        component: MainLayout,
+        redirect:'/user/dashboard/',
         children: userSide('user')
     },
     {
         path: '/admin',
         component: MainLayout,
+        redirect: '/admin/dashboard',
         children: adminSide('admin')
     },
 ];
@@ -185,8 +203,8 @@ function userMiddleware(to, from, next) {
 function clientMiddleware(to, from, next) {
     // Admin user middleware logic
     // console.log('Applicant user middleware')
-    if (to.meta.user !== 'client') {
-        next('/client/dashboard')
+    if (to.meta.user !== 'user') {
+        next('/user/dashboard')
     } else {
         next()
     }

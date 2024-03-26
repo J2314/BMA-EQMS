@@ -9,24 +9,24 @@
     <ion-list class="SideList">
       <!-- Show these items for admin role -->
       <template v-if="$route.path.startsWith('/admin/')">
-        <ion-item router-link="/admin/dashboard" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
-        <ion-item router-link="/admin/addPolicy" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
-        <ion-item router-link="/admin/addProcedures" color="success" class="itemsK"><strong> Procedures </strong></ion-item>
-        <ion-item router-link="/admin/addWorkInstructions" color="success" class="itemsK"><strong> Work Instructions </strong></ion-item>
-        <ion-item router-link="/admin/addForm" color="success" class="itemsK"><strong> Forms </strong></ion-item>
-        <ion-item router-link="/admin/addRecords" color="success" class="itemsK"><strong> Records </strong></ion-item>
+        <ion-item @click="reloadPage('/admin/dashboard')" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
+        <ion-item @click="reloadPage('/admin/addPolicy')" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
+        <ion-item @click="reloadPage('/admin/addProcedures')" color="success" class="itemsK"><strong> Procedures </strong></ion-item>
+        <ion-item @click="reloadPage('/admin/addWorkInstructions')" color="success" class="itemsK"><strong> Work Instructions </strong></ion-item>
+        <ion-item @click="reloadPage('/admin/addForm')" color="success" class="itemsK"><strong> Forms </strong></ion-item>
+        <ion-item @click="reloadPage('/admin/addRecords')" color="success" class="itemsK"><strong> Records </strong></ion-item>
       </template>
       <!-- Show these items for user role -->
-      <template v-if="$route.path.startsWith('/userdashboard')">
-        <ion-item router-link="/userdashboard" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
-        <ion-item router-link="/userdashboard/policy" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
+      <template v-if="$route.path.startsWith('/user/')">
+        <ion-item @click="reloadPage('/user/dashboard')" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
+        <ion-item @click="reloadPage('/user/policy')" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
         <ion-item @click="toggleUserFormsDropdown" color="success">
           <strong> Forms </strong>
           <ion-icon slot="end" :icon="showUserForms ? chevronUp : chevronDown"></ion-icon>
         </ion-item>
         <ion-list v-show="showUserForms" class="subList">
-          <ion-item router-link="/userdashboard/generalForms" color="success" class="itemsK subItem"><strong> General Forms </strong></ion-item>
-          <ion-item router-link="/userdashboard/departmentForms" color="success" class="itemsK subItem"><strong> Department Forms </strong></ion-item>
+          <ion-item @click="reloadPage('/user/generalForms')" color="success" class="itemsK subItem"><strong> General Forms </strong></ion-item>
+          <ion-item @click="reloadPage('/user/departmentForms')" color="success" class="itemsK subItem"><strong> Department Forms </strong></ion-item>
         </ion-list>
       </template>
     </ion-list>
@@ -44,9 +44,7 @@
         </ion-title>
         <ion-searchbar class="search"></ion-searchbar>
         <!-- Change title based on the route -->
-        <ion-title slot="end"><strong>{{ $route.path.startsWith('/userdashboard') ||
-        $route.path.startsWith('/generalForms') || $route.path.startsWith('/departmentForms') ||
-        $route.path.startsWith('/policy') ? 'User' : 'Admin' }}</strong></ion-title>
+        <ion-title slot="end"><strong>{{ $route.path.startsWith('/user/')  ? 'User' : 'Admin' }}</strong></ion-title>
 
         <img src="@/assets/marine.png" alt="BMA Logo" class="logo3" slot="end" shape="round">
       </ion-toolbar>
@@ -58,7 +56,7 @@
 <script>
 import { IonMenu, IonHeader, IonToolbar, IonTitle, IonButton, IonList, IonItem, IonRouterOutlet, IonPage, IonButtons, IonMenuButton, IonIcon } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'; 
 import { chevronDown, chevronUp } from 'ionicons/icons';
 import { mapActions, mapGetters } from 'vuex';
 import {
@@ -69,9 +67,21 @@ import {
 export default defineComponent({
   computed: {
     showNavigation() {
-    return !['/login', '/signup'].includes(this.$route.path);
-  }
-},
+      return !['/login', '/signup'].includes(this.$route.path);
+    },
+    ...mapGetters('auth', {
+            isAuthenticated: IS_USER_AUTHENTICATE_GETTER,
+        }),
+  },
+  methods: {
+        ...mapActions('auth', {
+            logout: LOGOUT_ACTION,
+        }),
+        onLogout() {
+            this.logout();
+            this.$router.push('/login');
+        },
+    },
   setup() {
     const router = useRouter();
     const logout = () => {
@@ -136,7 +146,7 @@ export default defineComponent({
 }
 
 .subItem {
-  font-size: 0.9em;
+  font-size: 0.9em; 
 }
 
 .subList {

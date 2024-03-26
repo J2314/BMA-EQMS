@@ -10,9 +10,7 @@ import {
     AUTO_LOGOUT_ACTION,
     SET_AUTO_LOGOUT_MUTATION,
 } from '../../storeconstants';
-
 let timer = null;
-
 export default {
     [LOGOUT_ACTION](context) {
         context.commit(SET_USER_TOKEN_DATA_MUTATION, {
@@ -28,16 +26,14 @@ export default {
             timer = null;
         }
     },
-
     [AUTO_LOGOUT_ACTION](context) {
         context.dispatch(LOGOUT_ACTION);
         context.commit(SET_AUTO_LOGOUT_MUTATION);
     },
-
     async [LOGIN_ACTION](context, payload) {
         return context.dispatch(AUTH_ACTION, {
             ...payload,
-            url: `http://127.0.0.1:7000/api/student/login`,
+            url: `http://127.0.0.1:7000/api/login`,
         });
     },
 
@@ -47,7 +43,6 @@ export default {
             url: `http://127.0.0.1:8000/api/register`,
         });
     },
-
     [AUTO_LOGIN_ACTION](context) {
         let userDataString = localStorage.getItem('userData');
 
@@ -66,12 +61,12 @@ export default {
         };
         try {
             let response = await Axios.post(payload.url, postData);
-            /*   console.log(response) */
+            console.log(response) 
             let tokenData = {
-                email: response.data.student.email, // Kindly Replace the Student Model
+                email: response.data.email, // Kindly Replace the Student Model
                 token: response.data.token,
-                userId: response.data.student.id,
-                userName: response.data.student.first_name
+                userId: response.data.localId,
+                userName: response.data.first_name
             };
             console.log(tokenData)
             localStorage.setItem('userData', JSON.stringify(tokenData));
