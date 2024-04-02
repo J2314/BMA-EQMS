@@ -13,6 +13,7 @@
         <ion-item @click="reloadPage('/admin/addPolicy')" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
         <ion-item @click="reloadPage('/admin/addProcedures')" color="success" class="itemsK"><strong> Procedures </strong></ion-item>
         <ion-item @click="reloadPage('/admin/addWorkInstructions')" color="success" class="itemsK"><strong> Work Instructions </strong></ion-item>
+        <ion-item @click="reloadPage('/admin/addDepartments')" color="success" class="itemsK"><strong> Departments </strong></ion-item>
         <ion-item @click="reloadPage('/admin/addForm')" color="success" class="itemsK"><strong> Forms </strong></ion-item>
         <ion-item @click="reloadPage('/admin/addRecords')" color="success" class="itemsK"><strong> Records </strong></ion-item>
       </template>

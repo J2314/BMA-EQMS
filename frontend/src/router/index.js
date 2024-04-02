@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import store from '../store/store';
-import { IS_USER_AUTHENTICATE_GETTER } from '../store/storeconstants';
+import { IS_USER_AUTHENTICATE_GETTER, GET_USER_TOKEN_GETTER } from '../store/storeconstants';
 
 const Login = () => import( /* webpackChunkName: "Login" */ '../views/Login.vue');
 const Signup = () => import('../views/Signup.vue');
@@ -213,6 +213,8 @@ router.beforeEach((to, from, next) => {
 
     // Check if the user is Autheticated
     const isAuth = store.getters[`auth/${IS_USER_AUTHENTICATE_GETTER}`]
+    const isToken = store.getters[`auth/${GET_USER_TOKEN_GETTER}`]
+    console.log(isToken)
     console.log(isAuth)
     console.log(IS_USER_AUTHENTICATE_GETTER)
     /* if (
@@ -224,7 +226,7 @@ router.beforeEach((to, from, next) => {
     } else {
         next();
     } */
-        if (isAuth) {
+/*         if (isAuth) {
          if (to.meta.user == 'admin')
          {
             userMiddleware(to, from, next)
@@ -235,7 +237,21 @@ router.beforeEach((to, from, next) => {
          } else {
              next()
          }
-     } 
+     }  */
+
+     if (to.meta.auth && !isAuth && !isToken) {
+        // Redirect unauthenticated users to the login page
+        next('/login');
+    } else if (to.meta.auth && !isAuth && isToken) {
+        // If token is present but not authenticated, attempt to authenticate
+        // You may need to dispatch an action to authenticate the user here
+    } else if (to.meta.auth && isAuth) {
+        // Authenticated user, allow access to the route
+        next();
+    } else {
+        // No authentication required, allow access
+        next();
+    }
 });
 
 export default router;
