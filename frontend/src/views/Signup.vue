@@ -118,7 +118,7 @@ export default {
       this.loading = true;
 
       try {
-        let response = await axios.post('http://127.0.0.1:8000/api/register', {
+        let response = await axios.post('http://192.168.100.8:7070/api/register', {
           name: this.name,
           email: this.email,
           password: this.password,
