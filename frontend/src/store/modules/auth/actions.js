@@ -33,14 +33,14 @@ export default {
     async [LOGIN_ACTION](context, payload) {
         return context.dispatch(AUTH_ACTION, {
             ...payload,
-            url: `http://192.168.100.8:7070/api/login`,
+            url: `login`,
         });
     },
 
     async [SIGNUP_ACTION](context, payload) {
         return context.dispatch(AUTH_ACTION, {
             ...payload,
-            url: `http://192.168.100.8:7070/api/register`,
+            url: `register`,
         });
     },
     [AUTO_LOGIN_ACTION](context) {
@@ -61,7 +61,7 @@ export default {
         };
         try {
             let response = await Axios.post(payload.url, postData);
-            console.log(response) 
+            console.log(response)
             let tokenData = {
                 email: response.data.user.email, // Kindly Replace the Student Model
                 token: response.data.token,
