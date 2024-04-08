@@ -64,3 +64,6 @@ Route::middleware('auth.sanctum')->group(function () {
   // Policies
   Route::post('/upload-policy', [PolicyController::class, 'upload']);
   Route::get('/retrieve-policies', [PolicyController::class, 'getPolicies']);
+
+
+  Route::post('increment-views', [FormController::class, 'incrementViewCount']);

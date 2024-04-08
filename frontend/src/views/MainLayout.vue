@@ -46,7 +46,6 @@
         <ion-searchbar class="search"></ion-searchbar>
         <!-- Change title based on the route -->
         <ion-title slot="end"><strong>{{ $route.path.startsWith('/user/')  ? 'User' : 'Admin' }}</strong></ion-title>
-
         <img src="@/assets/marine.png" alt="BMA Logo" class="logo3" slot="end" shape="round">
       </ion-toolbar>
     </ion-header>

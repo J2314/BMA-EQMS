@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Forms;
+use App\Models\FormViewing;
+use Illuminate\Support\Facades\Auth;
 
 class FormController extends Controller
 {
@@ -46,5 +48,22 @@ class FormController extends Controller
     {
         $form = Forms::with('department')->with('form_files')->find($data);
         return response(compact('form'), 200);
+    }
+
+    public function incrementViewCount(Request $request)
+    {
+        $formFileId = $request->input('formFileId');
+
+        $user = Auth::user();
+        $userId = $user ? $user->id : null;
+
+        FormViewing::create([
+            'form_files_id' => $formFileId,
+            'user_id' => $userId,
+        ]);
+
+        // Increment the form view count here
+
+        return response()->json(['message' => 'View recorded successfully.']);
     }
 }

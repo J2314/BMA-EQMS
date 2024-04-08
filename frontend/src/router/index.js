@@ -16,6 +16,7 @@ import UserDash from '../views/ClientSide/UserDashboard.vue'
 import UserPolicy from '../views/ClientSide/policy/Policy.vue'
 import UserGenForm from '../views/ClientSide/form/GeneralForms.vue'
 import UserDeptForm from '../views/ClientSide/form/DepartmentForms.vue'
+import uploadForm from '../views/forms/UploadForm.vue'
 
 const userSide = (props) => [
     { 
@@ -147,8 +148,18 @@ const adminSide = (props) => [
             userType: 'admin'
         },
         component: AddDepartments
+    },
+    {
+        path: 'uploadForm',
+        name: 'uploadForm',
+        meta: {
+            auth: false,
+            user: 'admin',
+            userType: 'admin'
+        },
+        component: uploadForm
     }
-]
+]    
 
 const routes = [{
         path: '',

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\FormFiles;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 class FileController extends Controller
 {
@@ -25,12 +27,12 @@ class FileController extends Controller
     //     return response()->json(['message' => 'File uploaded successfully']);
     // }
 
-    public function submittedFiles()
-    {
-        $files = SubmittedFile::all();
+    // public function submittedFiles()
+    // {
+    //     $files = SubmittedFile::all();
 
-        return response()->json($files);
-    }
+    //     return response()->json($files);
+    // }
 
     public function upload(Request $request)
     {

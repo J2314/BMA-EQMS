@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Policies;
+use Illuminate\Support\Facades\URL;
 
 class PolicyController extends Controller
 {

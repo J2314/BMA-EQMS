@@ -51,7 +51,7 @@
           <tr v-for="form in forms" :key="form.id">
             <td>
               <router-link id="uploadForm"
-                :to="{ name: 'uploadForm', params: { formId: form.id, departmentName: form.department.name, fileName: form.file_name } }"
+                :to="{ name: 'uploadForm', query: { formId: form.id, departmentName: form.department.name, fileName: form.file_name } }"
                 @click="logFormData(form.id, form.department.name, form.department_id)">
                 {{ form.file_name }}
               </router-link>
@@ -97,10 +97,10 @@ export default {
     };
   },
   methods: {
-    logFormData(formId, departmentName, department_id) {
+    logFormData(formId, departmentName, fileName) {
       console.log('Form ID:', formId);
-      console.log('Department ID:', department_id);
       console.log('Department Name:', departmentName);
+      console.log('File Name:', fileName);
     },
 
     submitForm() {

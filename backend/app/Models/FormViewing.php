@@ -12,5 +12,6 @@ class FormViewing extends Model
     protected $fillable = [
         'form_id',
         'user_id',
+        'form_files_id'
     ];
 }
