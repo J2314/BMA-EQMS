@@ -85,10 +85,12 @@ export default {
           pdfViewer.src = fileContent;
 
           axios.post('http://127.0.0.1:8000/api/increment-view-count', {
-            formFileId: fileId
+            formFileId: fileId,
+            user_id: this.userId
           })
             .then(response => {
               console.log(response.data.message);
+              console.log(formFileId);
             })
             .catch(error => {
               console.error('Error recording view:', error);

@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('form_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('form_files_id');
             $table->timestamps();
 
+            $table->foreign('form_files_id')->references('id')->on('form_files');
             $table->foreign('form_id')->references('id')->on('forms');
             $table->foreign('user_id')->references('id')->on('users');
         });
