@@ -1,59 +1,3 @@
-<template>
-  <ion-menu content-id="main-content">
-    <ion-header>
-      <ion-toolbar>
-        <img src="@/assets/bma.png" alt="BMA Logo" class="logo1" slot="start">
-        <ion-title class="title" slot="start"><strong>E-QMS</strong></ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-list class="SideList">
-      <!-- Show these items for admin role -->
-      <template v-if="$route.path.startsWith('/admin/')">
-        <ion-item @click="reloadPage('/admin/dashboard')" class="menu-item" :class="{ 'active-item': activeItem === 'dashboard' }"> Dashboard </ion-item>
-        <ion-item @click="reloadPage('/admin/addPolicy')" class="menu-item" :class="{ 'active-item': activeItem === 'addPolicy' }"> Policy Documents</ion-item>
-        <ion-item @click="reloadPage('/admin/addProcedures')" class="menu-item" :class="{ 'active-item': activeItem === 'addProcedures' }"> Procedures </ion-item>
-        <ion-item @click="reloadPage('/admin/addWorkInstructions')" class="menu-item" :class="{ 'active-item': activeItem === 'addWorkInstructions' }"> Work Instructions </ion-item>
-        <ion-item @click="reloadPage('/admin/addDepartments')" class="menu-item" :class="{ 'active-item': activeItem === 'addDepartments' }"> Departments </ion-item>
-        <ion-item @click="reloadPage('/admin/addForm')" class="menu-item" :class="{ 'active-item': activeItem === 'addForm' }"> Forms </ion-item>
-        <ion-item @click="reloadPage('/admin/addRecords')" class="menu-item" :class="{ 'active-item': activeItem === 'addRecords' }"> Records </ion-item>
-      </template>
-      <!-- Show these items for user role -->
-      <template v-if="$route.path.startsWith('/user/')">
-        <ion-item @click="reloadPage('/user/dashboard')" class="menu-item" :class="{ 'active-item': activeItem === 'dashboard' }"> Dashboard </ion-item>
-        <ion-item @click="reloadPage('/user/policy')" class="menu-item" :class="{ 'active-item': activeItem === 'policy' }"> Policy Documents </ion-item>
-        <ion-item @click="toggleUserFormsDropdown"  class="menu-item" :class="{ 'active-item': activeItem === 'forms' }" >
-           Forms 
-          <ion-icon slot="end" :icon="showUserForms ? chevronUp : chevronDown"></ion-icon>
-        </ion-item>
-        <ion-list v-show="showUserForms" class="subList">
-          <ion-item @click="reloadPage('/user/generalForms')" class="menu-item" :class="{ 'active-item': activeItem === 'generalForms' }">General Forms</ion-item>
-          <ion-item @click="reloadPage('/user/departmentForms')" class="menu-item" :class="{ 'active-item': activeItem === 'departmentForms' }">Department Forms </ion-item>
-        </ion-list>
-        <!-- Add other user items similarly -->
-      </template>
-    </ion-list>
-    <ion-button @click="onLogout()" shape="round" class="btn logout" color="success" v-if="isAuthenticated"><strong>Logout</strong></ion-button>
-  </ion-menu>
-  <ion-page>
-    <ion-header v-if="showNavigation">
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button></ion-menu-button>
-        </ion-buttons>
-        <img src="@/assets/bma.png" alt="BMA Logo" class="logo2" slot="start">
-        <ion-title slot="start">
-          <strong>BALIWAG MARITIME ACADEMY</strong>
-        </ion-title>
-        <ion-searchbar class="search"></ion-searchbar>
-        <!-- Change title based on the route -->
-        <ion-title slot="end"><strong>{{ $route.path.startsWith('/user/')  ? 'User' : 'Admin' }}</strong></ion-title>
-        <img src="@/assets/marine.png" alt="BMA Logo" class="logo3" slot="end" shape="round">
-      </ion-toolbar>
-    </ion-header>
-    <ion-router-outlet id="main-content"></ion-router-outlet>
-  </ion-page>
-</template>
-
 <script>
 import { IonMenu, IonHeader, IonToolbar, IonTitle, IonButton, IonList, IonItem, IonRouterOutlet, IonPage, IonButtons, IonMenuButton, IonIcon } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
@@ -71,29 +15,23 @@ export default defineComponent({
       return !['/login', '/signup'].includes(this.$route.path);
     },
     ...mapGetters('auth', {
-            isAuthenticated: IS_USER_AUTHENTICATE_GETTER,
-        }),
+        isAuthenticated: IS_USER_AUTHENTICATE_GETTER,
+    }),
+    activeItem() {
+      return this.$route.path; // Use the full path of the current route
+    }
   },
   methods: {
-        ...mapActions('auth', {
-            logout: LOGOUT_ACTION,
-        }),
-        onLogout() {
-            this.logout();
-            this.$router.push('/login');
-        },
+    ...mapActions('auth', {
+      logout: LOGOUT_ACTION,
+    }),
+    onLogout() {
+      this.logout();
+      this.$router.push('/login');
     },
+  },
   setup() {
     const router = useRouter();
-    const logout = () => {
-      router.push({ name: 'Login' });
-    };
-
-    const showUserForms = ref(false);
-
-    const toggleUserFormsDropdown = () => {
-      showUserForms.value = !showUserForms.value;
-    };
 
     const reloadPage = (path) => {
       router.push(path).then(() => {
@@ -102,9 +40,6 @@ export default defineComponent({
     };
 
     return {
-      logout,
-      showUserForms,
-      toggleUserFormsDropdown,
       reloadPage
     };
   },
@@ -130,6 +65,62 @@ export default defineComponent({
   }
 });
 </script>
+
+<template>
+  <ion-menu content-id="main-content">
+    <ion-header>
+      <ion-toolbar>
+        <img src="@/assets/bma.png" alt="BMA Logo" class="logo1" slot="start">
+        <ion-title class="title" slot="start"><strong>E-QMS</strong></ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-list class="SideList">
+      <!-- Show these items for admin role -->
+      <template v-if="$route.path.startsWith('/admin/')">
+        <ion-item @click="reloadPage('/admin/dashboard')" class="menu-item" :class="{ 'active-item': activeItem === '/admin/dashboard' }"> Dashboard </ion-item>
+        <ion-item @click="reloadPage('/admin/addPolicy')" class="menu-item" :class="{ 'active-item': activeItem === '/admin/addPolicy' }"> Policy Documents</ion-item>
+        <ion-item @click="reloadPage('/admin/addProcedures')" class="menu-item" :class="{ 'active-item': activeItem === '/admin/addProcedures' }"> Procedures </ion-item>
+        <ion-item @click="reloadPage('/admin/addWorkInstructions')" class="menu-item" :class="{ 'active-item': activeItem === '/admin/addWorkInstructions' }"> Work Instructions </ion-item>
+        <ion-item @click="reloadPage('/admin/addDepartments')" class="menu-item" :class="{ 'active-item': activeItem === '/admin/addDepartments' }"> Departments </ion-item>
+        <ion-item @click="reloadPage('/admin/addForm')" class="menu-item" :class="{ 'active-item': activeItem === '/admin/addForm' }"> Forms </ion-item>
+        <ion-item @click="reloadPage('/admin/addRecords')" class="menu-item" :class="{ 'active-item': activeItem === '/admin/addRecords' }"> Records </ion-item>
+      </template>
+      <!-- Show these items for user role -->
+      <template v-if="$route.path.startsWith('/user/')">
+        <ion-item @click="reloadPage('/user/dashboard')" class="menu-item" :class="{ 'active-item': activeItem === '/user/dashboard' }"> Dashboard </ion-item>
+        <ion-item @click="reloadPage('/user/policy')" class="menu-item" :class="{ 'active-item': activeItem === '/user/policy' }"> Policy Documents </ion-item>
+        <ion-item @click="toggleUserFormsDropdown"  class="menu-item" :class="{ 'active-item': activeItem === '/user/forms' }" >
+           Forms 
+          <ion-icon slot="end" :icon="showUserForms ? chevronUp : chevronDown"></ion-icon>
+        </ion-item>
+        <ion-list v-show="showUserForms" class="subList">
+          <ion-item @click="reloadPage('/user/generalForms')" class="menu-item" :class="{ 'active-item': activeItem === '/user/generalForms' }">General Forms</ion-item>
+          <ion-item @click="reloadPage('/user/departmentForms')" class="menu-item" :class="{ 'active-item': activeItem === '/user/departmentForms' }">Department Forms </ion-item>
+        </ion-list>
+        <!-- Add other user items similarly -->
+      </template>
+    </ion-list>
+    <ion-button @click="onLogout()" shape="round" class="btn logout" color="success" v-if="isAuthenticated"><strong>Logout</strong></ion-button>
+  </ion-menu>
+  <ion-page>
+    <ion-header v-if="showNavigation">
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <img src="@/assets/bma.png" alt="BMA Logo" class="logo2" slot="start">
+        <ion-title slot="start">
+          <strong>BALIWAG MARITIME ACADEMY</strong>
+        </ion-title>
+        <ion-searchbar class="search"></ion-searchbar>
+        <!-- Change title based on the route -->
+        <ion-title slot="end"><strong>{{ $route.path.startsWith('/user/')  ? 'User' : 'Admin' }}</strong></ion-title>
+        <img src="@/assets/marine.png" alt="BMA Logo" class="logo3" slot="end" shape="round">
+      </ion-toolbar>
+    </ion-header>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-page>
+</template>
 
 <style scoped>
 .title {
@@ -186,5 +177,3 @@ export default defineComponent({
   margin-right: 15px;
 }
 </style>
-
-
