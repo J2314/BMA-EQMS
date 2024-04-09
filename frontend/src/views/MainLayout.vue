@@ -9,26 +9,27 @@
     <ion-list class="SideList">
       <!-- Show these items for admin role -->
       <template v-if="$route.path.startsWith('/admin/')">
-        <ion-item @click="reloadPage('/admin/dashboard')" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
-        <ion-item @click="reloadPage('/admin/addPolicy')" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
-        <ion-item @click="reloadPage('/admin/addProcedures')" color="success" class="itemsK"><strong> Procedures </strong></ion-item>
-        <ion-item @click="reloadPage('/admin/addWorkInstructions')" color="success" class="itemsK"><strong> Work Instructions </strong></ion-item>
-        <ion-item @click="reloadPage('/admin/addDepartments')" color="success" class="itemsK"><strong> Departments </strong></ion-item>
-        <ion-item @click="reloadPage('/admin/addForm')" color="success" class="itemsK"><strong> Forms </strong></ion-item>
-        <ion-item @click="reloadPage('/admin/addRecords')" color="success" class="itemsK"><strong> Records </strong></ion-item>
+        <ion-item @click="reloadPage('/admin/dashboard')" class="menu-item" :class="{ 'active-item': activeItem === 'dashboard' }"> Dashboard </ion-item>
+        <ion-item @click="reloadPage('/admin/addPolicy')" class="menu-item" :class="{ 'active-item': activeItem === 'addPolicy' }"> Policy Documents</ion-item>
+        <ion-item @click="reloadPage('/admin/addProcedures')" class="menu-item" :class="{ 'active-item': activeItem === 'addProcedures' }"> Procedures </ion-item>
+        <ion-item @click="reloadPage('/admin/addWorkInstructions')" class="menu-item" :class="{ 'active-item': activeItem === 'addWorkInstructions' }"> Work Instructions </ion-item>
+        <ion-item @click="reloadPage('/admin/addDepartments')" class="menu-item" :class="{ 'active-item': activeItem === 'addDepartments' }"> Departments </ion-item>
+        <ion-item @click="reloadPage('/admin/addForm')" class="menu-item" :class="{ 'active-item': activeItem === 'addForm' }"> Forms </ion-item>
+        <ion-item @click="reloadPage('/admin/addRecords')" class="menu-item" :class="{ 'active-item': activeItem === 'addRecords' }"> Records </ion-item>
       </template>
       <!-- Show these items for user role -->
       <template v-if="$route.path.startsWith('/user/')">
-        <ion-item @click="reloadPage('/user/dashboard')" color="success" class="itemsK"><strong> Dashboard </strong></ion-item>
-        <ion-item @click="reloadPage('/user/policy')" color="success" class="itemsK"><strong> Policy Documents</strong></ion-item>
-        <ion-item @click="toggleUserFormsDropdown" color="success">
-          <strong> Forms </strong>
+        <ion-item @click="reloadPage('/user/dashboard')" class="menu-item" :class="{ 'active-item': activeItem === 'dashboard' }"> Dashboard </ion-item>
+        <ion-item @click="reloadPage('/user/policy')" class="menu-item" :class="{ 'active-item': activeItem === 'policy' }"> Policy Documents </ion-item>
+        <ion-item @click="toggleUserFormsDropdown"  class="menu-item" :class="{ 'active-item': activeItem === 'forms' }" >
+           Forms 
           <ion-icon slot="end" :icon="showUserForms ? chevronUp : chevronDown"></ion-icon>
         </ion-item>
         <ion-list v-show="showUserForms" class="subList">
-          <ion-item @click="reloadPage('/user/generalForms')" color="success" class="itemsK subItem"><strong> General Forms </strong></ion-item>
-          <ion-item @click="reloadPage('/user/departmentForms')" color="success" class="itemsK subItem"><strong> Department Forms </strong></ion-item>
+          <ion-item @click="reloadPage('/user/generalForms')" class="menu-item" :class="{ 'active-item': activeItem === 'generalForms' }">General Forms</ion-item>
+          <ion-item @click="reloadPage('/user/departmentForms')" class="menu-item" :class="{ 'active-item': activeItem === 'departmentForms' }">Department Forms </ion-item>
         </ion-list>
+        <!-- Add other user items similarly -->
       </template>
     </ion-list>
     <ion-button @click="onLogout()" shape="round" class="btn logout" color="success" v-if="isAuthenticated"><strong>Logout</strong></ion-button>
@@ -141,23 +142,27 @@ export default defineComponent({
   margin-left: 10px;
 }
 
-.itemsK {
-  margin-bottom: 5px;
+.menu-item {
+  transition: all 0.3s ease-in-out;
+  color: black;
 }
 
-.subItem {
-  font-size: 0.9em; 
-}
-
-.subList {
-  width: 100%;
-  margin-left: 20px;
+.menu-item:hover,
+.menu-item.active-item {
+  font-weight: bold;
+  --background: #4caf50; /* Set the background color to green */
+  color: white; 
 }
 
 .logout {
   margin-right: 12px;
   margin-left: 10px;
   margin-bottom: 10px;
+}
+
+.subList {
+  width: 100%;
+  margin-left: 20px;
 }
 
 .logo1 {
@@ -181,3 +186,5 @@ export default defineComponent({
   margin-right: 15px;
 }
 </style>
+
+
