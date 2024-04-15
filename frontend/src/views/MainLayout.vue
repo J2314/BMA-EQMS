@@ -1,6 +1,6 @@
 <script>
-import { IonMenu, IonHeader, IonToolbar, IonTitle, IonButton, IonList, IonItem, IonRouterOutlet, IonPage, IonButtons, IonMenuButton, IonIcon } from '@ionic/vue';
-import { defineComponent, ref } from 'vue';
+import { IonMenu, IonHeader, IonToolbar, IonTitle, IonButton, IonList, IonItem, IonRouterOutlet, IonPage, IonButtons, IonMenuButton, IonIcon, IonSearchbar } from '@ionic/vue';
+import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router'; 
 import { chevronDown, chevronUp } from 'ionicons/icons';
 import { mapActions, mapGetters } from 'vuex';
@@ -18,7 +18,8 @@ export default defineComponent({
         isAuthenticated: IS_USER_AUTHENTICATE_GETTER,
     }),
     activeItem() {
-      return this.$route.path; // Use the full path of the current route
+      const trimmedPath = this.$route.path.replace(/\/$/, ''); // Trim the route path to remove any trailing slashes
+      return trimmedPath; // Use the trimmed path of the current route
     }
   },
   methods: {
@@ -29,19 +30,14 @@ export default defineComponent({
       this.logout();
       this.$router.push('/login');
     },
-  },
-  setup() {
-    const router = useRouter();
-
-    const reloadPage = (path) => {
-      router.push(path).then(() => {
+    reloadPage(path) {
+      this.$router.push(path).then(() => {
         window.location.reload();
       });
-    };
-
-    return {
-      reloadPage
-    };
+    },
+    toggleUserFormsDropdown() {
+      this.showUserForms = !this.showUserForms; // Toggle the visibility of the user forms dropdown
+    }
   },
   components: {
     IonMenu,
@@ -55,12 +51,14 @@ export default defineComponent({
     IonPage,
     IonButtons,
     IonMenuButton,
-    IonIcon
+    IonIcon,
+    IonSearchbar
   },
   data() {
     return {
       chevronDown,
-      chevronUp
+      chevronUp,
+      showUserForms: false // Initially hide the user forms dropdown
     };
   }
 });
@@ -89,8 +87,8 @@ export default defineComponent({
       <template v-if="$route.path.startsWith('/user/')">
         <ion-item @click="reloadPage('/user/dashboard')" class="menu-item" :class="{ 'active-item': activeItem === '/user/dashboard' }"> Dashboard </ion-item>
         <ion-item @click="reloadPage('/user/policy')" class="menu-item" :class="{ 'active-item': activeItem === '/user/policy' }"> Policy Documents </ion-item>
-        <ion-item @click="toggleUserFormsDropdown"  class="menu-item" :class="{ 'active-item': activeItem === '/user/forms' }" >
-           Forms 
+        <ion-item @click="toggleUserFormsDropdown" class="menu-item" :class="{ 'active-item': activeItem === '/user/forms' }">
+          Forms
           <ion-icon slot="end" :icon="showUserForms ? chevronUp : chevronDown"></ion-icon>
         </ion-item>
         <ion-list v-show="showUserForms" class="subList">
