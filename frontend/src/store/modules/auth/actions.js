@@ -66,7 +66,6 @@ export default {
                 email: response.data.user.email, // Kindly Replace the Student Model
                 token: response.data.token,
                 userId: response.data.user.id,
-                userName: response.data.name
             };
             console.log(tokenData)
             localStorage.setItem('userData', JSON.stringify(tokenData));

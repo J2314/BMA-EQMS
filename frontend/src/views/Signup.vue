@@ -15,7 +15,7 @@
           <div class="alert alert-danger" v-if="error" style="font-family: 'Arial', sans-serif; font-size: 14px;">
             {{ error }}
           </div>
-          <form @submit.prevent="onSignup()" class="mt-4">
+          <form @submit.prevent="onSignup" class="mt-4">
             <div class="form-group">
               <label for="name" style="font-family: 'Arial', sans-serif;">Name</label>
               <input
@@ -67,7 +67,7 @@
             </div>
 
             <div class="text-center">
-              <p style="font-family: 'Arial', sans-serif;">Already have an account? <router-link to="/login" class="login-link" style="font-family: 'Arial', sans-serif;" @click="reloadPage">Login</router-link></p>
+              <p style="font-family: 'Arial', sans-serif;">Already have an account? <router-link to="/login" class="login-link" style="font-family: 'Arial', sans-serif;" @click="reloadPage('/login')">Login</router-link></p>
             </div>
           </form>
         </div>
@@ -115,10 +115,10 @@ export default {
       }
       this.error = '';
 
-      this.loading = true;
+      this.showLoading = true;
 
       try {
-        let response = await axios.post('http://192.168.100.8:7070/api/register', {
+        let response = await axios.post('register', {
           name: this.name,
           email: this.email,
           password: this.password,
@@ -128,13 +128,15 @@ export default {
       } catch (error) {
         this.error = error.message || 'An error occurred while signing up';
       } finally {
-        this.loading = false;
+        this.showLoading = false;
       }
     },
-    reloadPage() {
-      window.location.reload(); // Reload the page after clicking the login link
-    }
-  },
+    reloadPage(path) {
+      this.$router.push(path).then(() => {
+        window.location.reload();
+      });
+    },
+  }
 };
 </script>
 

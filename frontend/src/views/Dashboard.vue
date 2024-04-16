@@ -1,10 +1,10 @@
 <template>
   <ion-content>
     <div class="additional-buttons">
-      <ion-button router-link="/dashboard"><strong>Statistics</strong></ion-button>
-      <ion-button router-link="/dashboard"><strong>Announcements</strong></ion-button>
-      <ion-button router-link="/dashboard"><strong>Monitoring</strong></ion-button>
-      <ion-button router-link="/dashboard"><strong>Calendar</strong></ion-button>
+      <ion-button router-link="/admin/statistics"><strong>Statistics</strong></ion-button>
+      <ion-button router-link="/admin/announcements"><strong>Announcements</strong></ion-button>
+      <ion-button router-link="/admin/monitoring"><strong>Monitoring</strong></ion-button>
+      <ion-button router-link="/admin/calendar"><strong>Calendar</strong></ion-button>
     </div>
     <TheStats />
   </ion-content>
