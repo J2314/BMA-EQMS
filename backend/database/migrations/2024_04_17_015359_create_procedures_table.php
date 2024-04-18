@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->text('document_type');
             $table->string('document_name');
-            $table->string('department');
+            $table->unsignedBigInteger('department_id');
             $table->string('file_path')->nullable();
             $table->boolean('is_active');
             $table->timestamps();
+
+            $table->foreign('department_id')->references('id')->on('departments');
         });
     }
 

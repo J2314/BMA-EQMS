@@ -11,9 +11,14 @@ class Procedures extends Model
 
     protected $fillable = [
         'document_type',
-        'department',
+        'department_id',
         'document_name',
         'file_path',
         'is_active',
     ];
+
+    function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id');
+    }
 }

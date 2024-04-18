@@ -40,7 +40,7 @@ Route::middleware('auth.sanctum')->group(function () {
     Route::get('/retrieve-policies', [PolicyController::class, 'getPolicies']);
 
     // Procedures
-    Route::post('/upload-procedure', [ProcedureController::class, 'upload']);
+    Route::post('/upload-procedure', [ProcedureController::class, 'uploadProcedure']);
     Route::get('/retrieve-procedures', [ProcedureController::class, 'getProcedure']);
 
     // Retrieve department
