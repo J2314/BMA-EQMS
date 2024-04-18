@@ -1,66 +1,70 @@
 <template>
   <ion-content>
-  <div class="content-wrapper">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="add-form">
-          <form @submit.prevent="submitForm">
-            <h1 class="form-title">Add Work Instruction</h1>
-            <div class="form-group">
-              <label for="documentType" class="form-label">Document Type:</label>
-              <select id="documentType" class="form-control" v-model="document_type">
-                <option value="" disabled selected>Select Document Type</option>
-                <option value="Quality Policy">Quality Policy</option>
-                <option value="Environmental Policy">Environmental Policy</option>
-                <option value="Health and Safety Policy">Health and Safety Policy</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="documentName" class="form-label">Document Name:</label>
-              <input type="text" id="documentName" class="form-control" v-model="document_name"
-                placeholder="Enter document name">
-            </div>
-            <div class="form-group">
-              <label for="file" class="form-label">Choose File:</label>
-              <input class="form-control form-control-lg me-3" id="formFileLg" type="file" @change="fileSelected"
-                ref="file">
-            </div>
-            <div class="d-flex">
-              <button type="submit" class="btn btn-primary btn-lg">Upload</button>
-            </div>
-          </form>
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="add-form">
+            <form @submit.prevent="submitForm">
+              <h1 class="form-title">Add Work Instruction</h1>
+              <div class="form-group">
+                <label for="documentType" class="form-label">Document Type:</label>
+                <select id="documentType" class="form-control" v-model="document_type">
+                  <option value="" disabled selected>Select Document Type</option>
+                  <option value="Quality Policy">Quality Policy</option>
+                  <option value="Environmental Policy">Environmental Policy</option>
+                  <option value="Health and Safety Policy">Health and Safety Policy</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="documentName" class="form-label">Document Name:</label>
+                <input type="text" id="documentName" class="form-control" v-model="document_name" placeholder="Enter document name">
+              </div>
+              <div class="form-group">
+                <label for="employee" class="form-label">Employee:</label>
+                <input type="text" id="employee" class="form-control" v-model="employee" placeholder="Enter employee name">
+              </div>
+              <div class="form-group">
+                <label for="file" class="form-label">Choose File:</label>
+                <input class="form-control form-control-lg me-3" id="formFileLg" type="file" @change="fileSelected" ref="file">
+              </div>
+              <div class="d-flex">
+                <button type="submit" class="btn btn-primary btn-lg">Upload</button>
+              </div>
+            </form>
+          </div>
+          <div id="cusTable" class="table-wrapper mt-3">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th id="documentType" scope="col">Document Type</th>
+                  <th id="documentName" scope="col">Document Name</th>
+                  <th id="employee" scope="col">Employee</th>
+                  <th id="filePath" scope="col">File Path</th>
+                  <th id="actions" scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(policy, index) in policies" :key="index">
+                  <td>{{ index + 1 }}</td>
+                  <td>{{ policy.document_type }}</td>
+                  <td>{{ policy.document_name }}</td>
+                  <td>{{ policy.employee }}</td>
+                  <td>{{ policy.file_path }}</td>
+                  <td><button id="btnView" type="button" class="btn btn-secondary" @click="openPdf(policy.id)">View</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div id="cusTable" class="table-wrapper mt-3">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th id="documentType" scope="col">Document Type</th>
-                <th id="documentName" scope="col">Document Name</th>
-                <th id="filePath" scope="col">File Path</th>
-                <th id="actions" scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(policy, index) in policies" :key="index">
-                <td>{{ index + 1 }}</td>
-                <td>{{ policy.document_type }}</td>
-                <td>{{ policy.document_name }}</td>
-                <td>{{ policy.file_path }}</td>
-                <td><button id="btnView" type="button" class="btn btn-secondary" @click="openPdf(policy.id)">View</button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="pdf-viewer-container">
-          <iframe id="pdfViewer" class="pdf-viewer" ref="pdfViewer" height="100%"></iframe>
+        <div class="col-md-6">
+          <div class="pdf-viewer-container">
+            <iframe id="pdfViewer" class="pdf-viewer" ref="pdfViewer" height="100%"></iframe>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</ion-content>
+  </ion-content>
 </template>
 
 <script>
@@ -72,6 +76,7 @@ export default {
     return {
       document_type: '',
       document_name: '',
+      employee: '',
       policies: [],
     };
   },
@@ -89,7 +94,7 @@ export default {
         });
     },
     submitForm() {
-      if (!this.document_type || !this.document_name || !this.$refs.file.files[0]) {
+      if (!this.document_type || !this.document_name || !this.employee || !this.$refs.file.files[0]) {
         alert('Please fill out all fields and select a file.');
         return;
       }
@@ -98,6 +103,7 @@ export default {
       formData.append('file', this.$refs.file.files[0]);
       formData.append('document_type', this.document_type);
       formData.append('document_name', this.document_name);
+      formData.append('employee', this.employee);
 
       axios.post('http://127.0.0.1:8000/api/upload-policy', formData, {
         headers: {
@@ -109,6 +115,7 @@ export default {
             alert('File uploaded successfully.');
             this.document_type = '';
             this.document_name = '';
+            this.employee = '';
             this.$refs.file.value = null;
             this.fetchPolicies();
           } else {
@@ -152,6 +159,7 @@ export default {
 .add-form {
   max-width: 700px;
   margin-left: 15%; /* Adjusted */
+  margin-right: auto; /* Adjusted */
 }
 
 .form-label {
@@ -189,8 +197,8 @@ export default {
 
 .table-wrapper {
   max-width: 700px;
-  margin-left: 15%; 
-  margin-right: auto;
+  margin-left: 15%; /* Adjusted */
+  margin-right: auto; /* Adjusted */
 }
 
 .table-hover {
@@ -235,3 +243,4 @@ export default {
   height: 100%;
 }
 </style>
+  

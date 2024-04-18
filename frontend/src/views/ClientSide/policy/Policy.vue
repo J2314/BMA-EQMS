@@ -1,55 +1,55 @@
 <template>
-      <ion-content>
-    <div class="pdf">
-      <h2>Policy Document</h2>
-      <div v-if="loading">Loading...</div>
-      <div v-else>
-        <div v-html="policyContent"></div>
-      </div>
+  <ion-content>
+    <div class="pdf-viewer-container">
+      <iframe id="pdfViewer" class="pdf-viewer" ref="pdfViewer"></iframe>
     </div>
-    <<router-view></router-view>>
-    <ion-router-outlet id="policy"></ion-router-outlet>
-</ion-content>
-  </template>
-  
-  <script>
-  import {IonRouterOutlet} from '@ionic/vue';
-  export default {
-    data() {
-      return {
-        loading: true,
-        policyContent: `
-          <h3>Privacy Policy</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus euismod augue sit amet 
-            tortor placerat tempus. Sed vehicula velit ac diam euismod, et lobortis mauris faucibus. 
-            Nulla facilisi. Sed in dui mi. Integer ut lacus ac est imperdiet ultrices. Donec in libero 
-            libero. Fusce fermentum ac urna a eleifend. Nulla ut nulla vitae purus efficitur convallis. 
-            Aenean nec pharetra odio, a viverra quam.
-          </p>
-          <h3>Terms of Service</h3>
-          <p>
-            Duis ac felis fermentum, sagittis diam at, feugiat nisi. Phasellus consectetur purus non 
-            consectetur cursus. Donec vel augue a sapien ullamcorper convallis vel id nunc. Integer 
-            sodales erat et nisl varius, sed commodo ex laoreet. Integer fringilla dui nec mauris 
-            pellentesque, at laoreet est rhoncus. Morbi consectetur lectus non lacinia tincidunt. 
-            Curabitur scelerisque odio sit amet magna dapibus, et tincidunt felis luctus.
-          </p>
-        `
-      };
+  </ion-content>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  name: 'PdfViewerPage',
+  data() {
+    return {
+      policies: [],
+    };
+  },
+  methods: {
+    openPdf(polId) {
+      axios.get(`http://127.0.0.1:8000/api/retrieve-policies/${polId}`)
+        .then(response => {
+          const fileContent = response.data.policy.file_path;
+          const pdfViewer = this.$refs.pdfViewer;
+
+          pdfViewer.src = fileContent;
+        })
+        .catch(error => {
+          console.error('Error fetching file content:', error);
+        });
     },
-    mounted() {
-      // Simulate loading delay
-      setTimeout(() => {
-        this.loading = false;
-      }, 1000);
-    }
-  };
-  </script>
-  
-  <style scoped>
-  .pdf {
-    margin: 5%;
+  },
+  mounted() {
+    // Call openPdf method with a sample polId to load an initial PDF, or load the PDF as per your requirement
+    // Example: this.openPdf(1);
   }
-  </style>
-  
+}
+</script>
+
+<style scoped>
+.pdf-viewer-container {
+  margin-top: 6%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+  height: 700px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.pdf-viewer {
+  width: 100%;
+  height: 100%;
+}
+</style>

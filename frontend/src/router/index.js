@@ -23,7 +23,7 @@ const userSide = (props) => [
         path: '',
         name: props + '.dashboard',
         meta: {
-            auth: true,
+            auth: false,
             user: 'user',
             userType: 'user'
         },
@@ -33,7 +33,7 @@ const userSide = (props) => [
         path: 'dashboard',
         name: props + '.dashboard',
         meta: {
-            auth: true,
+            auth: false,
             user: 'user',
             userType: 'user'
         },
@@ -44,7 +44,7 @@ const userSide = (props) => [
         name: 'User Policy',
         component: UserPolicy,
         meta: {
-            auth: true,
+            auth: false,
             userType: 'user'
         },
     },
@@ -53,7 +53,7 @@ const userSide = (props) => [
         name: 'User General Form',
         component: UserGenForm,
         meta: {
-            auth: true,
+            auth: false,
             userType: 'user'
         },
     },
@@ -62,7 +62,7 @@ const userSide = (props) => [
         name: 'User Department Form',
         component: UserDeptForm,
         meta: {
-            auth: true,
+            auth: false,
             userType: 'user'
         },
     },
@@ -73,7 +73,7 @@ const adminSide = (props) => [
         path: '',
         name: props + '.dashboard',
         meta: {
-            auth: true,
+            auth: false,
             user: 'admin',
             userType: 'admin'
         },
@@ -83,7 +83,7 @@ const adminSide = (props) => [
         path: 'dashboard',
         name: props + '.dashboard',
         meta: {
-            auth: true,
+            auth: false,
             user: 'admin',
             userType: 'admin'
         },
@@ -93,7 +93,7 @@ const adminSide = (props) => [
         path: 'addForm',
         name: 'Add Form',
         meta: {
-            auth: true,
+            auth: false,
             user: 'admin',
             userType: 'admin'
         },
@@ -103,7 +103,7 @@ const adminSide = (props) => [
         path: 'addPolicy',
         name: 'Add Policy',
         meta: {
-            auth: true,
+            auth: false,
             user: 'admin',
             userType: 'admin'
         },
@@ -113,7 +113,7 @@ const adminSide = (props) => [
         path: 'addProcedures',
         name: 'Add Procedures',
         meta: {
-            auth: true,
+            auth: false,
             user: 'admin',
             userType: 'admin'
         },
@@ -123,7 +123,7 @@ const adminSide = (props) => [
         path: 'addWorkInstructions',
         name: 'Add Work Instructions',
         meta: {
-            auth: true,
+            auth: false,
             user: 'admin',
             userType: 'admin'
         },
@@ -133,7 +133,7 @@ const adminSide = (props) => [
         path: 'addRecords',
         name: 'Add Records',
         meta: {
-            auth: true,
+            auth: false,
             user: 'admin',
             userType: 'admin'
         },
@@ -143,7 +143,7 @@ const adminSide = (props) => [
         path: 'addDepartments',
         name: 'Add Departments',
         meta: {
-            auth: true,
+            auth: false,
             user: 'admin',
             userType: 'admin'
         },
@@ -153,7 +153,7 @@ const adminSide = (props) => [
         path: 'uploadForm',
         name: 'uploadForm',
         meta: {
-            auth: true,
+            auth: false,
             user: 'admin',
             userType: 'admin'
         },

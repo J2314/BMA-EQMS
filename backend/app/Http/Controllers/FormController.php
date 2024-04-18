@@ -93,41 +93,41 @@ class FormController extends Controller
     }
 
     public function incrementDownloadCount(Request $request)
-{
-    try {
-        if (Auth::guard('sanctum')->check()) {
-            $user = Auth::guard('sanctum')->user();
-            $userId = $user->id;
-            $formId = $request->input('form_id');
+    {
+        try {
+            if (Auth::guard('sanctum')->check()) {
+                $user = Auth::guard('sanctum')->user();
+                $userId = $user->id;
+                $formId = $request->input('form_id');
 
-            if (!$formId) {
-                return response()->json(['error' => 'Form ID is required'], 400);
+                if (!$formId) {
+                    return response()->json(['error' => 'Form ID is required'], 400);
+                }
+
+                $formFiles = FormFiles::where('form_id', $formId)->first();
+
+                if (!$formFiles) {
+                    return response()->json(['error' => 'Form Files not found'], 404);
+                }
+
+                $formViewing = new FormDownloading();
+                $formViewing->user_id = $userId;
+                $formViewing->form_id = $formId;
+                $formViewing->form_files_id = $formFiles->id;
+                $formViewing->save();
+
+                $formViewing->load('form');
+
+                return response()->json([
+                    'message' => 'Form download recorded successfully',
+                    'form_viewing' => $formViewing,
+                ], 200);
+            } else {
+                return response()->json(['error' => 'User not authenticated'], 401);
             }
-
-            $formFiles = FormFiles::where('form_id', $formId)->first();
-
-            if (!$formFiles) {
-                return response()->json(['error' => 'Form Files not found'], 404);
-            }
-
-            $formViewing = new FormDownloading();
-            $formViewing->user_id = $userId;
-            $formViewing->form_id = $formId;
-            $formViewing->form_files_id = $formFiles->id; 
-            $formViewing->save();
-
-            $formViewing->load('form');
-
-            return response()->json([
-                'message' => 'Form download recorded successfully',
-                'form_viewing' => $formViewing,
-            ], 200);
-        } else {
-            return response()->json(['error' => 'User not authenticated'], 401);
+        } catch (\Exception $e) {
+            Log::error('Failed to record form download', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'An error occurred. Please try again later.'], 500);
         }
-    } catch (\Exception $e) {
-        Log::error('Failed to record form download', ['error' => $e->getMessage()]);
-        return response()->json(['error' => 'An error occurred. Please try again later.'], 500);
     }
-}
 }

@@ -8,7 +8,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\Archive;
 use App\Http\Controllers\PolicyController;
-
+use App\Http\Controllers\ProcedureController;
 use App\Http\Controllers\ViewPDF;
 
 /*
@@ -35,34 +35,38 @@ Route::middleware('auth.sanctum')->group(function () {
     // Add department
     Route::post('/department', [DepartmentController::class, 'addDepartment']);
 
+    // Policies
+    Route::post('/upload-policy', [PolicyController::class, 'uploadPolicy']);
+    Route::get('/retrieve-policies', [PolicyController::class, 'getPolicies']);
+
+    // Procedures
+    Route::post('/upload-procedure', [ProcedureController::class, 'upload']);
+    Route::get('/retrieve-procedures', [ProcedureController::class, 'getProcedure']);
+
     // Retrieve department
     Route::get('/retrieve', [DepartmentController::class, 'getDepartments']);
-  
+
     // Add forms
     Route::post('/form', [FormController::class, 'submitForm']);
-  
+
     // Retrieve Forms per ID
     Route::get('/retrieve-forms/{data}', [FormController::class, 'retrieve_forms']);
-  
+
     // Retrieve forms
     Route::get('/retrieve-forms', [FormController::class, 'getForms']);
-  
+
     // Archive
     Route::put('/archive/{id}', [Archive::class, 'archiveDepartment']);
     Route::put('/archive-forms/{id}', [Archive::class, 'archiveForms']);
-  
+
     // Upload Files
     Route::post('/upload', [FileController::class, 'upload']);
     Route::get('/retrieve-upload/{formId}', [FileController::class, 'retrieveUploads']);
-  
+
     // View PDF
     Route::get('/get-file-content/{fileId}', [ViewPDF::class, 'getFileContent']);
     Route::get('/retrieve-policies/{polId}', [ViewPDF::class, 'getContentPolicies']);
-  
-    // Policies
-    Route::post('/upload-policy', [PolicyController::class, 'upload']);
-    Route::get('/retrieve-policies', [PolicyController::class, 'getPolicies']);
-  
+
     // Form Viewing  
     Route::post('increment-views', [FormController::class, 'incrementViewCount']);
 
@@ -70,4 +74,3 @@ Route::middleware('auth.sanctum')->group(function () {
     Route::post('increment-views-dowload', [FormController::class, 'incrementDownloadCount']);
     
 });
-

@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('policies', function (Blueprint $table) {
+        Schema::create('procedures', function (Blueprint $table) {
             $table->id();
             $table->text('document_type');
-            $table->unsignedBigInteger('department_id');
             $table->string('document_name');
+            $table->string('department');
             $table->string('file_path')->nullable();
             $table->boolean('is_active');
             $table->timestamps();
-
-            $table->foreign('department_id')->references('id')->on('departments');
         });
     }
 
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('policies');
+        Schema::dropIfExists('procedures');
     }
 };

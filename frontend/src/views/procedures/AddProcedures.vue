@@ -1,93 +1,98 @@
 <template>
-    <ion-content>
-  <div class="content-wrapper">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="add-form">
-          <form @submit.prevent="submitForm">
-            <h1 class="form-title">Add Procedures</h1>
-            <div class="form-group">
-              <label for="documentType" class="form-label">Procedure Type:</label>
-              <select id="documentType" class="form-control" v-model="document_type">
-                <option value="" disabled selected>Select Procedure Type</option>
-                <option value="Document Control Procedure">Document Control Procedure</option>
-                <option value="Corrective and Preventive Action (CAPA) Procedure">Corrective and Preventive Action (CAPA) Procedure</option>
-                <option value="Internal Audit Procedure">Internal Audit Procedure</option>
-                <option value="Management Review Procedure">Management Review Procedure</option>
-                <option value="Risk Management Review Procedure">Risk Management Review Procedure</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="departmentalProcedure" class="form-label">Departmental Procedure:</label>
-              <input type="text" id="departmentalProcedure" class="form-control" v-model="departmental_procedure"
-                placeholder="Enter departmental procedure">
-            </div>
-            <div class="form-group">
-              <label for="documentName" class="form-label">Document Name:</label>
-              <input type="text" id="documentName" class="form-control" v-model="document_name"
-                placeholder="Enter document name">
-            </div>
-            <div class="form-group">
-              <label for="file" class="form-label">Choose File:</label>
-              <input class="form-control form-control-lg me-3" id="formFileLg" type="file" @change="fileSelected"
-                ref="file">
-            </div>
-            <div class="d-flex">
-              <button type="submit" class="btn btn-primary btn-lg">Upload</button>
-            </div>
-          </form>
+  <ion-content>
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="add-form">
+            <form @submit.prevent="submitForm">
+              <h1 class="form-title">Add Procedures</h1>
+              <div class="form-group">
+                <label for="documentType" class="form-label">Procedure Type:</label>
+                <select id="documentType" class="form-control" v-model="document_type">
+                  <option value="" disabled selected>Select Procedure Type</option>
+                  <option value="Document Control Procedure">Document Control Procedure</option>
+                  <option value="Corrective and Preventive Action (CAPA) Procedure">Corrective and Preventive Action (CAPA) Procedure</option>
+                  <option value="Internal Audit Procedure">Internal Audit Procedure</option>
+                  <option value="Management Review Procedure">Management Review Procedure</option>
+                  <option value="Risk Management Review Procedure">Risk Management Review Procedure</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="departmentId" class="form-label">Department:</label>
+                <select id="departmentId" class="form-control" v-model="department_id">
+                  <option value="">Select Department</option>
+                  <option v-for="(department, index) in departments" :key="index" :value="department.id">{{ department.name }}</option>
+                </select>
+              </div>
+              <!-- <div class="form-group">
+                <label for="departmentalProcedure" class="form-label">Departmental Procedure:</label>
+                <input type="text" id="departmentalProcedure" class="form-control" v-model="departmental_procedure" placeholder="Enter departmental procedure">
+              </div> -->
+              <div class="form-group">
+                <label for="documentName" class="form-label">Document Name:</label>
+                <input type="text" id="documentName" class="form-control" v-model="document_name" placeholder="Enter document name">
+              </div>
+              <div class="form-group">
+                <label for="file" class="form-label">Choose File:</label>
+                <input class="form-control form-control-lg me-3" id="formFileLg" type="file" @change="fileSelected" ref="file">
+              </div>
+              <div class="d-flex">
+                <button type="submit" class="btn btn-primary btn-lg">Upload</button>
+              </div>
+            </form>
+          </div>
+          <div id="cusTable" class="table-wrapper mt-3">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th id="documentType" scope="col">Procedure Type</th>
+                  <th id="documentName" scope="col">Document Name</th>
+                  <th id="filePath" scope="col">File Path</th>
+                  <th id="actions" scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(procedure, index) in procedures" :key="index">
+                  <td>{{ index + 1 }}</td>
+                  <td>{{ procedure.document_type }}</td>
+                  <td>{{ procedure.document_name }}</td>
+                  <td>{{ procedure.file_path }}</td>
+                  <td><button id="btnView" type="button" class="btn btn-secondary" @click="openPdf(procedure.id)">View</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div id="cusTable" class="table-wrapper mt-3">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th id="documentType" scope="col">Document Type</th>
-                <th id="documentName" scope="col">Document Name</th>
-                <th id="filePath" scope="col">File Path</th>
-                <th id="actions" scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(policy, index) in policies" :key="index">
-                <td>{{ index + 1 }}</td>
-                <td>{{ policy.document_type }}</td>
-                <td>{{ policy.document_name }}</td>
-                <td>{{ policy.file_path }}</td>
-                <td><button id="btnView" type="button" class="btn btn-secondary" @click="openPdf(policy.id)">View</button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="pdf-viewer-container">
-          <iframe id="pdfViewer" class="pdf-viewer" ref="pdfViewer" height="100%"></iframe>
+        <div class="col-md-6">
+          <div class="pdf-viewer-container">
+            <iframe id="pdfViewer" class="pdf-viewer" ref="pdfViewer" height="100%"></iframe>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</ion-content>
+  </ion-content>
 </template>
 
 <script>
 import axios from 'axios';
 
 export default {
-  name: 'AddPolicyPage',
+  name: 'AddProcedurePage',
   data() {
     return {
       document_type: '',
-      departmental_procedure: '',
+      department_id: '',
       document_name: '',
-      policies: [],
+      procedures: [],
+      departments: [] // Assuming you have departments data to populate the select options
     };
   },
   methods: {
-    openPdf(polId) {
-      axios.get(`http://127.0.0.1:8000/api/retrieve-policies/${polId}`)
+    openPdf(procId) {
+      axios.get(`http://127.0.0.1:8000/api/retrieve-procedures/${procId}`)
         .then(response => {
-          const fileContent = response.data.policy.file_path;
+          const fileContent = response.data.procedure.file_path;
           const pdfViewer = this.$refs.pdfViewer;
 
           pdfViewer.src = fileContent;
@@ -97,7 +102,7 @@ export default {
         });
     },
     submitForm() {
-      if (!this.document_type || !this.departmental_procedure || !this.document_name || !this.$refs.file.files[0]) {
+      if (!this.document_type || !this.department_id || !this.document_name || !this.$refs.file.files[0]) {
         alert('Please fill out all fields and select a file.');
         return;
       }
@@ -105,10 +110,11 @@ export default {
       let formData = new FormData();
       formData.append('file', this.$refs.file.files[0]);
       formData.append('document_type', this.document_type);
-      formData.append('departmental_procedure', this.departmental_procedure);
+      formData.append('department_id', this.department_id);
+      //formData.append('departmental_procedure', this.departmental_procedure);
       formData.append('document_name', this.document_name);
 
-      axios.post('http://127.0.0.1:8000/api/upload-policy', formData, {
+      axios.post('http://127.0.0.1:8000/api/upload-procedure', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -117,10 +123,11 @@ export default {
           if (response.status === 200) {
             alert('File uploaded successfully.');
             this.document_type = '';
-            this.departmental_procedure = '';
+            this.department_id = '';
+            //this.departmental_procedure = '';
             this.document_name = '';
             this.$refs.file.value = null;
-            this.fetchPolicies();
+            this.fetchProcedures();
           } else {
             alert('Error uploading file.');
           }
@@ -130,13 +137,13 @@ export default {
           alert('Error uploading file.');
         });
     },
-    fetchPolicies() {
-      axios.get('http://127.0.0.1:8000/api/retrieve-policies')
+    fetchProcedures() {
+      axios.get('http://127.0.0.1:8000/api/retrieve-procedures')
         .then(response => {
-          this.policies = response.data;
+          this.procedures = response.data;
         })
         .catch(error => {
-          console.error('Error fetching policies:', error);
+          console.error('Error fetching procedures:', error);
         });
     },
     fileSelected(event) {
@@ -147,7 +154,7 @@ export default {
     },
   },
   mounted() {
-    this.fetchPolicies();
+    this.fetchProcedures();
   }
 }
 </script>
@@ -220,7 +227,7 @@ export default {
 
 .table-hover th {
   background-color: #f0f0f0;
-}
+} 
 
 .form-control-lg {
   width: 100%;
