@@ -5,8 +5,9 @@ import { IS_USER_AUTHENTICATE_GETTER, GET_USER_TOKEN_GETTER } from '../store/sto
 const Login = () => import( /* webpackChunkName: "Login" */ '../views/Login.vue');
 const Signup = () => import('../views/Signup.vue');
 const MainLayout = () => import('../views/MainLayout.vue');
-const Dashboard = () => import('../views/Dashboard.vue');
 
+//Admin
+import AdminDash from '../views/AdminSide/AdminDashboard.vue'
 import AddForm from '../views/AdminSide/forms/AddForm.vue';
 import uploadForm from '../views/AdminSide/forms/UploadForm.vue'
 import AddPolicy from '../views/AdminSide/policy/AddPolicy.vue';
@@ -14,7 +15,7 @@ import AddProcedures from '../views/AdminSide/procedures/AddProcedures.vue';
 import AddWorkInstruction from '../views/AdminSide/instruction/AddWorkInstruction.vue';
 import AddRecords from '../views/AdminSide/records/AddRecords.vue';
 import AddDepartments from '../views/AdminSide/departments/AddDepartments.vue';
-
+//UserClient
 import UserDash from '../views/ClientSide/UserDashboard.vue'
 import generalPolicy from '../views/ClientSide/policy/GeneralPolicy.vue'
 import departmentPolicy from '../views/ClientSide/policy/DepartmentPolicy.vue'
@@ -90,7 +91,7 @@ const adminSide = (props) => [
             user: 'admin',
             userType: 'admin'
         },
-        component: Dashboard,
+        component: AdminDash,
     },
     {
         path: 'dashboard',
@@ -100,7 +101,7 @@ const adminSide = (props) => [
             user: 'admin',
             userType: 'admin'
         },
-        component: Dashboard
+        component: AdminDash
     },
     {
         path: 'addForm',
