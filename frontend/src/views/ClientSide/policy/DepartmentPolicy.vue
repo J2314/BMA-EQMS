@@ -1,8 +1,11 @@
 <template>
   <ion-content>
+    <div class="pdf-title">Department Policy</div>
     <div class="pdf-viewer-container">
+
       <iframe id="pdfViewer" class="pdf-viewer" ref="pdfViewer"></iframe>
     </div>
+    
   </ion-content>
 </template>
 
@@ -38,8 +41,15 @@ export default {
 </script>
 
 <style scoped>
+.pdf-title {
+  text-align: left;
+  margin-top: 5%;
+  margin-left: 28%;
+  font-size: 24px;
+}
+
 .pdf-viewer-container {
-  margin-top: 6%;
+  margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
   width: 800px;

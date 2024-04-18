@@ -6,17 +6,21 @@ const Login = () => import( /* webpackChunkName: "Login" */ '../views/Login.vue'
 const Signup = () => import('../views/Signup.vue');
 const MainLayout = () => import('../views/MainLayout.vue');
 const Dashboard = () => import('../views/Dashboard.vue');
-const AddForm = () => import('../views/forms/AddForm.vue');
-import AddPolicy from '../views/policy/AddPolicy.vue';
-import AddProcedures from '../views/procedures/AddProcedures.vue';
-import AddWorkInstruction from '../views/instruction/AddWorkInstruction.vue';
-import AddRecords from '../views/records/AddRecords.vue';
-import AddDepartments from '../views/departments/AddDepartments.vue';
+
+import AddForm from '../views/AdminSide/forms/AddForm.vue';
+import uploadForm from '../views/AdminSide/forms/UploadForm.vue'
+import AddPolicy from '../views/AdminSide/policy/AddPolicy.vue';
+import AddProcedures from '../views/AdminSide/procedures/AddProcedures.vue';
+import AddWorkInstruction from '../views/AdminSide/instruction/AddWorkInstruction.vue';
+import AddRecords from '../views/AdminSide/records/AddRecords.vue';
+import AddDepartments from '../views/AdminSide/departments/AddDepartments.vue';
+
 import UserDash from '../views/ClientSide/UserDashboard.vue'
-import UserPolicy from '../views/ClientSide/policy/Policy.vue'
+import generalPolicy from '../views/ClientSide/policy/GeneralPolicy.vue'
+import departmentPolicy from '../views/ClientSide/policy/DepartmentPolicy.vue'
 import UserGenForm from '../views/ClientSide/form/GeneralForms.vue'
 import UserDeptForm from '../views/ClientSide/form/DepartmentForms.vue'
-import uploadForm from '../views/forms/UploadForm.vue'
+
 
 const userSide = (props) => [
     {
@@ -40,9 +44,18 @@ const userSide = (props) => [
         component: UserDash,
     },
     {
-        path: 'policy',
-        name: 'User Policy',
-        component: UserPolicy,
+        path: 'generalPolicy',
+        name: 'General Policy',
+        component: generalPolicy,
+        meta: {
+            auth: false,
+            userType: 'user'
+        },
+    },
+    {
+        path: 'departmentPolicy',
+        name: 'Department Policy',
+        component: departmentPolicy,
         meta: {
             auth: false,
             userType: 'user'

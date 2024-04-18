@@ -37,6 +37,9 @@ export default defineComponent({
     },
     toggleUserFormsDropdown() {
       this.showUserForms = !this.showUserForms; // Toggle the visibility of the user forms dropdown
+    },
+    toggleUserPolicyDropdown() {
+      this.showUserPolicy = !this.showUserPolicy; // Toggle the visibility of the user policy dropdown
     }
   },
   components: {
@@ -58,7 +61,8 @@ export default defineComponent({
     return {
       chevronDown,
       chevronUp,
-      showUserForms: false // Initially hide the user forms dropdown
+      showUserForms: false, // Initially hide the user forms dropdown
+      showUserPolicy: false // Initially hide the user policy dropdown
     };
   }
 });
@@ -73,8 +77,8 @@ export default defineComponent({
       </ion-toolbar>
     </ion-header>
     <ion-list class="SideList">
-      <!-- Show these items for admin role -->
-      <template v-if="$route.path.startsWith('/admin/')">
+         <!-- Show these items for admin role -->
+         <template v-if="$route.path.startsWith('/admin/')">
         <ion-item @click="reloadPage('/admin/dashboard')" class="menu-item" :class="{ 'active-item': activeItem === '/admin/dashboard' }"> Dashboard </ion-item>
         <ion-item @click="reloadPage('/admin/addPolicy')" class="menu-item" :class="{ 'active-item': activeItem === '/admin/addPolicy' }"> Policy Documents</ion-item>
         <ion-item @click="reloadPage('/admin/addProcedures')" class="menu-item" :class="{ 'active-item': activeItem === '/admin/addProcedures' }"> Procedures </ion-item>
@@ -86,7 +90,14 @@ export default defineComponent({
       <!-- Show these items for user role -->
       <template v-if="$route.path.startsWith('/user/')">
         <ion-item @click="reloadPage('/user/dashboard')" class="menu-item" :class="{ 'active-item': activeItem === '/user/dashboard' }"> Dashboard </ion-item>
-        <ion-item @click="reloadPage('/user/policy')" class="menu-item" :class="{ 'active-item': activeItem === '/user/policy' }"> Policy Documents </ion-item>
+        <ion-item @click="toggleUserPolicyDropdown" class="menu-item" :class="{ 'active-item': activeItem === '/user/policy' }">
+          Policy Documents
+          <ion-icon slot="end" :icon="showUserPolicy ? chevronUp : chevronDown"></ion-icon>
+        </ion-item>
+        <ion-list v-show="showUserPolicy" class="subList">
+          <ion-item @click="reloadPage('/user/generalPolicy')" class="menu-item" :class="{ 'active-item': activeItem === '/user/generalPolicy' }">General Policy</ion-item>
+          <ion-item @click="reloadPage('/user/departmentPolicy')" class="menu-item" :class="{ 'active-item': activeItem === '/user/departmentPolicy' }">Department Policy </ion-item>
+        </ion-list>
         <ion-item @click="toggleUserFormsDropdown" class="menu-item" :class="{ 'active-item': activeItem === '/user/forms' }">
           Forms
           <ion-icon slot="end" :icon="showUserForms ? chevronUp : chevronDown"></ion-icon>
