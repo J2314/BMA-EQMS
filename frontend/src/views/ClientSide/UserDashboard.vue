@@ -19,18 +19,14 @@
       </div>
     </div>
 
-    <!-- Placeholder for "Work Procedure" -->
+    <!-- Work Procedures -->
     <div class="work-procedure-placeholder">
       <h2 class="placeholder-title">Work Procedure</h2>
-      <div class="document-placeholder">
-        <h3 class="document-title">Document Title 1</h3>
-        <p class="document-department">Department: IT Department</p>
+      <div v-for="(procedure, index) in workProcedures" :key="index" class="document-placeholder">
+        <h3 class="document-title">{{ procedure.title }}</h3>
+        <p class="document-department">Department: {{ procedure.department }}</p>
+        <button @click="viewProcedure(procedure)" class="view-button">View</button>
       </div>
-      <div class="document-placeholder">
-        <h3 class="document-title">Document Title 2</h3>
-        <p class="document-department">Department: Human Resources</p>
-      </div>
-      <!-- Add more document placeholders as needed -->
     </div>
   </ion-content>
 </template>
@@ -39,7 +35,7 @@
 export default {
   data() {
     return {
-      maxContentLength: 200, 
+      maxContentLength: 200,
       announcements: [
         {
           sender: "Admin",
@@ -55,6 +51,19 @@ export default {
           content: "Short content Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           showFullContent: false
         },
+      ],
+      workProcedures: [
+        {
+          title: "Document Title 1",
+          department: "IT Department",
+          content: "Procedure content for Document 1."
+        },
+        {
+          title: "Document Title 2",
+          department: "Human Resources",
+          content: "Procedure content for Document 2."
+        }
+        // Add more work procedures as needed
       ]
     };
   },
@@ -65,6 +74,10 @@ export default {
     formatDate(dateString) {
       const options = { year: 'numeric', month: 'long', day: 'numeric' };
       return new Date(dateString).toLocaleDateString(undefined, options);
+    },
+    viewProcedure(procedure) {
+      // Show the full content of the selected work procedure
+      alert(procedure.content);
     }
   }
 };
@@ -135,7 +148,7 @@ export default {
 }
 
 .work-procedure-placeholder {
-  margin-top: 50px; /* Adjust as needed */
+  margin-top: 50px; 
   text-align: left;
   margin-left: 5%;
   margin-right: 5%;
@@ -151,7 +164,7 @@ export default {
 }
 
 .document-placeholder {
-  margin-top: 20px; /* Adjust as needed */
+  margin-top: 20px; 
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
@@ -165,5 +178,23 @@ export default {
 .document-department {
   font-size: 1em;
   color: #666;
+}
+
+.view-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.view-button:hover {
+  background-color: #0056b3;
 }
 </style>

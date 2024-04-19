@@ -37,10 +37,6 @@
               </button>
             </div>
           </form>
-
-          <div class="text-center">
-            <p style="font-family: 'Arial', sans-serif;">Don't have an account? <router-link :to="{ name: 'Sign Up' }" class="signup-link" style="font-family: 'Arial', sans-serif;" @click="reloadPage('/signup')">Signup</router-link></p>
-          </div>
         </div>
       </div>
     </div>

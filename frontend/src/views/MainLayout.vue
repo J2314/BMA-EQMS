@@ -40,6 +40,9 @@ export default defineComponent({
     },
     toggleUserPolicyDropdown() {
       this.showUserPolicy = !this.showUserPolicy; // Toggle the visibility of the user policy dropdown
+    },
+    toggleAdminSettingsDropdown() {
+      this.showAdminSettings = !this.showAdminSettings; // Toggle the visibility of the admin settings dropdown
     }
   },
   components: {
@@ -62,7 +65,8 @@ export default defineComponent({
       chevronDown,
       chevronUp,
       showUserForms: false, // Initially hide the user forms dropdown
-      showUserPolicy: false // Initially hide the user policy dropdown
+      showUserPolicy: false, // Initially hide the user policy dropdown
+      showAdminSettings: false // Initially hide the admin settings dropdown
     };
   }
 });
@@ -86,6 +90,14 @@ export default defineComponent({
         <ion-item @click="reloadPage('/admin/addDepartments')" class="menu-item" :class="{ 'active-item': activeItem === '/admin/addDepartments' }"> Departments </ion-item>
         <ion-item @click="reloadPage('/admin/addForm')" class="menu-item" :class="{ 'active-item': activeItem === '/admin/addForm' }"> Forms </ion-item>
         <ion-item @click="reloadPage('/admin/addRecords')" class="menu-item" :class="{ 'active-item': activeItem === '/admin/addRecords' }"> Records </ion-item>
+        <ion-item @click="toggleAdminSettingsDropdown" class="menu-item" :class="{ 'active-item': activeItem === '/admin/settings' }">
+          Settings
+          <ion-icon slot="end" :icon="showAdminSettings ? chevronUp : chevronDown"></ion-icon>
+        </ion-item>
+        <ion-list v-show="showAdminSettings" class="subList">
+          <ion-item @click="reloadPage('/admin/accountManagement')" class="menu-item" :class="{ 'active-item': activeItem === '/admin/accountManagement' }">Account Management</ion-item>
+          <!-- Add other settings items here -->
+        </ion-list>
       </template>
       <!-- Show these items for user role -->
       <template v-if="$route.path.startsWith('/user/')">
@@ -109,7 +121,8 @@ export default defineComponent({
         <!-- Add other user items similarly -->
       </template>
     </ion-list>
-    <ion-button @click="onLogout()" shape="round" class="btn logout" color="success" v-if="isAuthenticated"><strong>Logout</strong></ion-button>
+    <ion-button @click="onLogout()" shape="round" class="btn logout" color="success" ><strong>Logout</strong></ion-button> 
+    <!-- v-if="isAuthenticated for logout -->
   </ion-menu>
   <ion-page>
     <ion-header v-if="showNavigation">

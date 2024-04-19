@@ -3,7 +3,7 @@ import store from '../store/store';
 import { IS_USER_AUTHENTICATE_GETTER, GET_USER_TOKEN_GETTER } from '../store/storeconstants';
 
 const Login = () => import( /* webpackChunkName: "Login" */ '../views/Login.vue');
-const Signup = () => import('../views/Signup.vue');
+// const Signup = () => import('../views/Signup.vue');
 const MainLayout = () => import('../views/MainLayout.vue');
 
 //Admin
@@ -15,6 +15,7 @@ import AddProcedures from '../views/AdminSide/procedures/AddProcedures.vue';
 import AddWorkInstruction from '../views/AdminSide/instruction/AddWorkInstruction.vue';
 import AddRecords from '../views/AdminSide/records/AddRecords.vue';
 import AddDepartments from '../views/AdminSide/departments/AddDepartments.vue';
+import Account from '../views/AdminSide/settin/AccountManagement.vue'
 //UserClient
 import UserDash from '../views/ClientSide/UserDashboard.vue'
 import generalPolicy from '../views/ClientSide/policy/GeneralPolicy.vue'
@@ -172,6 +173,16 @@ const adminSide = (props) => [
             userType: 'admin'
         },
         component: uploadForm
+    },
+    {
+        path: 'accountManagement',
+        name: 'accountManagement',
+        meta: {
+            auth: false,
+            user: 'admin',
+            userType: 'admin'
+        },
+        component: Account
     }
 ]
 
@@ -188,15 +199,15 @@ const routes = [{
         user: 'guest'
     }
 },
-{
-    path: '/signup',
-    name: 'Sign Up',
-    component: Signup,
-    meta: {
-        auth: false,
-        user: 'guest'
-    }
-},
+// {
+//     path: '/signup',
+//     name: 'Sign Up',
+//     component: Signup,
+//     meta: {
+//         auth: false,
+//         user: 'guest'
+//     }
+// },
 {
     path: '/user',
     component: MainLayout,
