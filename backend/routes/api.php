@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\WorkInstructionsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -43,6 +44,10 @@ Route::middleware('auth.sanctum')->group(function () {
     Route::post('/upload-procedure', [ProcedureController::class, 'uploadProcedure']);
     Route::get('/retrieve-procedures', [ProcedureController::class, 'getProcedure']);
 
+    //Work Instructions
+    Route::post('/upload-work', [WorkInstructionsController::class, 'uploadWorkInstructions']);
+    Route::get('/retrieve-instructions', [WorkInstructionsController::class, 'getWork']);
+
     // Retrieve department
     Route::get('/retrieve', [DepartmentController::class, 'getDepartments']);
 
@@ -67,11 +72,12 @@ Route::middleware('auth.sanctum')->group(function () {
     Route::get('/get-file-content/{fileId}', [ViewPDF::class, 'getFileContent']);
     Route::get('/retrieve-policies/{polId}', [ViewPDF::class, 'getContentPolicies']);
     Route::get('/retrieve-procedures/{procId}', [ViewPDF::class, 'getContentProcedures']);
+    Route::get('/retrieve-workins/{workId}', [ViewPDF::class, 'getWorkInstructions']);
 
     // Form Viewing  
     Route::post('increment-views', [FormController::class, 'incrementViewCount']);
 
     // Form Download
     Route::post('increment-views-dowload', [FormController::class, 'incrementDownloadCount']);
-    
+
 });
