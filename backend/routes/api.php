@@ -66,6 +66,7 @@ Route::middleware('auth.sanctum')->group(function () {
     // View PDF
     Route::get('/get-file-content/{fileId}', [ViewPDF::class, 'getFileContent']);
     Route::get('/retrieve-policies/{polId}', [ViewPDF::class, 'getContentPolicies']);
+    Route::get('/retrieve-procedures/{procId}', [ViewPDF::class, 'getContentProcedures']);
 
     // Form Viewing  
     Route::post('increment-views', [FormController::class, 'incrementViewCount']);

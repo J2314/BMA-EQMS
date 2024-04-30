@@ -53,9 +53,9 @@ class PolicyController extends Controller
                 }
 
                 if ($isConverted) {
-                    $path = 'uploads/document_type/' . $request->input('document_type') . '/' . $filename . '.pdf';
+                    $path = 'uploads/policies/document_type/' . $request->input('document_type') . '/' . $filename . '.pdf';
                 } else {
-                    $path = 'uploads/document_type/' . $request->input('document_type') . '/' . $originalFileName;
+                    $path = 'uploads/policies/document_type/' . $request->input('document_type') . '/' . $originalFileName;
                 }
 
                 Storage::disk('public')->put($path, fopen($file, 'r+'));

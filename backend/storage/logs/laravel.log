@@ -44,3 +44,5 @@
 #39 C:\\Users\\lukev\\OneDrive\\Desktop\\BMA-eQMS\\backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\Users\\\\lukev\\\\...')
 #40 {main}
 "} 
+[2024-04-30 08:14:47] local.INFO: Login attempt with credentials: {"email":"pana@gmail.com","password":"123456"}  
+[2024-04-30 08:14:48] local.INFO: Login successful for user: pana@gmail.com  

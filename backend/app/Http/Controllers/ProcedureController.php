@@ -11,8 +11,11 @@ class ProcedureController extends Controller
 {
     public function getProcedure()
     {
-        $procedures = Procedures::where('is_active', true)->select('id', 'document_type', 'department_id', 'document_name', 'file_path')->get();
-
+        $procedures = Procedures::where('is_active', true)
+            ->where('file_path', 'LIKE', '%.pdf') 
+            ->select('id', 'document_type', 'department_id', 'document_name', 'file_path', 'created_at')
+            ->get();
+    
         return response()->json($procedures);
     }
 
@@ -21,39 +24,53 @@ class ProcedureController extends Controller
         try {
             $validatedData = $request->validate([
                 'file' => 'nullable|file|mimes:txt,doc,docx,pdf|max:10240',
-                'file_path' => 'nullable|string',
                 'document_name' => 'required|string',
+                'document_type' => 'required|string',
                 'department_id' => 'required|numeric|exists:departments,id',
             ]);
-    
+
             $url = null;
-    
+            $isConverted = false;
+
             if ($request->hasFile('file')) {
                 $file = $request->file('file');
-    
+
                 if (!$file->isValid()) {
                     return response()->json(['error' => 'The uploaded file is invalid.'], 422);
                 }
-    
-                $filename = uniqid() . '_' . $file->getClientOriginalName();
-    
-                $path = $file->storeAs('uploads', $filename, 'public');
-    
+
+                $originalFileName = $file->getClientOriginalName();
+                $filename = $originalFileName;
+
+                if (
+                    $file->getClientOriginalExtension() === 'doc' ||
+                    $file->getClientOriginalExtension() === 'docx'
+                ) {
+                    $convertedPath = $this->convertToPdf($file, $request->input('document_type'));
+                    $file = $convertedPath;
+
+                    $filename = pathinfo($convertedPath, PATHINFO_FILENAME);
+                    $isConverted = true;
+                }
+
+                if ($isConverted) {
+                    $path = 'uploads/procedure/document_type/' . $request->input('document_type') . '/' . $filename . '.pdf';
+                } else {
+                    $path = 'uploads/procedure/document_type/' . $request->input('document_type') . '/' . $originalFileName;
+                }
+
+                $path = $file->storeAs($path, $filename, 'public');
                 $url = URL::to('/') . '/storage/' . $path;
-            } elseif ($request->filled('file_path')) {
-                $url = $request->input('file_path');
-            } else {
-                return response()->json(['error' => 'Either a file or file path is required.'], 422);
             }
-    
+
             $procedure = new Procedures();
+            $procedure->document_name = $request->input('document_name');
             $procedure->file_path = $url;
             $procedure->document_type = $request->input('document_type');
             $procedure->department_id = $request->input('department_id');
-            $procedure->document_name = $request->input('document_name');
             $procedure->is_active = true;
             $procedure->save();
-    
+
             return response()->json(['message' => 'Procedure uploaded successfully'], 200);
         } catch (QueryException $e) {
             return response()->json(['error' => 'Database error: ' . $e->getMessage()], 500);
