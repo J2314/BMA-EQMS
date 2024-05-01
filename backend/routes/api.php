@@ -10,6 +10,7 @@ use App\Http\Controllers\FormController;
 use App\Http\Controllers\Archive;
 use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\ProcedureController;
+use App\Http\Controllers\RecordController;
 use App\Http\Controllers\ViewPDF;
 
 /*
@@ -48,6 +49,10 @@ Route::middleware('auth.sanctum')->group(function () {
     Route::post('/upload-work', [WorkInstructionsController::class, 'uploadWorkInstructions']);
     Route::get('/retrieve-instructions', [WorkInstructionsController::class, 'getWork']);
 
+    //Records
+    Route::post('/upload-record', [RecordController::class, 'uploadRecord']);
+    Route::get('/retrieve-record', [RecordController::class, 'getRecord']);
+
     // Retrieve department
     Route::get('/retrieve', [DepartmentController::class, 'getDepartments']);
 
@@ -73,6 +78,7 @@ Route::middleware('auth.sanctum')->group(function () {
     Route::get('/retrieve-policies/{polId}', [ViewPDF::class, 'getContentPolicies']);
     Route::get('/retrieve-procedures/{procId}', [ViewPDF::class, 'getContentProcedures']);
     Route::get('/retrieve-workins/{workId}', [ViewPDF::class, 'getWorkInstructions']);
+    Route::get('/retrieve-records/{recId}', [ViewPDF::class, 'getRecord']);
 
     // Form Viewing  
     Route::post('increment-views', [FormController::class, 'incrementViewCount']);

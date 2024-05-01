@@ -2,31 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\WorkInstructions;
+use App\Models\Records;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 
-class WorkInstructionsController extends Controller
+class RecordController extends Controller
 {
-    public function getWork()
+    public function getRecord()
     {
-        $work = WorkInstructions::where('is_active', true)
+        $records = Records::where('is_active', true)
             ->where('file_path', 'LIKE', '%.pdf') 
-            ->select('id', 'document_type', 'employee_name', 'document_name', 'file_path', 'created_at')
+            ->select('id', 'record_type', 'record_name', 'document_name', 'file_path', 'created_at')
             ->get();
     
-        return response()->json($work);
+        return response()->json($records);
     }
 
-    public function uploadWorkInstructions(Request $request)
+    public function uploadRecord(Request $request)
     {
         try {
             $validatedData = $request->validate([
                 'file' => 'required|file|mimes:pdf|max:10240',
+                'record_type' => 'required|string',
+                'record_name' => 'required|string',
                 'document_name' => 'required|string',
-                'document_type' => 'required|string',
-                'employee_name' => 'required|string',
             ]);
 
             $url = null;
@@ -54,22 +54,22 @@ class WorkInstructionsController extends Controller
                 }
 
                 if ($isConverted) {
-                    $path = 'uploads/workinstructions/document_type/' . $request->input('document_type') . '/' . $filename . '.pdf';
+                    $path = 'uploads/record/record_type/' . $request->input('record_type') . '/' . $filename . '.pdf';
                 } else {
-                    $path = 'uploads/workinstructions/document_type/' . $request->input('document_type') . '/' . $originalFileName;
+                    $path = 'uploads/record/record_type/' . $request->input('record_type') . '/' . $originalFileName;
                 }
 
                 $path = $file->storeAs($path, $filename, 'public');
                 $url = URL::to('/') . '/storage/' . $path;
             }
 
-            $workins = new WorkInstructions();
-            $workins->document_name = $request->input('document_name');
-            $workins->file_path = $url;
-            $workins->document_type = $request->input('document_type');
-            $workins->employee_name = $request->input('employee_name');
-            $workins->is_active = true;
-            $workins->save();
+            $record = new Records();
+            $record->record_type = $request->input('record_type');
+            $record->file_path = $url;
+            $record->record_name = $request->input('record_name');
+            $record->document_name = $request->input('document_name');
+            $record->is_active = true;
+            $record->save();
 
             return response()->json(['message' => 'Procedure uploaded successfully'], 200);
         } catch (QueryException $e) {
