@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\WorkInstructionsController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\AnnouncementController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
@@ -12,6 +11,7 @@ use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\ProcedureController;
 use App\Http\Controllers\RecordController;
 use App\Http\Controllers\ViewPDF;
+use App\Http\Controllers\WorkInstructionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +36,9 @@ Route::middleware('auth.sanctum')->group(function () {
 
     // Add department
     Route::post('/department', [DepartmentController::class, 'addDepartment']);
+
+    // Add announcement
+    Route::post('/announcement', [AnnouncementController::class, 'addAnnouncement']);
 
     // Policies
     Route::post('/upload-policy', [PolicyController::class, 'uploadPolicy']);

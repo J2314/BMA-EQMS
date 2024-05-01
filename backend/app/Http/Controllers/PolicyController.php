@@ -78,14 +78,14 @@ class PolicyController extends Controller
         }
     }
 
-    // private function convertToPdf($file, $documentType)
-    // {
-    //     $pdfPath = 'uploads/document_type/' . $documentType . '/' . time() . '_' . $file->getClientOriginalName() . '.pdf';
+    private function convertToPdf($file, $documentType)
+    {
+        $pdfPath = 'uploads/document_type/' . $documentType . '/' . time() . '_' . $file->getClientOriginalName() . '.pdf';
 
-    //     $phpWord = IOFactory::load($file->getPathname());
-    //     $pdfWriter = IOFactory::createWriter($phpWord, 'PDF');
-    //     $pdfWriter->save($pdfPath);
+        $phpWord = IOFactory::load($file->getPathname());
+        $pdfWriter = IOFactory::createWriter($phpWord, 'PDF');
+        $pdfWriter->save($pdfPath);
 
-    //     return $pdfPath;
-    // }
+        return $pdfPath;
+    }
 }
