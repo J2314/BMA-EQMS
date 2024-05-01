@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FormFiles;
 use App\Models\Policies;
 use App\Models\Procedures;
+use App\Models\WorkInstructions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -41,5 +42,16 @@ class ViewPDF extends Controller
         }
 
         return response(compact('procedure'), 200);
+    }
+
+    public function getWorkInstructions($workId)
+    {
+        $work = WorkInstructions::find($workId);
+
+        if (!$workId) {
+            return response()->json(['error' => 'File not found'], 404);
+        }
+
+        return response(compact('work'), 200);
     }
 }
