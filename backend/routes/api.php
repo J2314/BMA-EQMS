@@ -89,4 +89,6 @@ Route::middleware('auth.sanctum')->group(function () {
     // Form Download
     Route::post('increment-views-dowload', [FormController::class, 'incrementDownloadCount']);
 
+    Route::get('/user-retrieve', [UserController::class, 'getUsers']);
+
 });

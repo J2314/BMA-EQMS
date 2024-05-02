@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 
 class UserController extends Controller
 {
@@ -37,16 +38,32 @@ class UserController extends Controller
     public function register(Request $request)
     {
         $request->validate([
+            'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
         ]);
 
-
         $user = User::create([
+            'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
 
         return response()->json(['message' => 'User registered successfully'], 200);
+    }
+
+    public function getUsers()
+    {
+        try {
+            $users = User::all();
+            
+            if ($users->isEmpty()) {
+                return response()->json(['message' => 'No users found'], 404);
+            }
+            
+            return response()->json(['users' => $users], 200);
+        } catch (ThrottleRequestsException $e) {
+            return response()->json(['error' => 'Too many requests. Please try again later.'], 429);
+        }
     }
 }

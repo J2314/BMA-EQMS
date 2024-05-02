@@ -84,7 +84,7 @@ class PolicyController extends Controller
 
         $phpWord = IOFactory::load($file->getPathname());
         $pdfWriter = IOFactory::createWriter($phpWord, 'PDF');
-        $pdfWriter->save($pdfPath);
+        $pdfWriter->save($pdfPath); 
 
         return $pdfPath;
     }
