@@ -10,6 +10,7 @@ use App\Http\Controllers\Archive;
 use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\ProcedureController;
 use App\Http\Controllers\RecordController;
+use App\Http\Controllers\RoleDepController;
 use App\Http\Controllers\ViewPDF;
 use App\Http\Controllers\WorkInstructionsController;
 
@@ -88,7 +89,12 @@ Route::middleware('auth.sanctum')->group(function () {
 
     // Form Download
     Route::post('increment-views-dowload', [FormController::class, 'incrementDownloadCount']);
-
+    
+    // Users
     Route::get('/user-retrieve', [UserController::class, 'getUsers']);
+
+    // Role & Department
+    // Route::post('upload-roledep', [RoleDepController::class, 'addRoleDep']);
+    // Route::get('/roledep-retrieve', [RoleDepController::class, 'getRoleDep']);
 
 });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -41,29 +42,58 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
+            'department_id' => 'required',
+            'role' => 'required',
         ]);
-
+    
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
-
+    
+        $role = Role::create([
+            'department_id' => $request->department_id,
+            'user_id' => $user->id,
+            'role' => $request->role,
+        ]);
+    
         return response()->json(['message' => 'User registered successfully'], 200);
     }
+    
 
-    public function getUsers()
-    {
-        try {
-            $users = User::all();
-            
-            if ($users->isEmpty()) {
-                return response()->json(['message' => 'No users found'], 404);
-            }
-            
-            return response()->json(['users' => $users], 200);
-        } catch (ThrottleRequestsException $e) {
-            return response()->json(['error' => 'Too many requests. Please try again later.'], 429);
+public function getUsers()
+{
+    try {
+        $users = User::all();
+
+        if ($users->isEmpty()) {
+            return response()->json(['message' => 'No users found'], 404);
         }
+
+        $usersWithDetails = [];
+        foreach ($users as $user) {
+            $role = Role::where('user_id', $user->id)->first();
+            if ($role) {
+                $department = $role->department_id; 
+                $roleName = $role->role; 
+            } else {
+                $department = null;
+                $roleName = null;
+            }
+
+            $usersWithDetails[] = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'department_id' => $department,
+                'role' => $roleName,
+            ];
+        }
+
+        return response()->json(['users' => $usersWithDetails], 200);
+    } catch (ThrottleRequestsException $e) {
+        return response()->json(['error' => 'Too many requests. Please try again later.'], 429);
     }
+}
 }
