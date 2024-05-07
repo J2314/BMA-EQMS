@@ -2871,3 +2871,5 @@ Did you mean one of these?
 [2024-05-06 03:36:48] local.INFO: Login successful for user: jaymar@bma.edu.ph  
 [2024-05-06 03:38:00] local.INFO: Login attempt with credentials: {"email":"jaymar@bma.edu.ph","password":"123456"}  
 [2024-05-06 03:38:00] local.INFO: Login successful for user: jaymar@bma.edu.ph  
+[2024-05-07 00:14:54] local.INFO: Login attempt with credentials: {"email":"pana@gmail.com","password":"123456"}  
+[2024-05-07 00:14:56] local.INFO: Login successful for user: pana@gmail.com  

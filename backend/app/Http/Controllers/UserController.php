@@ -45,55 +45,66 @@ class UserController extends Controller
             'department_id' => 'required',
             'role' => 'required',
         ]);
-    
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
-    
+
         $role = Role::create([
             'department_id' => $request->department_id,
             'user_id' => $user->id,
             'role' => $request->role,
         ]);
-    
+
         return response()->json(['message' => 'User registered successfully'], 200);
     }
-    
 
-public function getUsers()
-{
-    try {
-        $users = User::all();
 
-        if ($users->isEmpty()) {
-            return response()->json(['message' => 'No users found'], 404);
-        }
+    public function getUsers()
+    {
+        try {
+            $users = User::all();
 
-        $usersWithDetails = [];
-        foreach ($users as $user) {
-            $role = Role::where('user_id', $user->id)->first();
-            if ($role) {
-                $department = $role->department_id; 
-                $roleName = $role->role; 
-            } else {
-                $department = null;
-                $roleName = null;
+            if ($users->isEmpty()) {
+                return response()->json(['message' => 'No users found'], 404);
             }
 
-            $usersWithDetails[] = [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'department_id' => $department,
-                'role' => $roleName,
-            ];
-        }
+            $usersWithDetails = [];
+            foreach ($users as $user) {
+                $role = Role::where('user_id', $user->id)->first();
+                if ($role) {
+                    $department = $role->department()->first(); 
+                    $departmentName = $department ? $department->name : null;
+                    $roleName = $role->role;
+                } else {
+                    $departmentName = null;
+                    $roleName = null;
+                }
 
-        return response()->json(['users' => $usersWithDetails], 200);
-    } catch (ThrottleRequestsException $e) {
-        return response()->json(['error' => 'Too many requests. Please try again later.'], 429);
+                $usersWithDetails[] = [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'department_id' => $departmentName, 
+                    'role' => $roleName,
+                ];
+            }
+
+            return response()->json(['users' => $usersWithDetails], 200);
+        } catch (ThrottleRequestsException $e) {
+            return response()->json(['error' => 'Too many requests. Please try again later.'], 429);
+        }
     }
-}
+
+    public function getUserPassword($userId)
+    {
+        try {
+            $user = User::findOrFail($userId);
+            return response()->json(['password' => $user->password]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'User not found.'], 404);
+        }
+    }
 }

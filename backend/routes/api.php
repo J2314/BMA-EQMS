@@ -97,4 +97,7 @@ Route::middleware('auth.sanctum')->group(function () {
     // Route::post('upload-roledep', [RoleDepController::class, 'addRoleDep']);
     // Route::get('/roledep-retrieve', [RoleDepController::class, 'getRoleDep']);
 
+    // Retrieval of Password
+    Route::get('/passwords/{userId}', [UserController::class, 'getUserPassword']);
+
 });
