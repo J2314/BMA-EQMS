@@ -23,7 +23,7 @@ class UserController extends Controller
         Log::info('Login attempt with credentials: ' . json_encode($credentials));
 
         if (Auth::attempt($credentials)) {
-            $user = User::where('email', $credentials['email'])->first();
+            $user = User::with('user_roles')->where('email', $credentials['email'])->first();
             $token = $user->createToken('myapptoken')->plainTextToken;
 
             Log::info('Login successful for user: ' . $user->email);
@@ -38,28 +38,32 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
-            'department_id' => 'required',
-            'role' => 'required',
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|min:6',
+                'role' => 'required',
+            ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+            ]);
 
-        $role = Role::create([
-            'department_id' => $request->department_id,
-            'user_id' => $user->id,
-            'role' => $request->role,
-        ]);
+            $role = Role::create([
+                'department_id' => $request->department_id,
+                'user_id' => $user->id,
+                'role' => $request->role,
+            ]);
 
-        return response()->json(['message' => 'User registered successfully'], 200);
+            return response()->json(['message' => 'User registered successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Registration failed: ' . $e->getMessage()], 500);
+        }
     }
+
 
 
     public function getUsers()
@@ -75,7 +79,7 @@ class UserController extends Controller
             foreach ($users as $user) {
                 $role = Role::where('user_id', $user->id)->first();
                 if ($role) {
-                    $department = $role->department()->first(); 
+                    $department = $role->department()->first();
                     $departmentName = $department ? $department->name : null;
                     $roleName = $role->role;
                 } else {
@@ -87,7 +91,7 @@ class UserController extends Controller
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
-                    'department_id' => $departmentName, 
+                    'department_id' => $departmentName,
                     'role' => $roleName,
                 ];
             }

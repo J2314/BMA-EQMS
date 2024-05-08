@@ -11,22 +11,28 @@ class WorkInstructionsController extends Controller
 {
     public function getWork()
     {
-        $work = WorkInstructions::where('is_active', true)
-            ->where('file_path', 'LIKE', '%.pdf') 
-            ->select('id', 'document_type', 'employee_name', 'document_name', 'file_path', 'created_at')
-            ->get();
-    
-        return response()->json($work);
+        try {
+            $work = WorkInstructions::select('id', 'document_type', 'document_name', 'department_id', 'user_id', 'file_path', 'created_at')
+                ->with('user')
+                ->where('is_active', true)
+                /*  ->where('file_path', 'LIKE', '%.pdf') */
+                ->get();
+
+            return response()->json($work);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error fetching work instructions: ' . $e->getMessage()], 500);
+        }
     }
 
     public function uploadWorkInstructions(Request $request)
     {
         try {
             $validatedData = $request->validate([
-                'file' => 'required|file|mimes:pdf|max:10240',
+                'file' => 'file|mimes:pdf|max:10240',
                 'document_name' => 'required|string',
                 'document_type' => 'required|string',
-                'employee_name' => 'required|string',
+                'user_id' => 'required|exists:users,id',
+                'department_id' => 'required|exists:departments,id'
             ]);
 
             $url = null;
@@ -67,7 +73,8 @@ class WorkInstructionsController extends Controller
             $workins->document_name = $request->input('document_name');
             $workins->file_path = $url;
             $workins->document_type = $request->input('document_type');
-            $workins->employee_name = $request->input('employee_name');
+            $workins->department_id = $request->input('department_id');
+            $workins->user_id = $request->input('user_id');
             $workins->is_active = true;
             $workins->save();
 

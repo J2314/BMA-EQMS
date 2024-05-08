@@ -15,13 +15,14 @@ return new class extends Migration
             $table->id();
             $table->text('document_type');
             $table->string('document_name');
-            //$table->unsignedBigInteger('department_id');
-            $table->string('employee_name');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('department_id');
             $table->string('file_path')->nullable();
             $table->boolean('is_active');
             $table->timestamps();
 
-            //$table->foreign('department_id')->references('id')->on('departments');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('department_id')->references('id')->on('departments');
         });
     }
 
