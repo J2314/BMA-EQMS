@@ -6,16 +6,19 @@ use App\Models\Records;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Illuminate\Support\Facades\Storage;
 
 class RecordController extends Controller
 {
     public function getRecord()
     {
         $records = Records::where('is_active', true)
-            ->where('file_path', 'LIKE', '%.pdf') 
+            ->where('file_path', 'LIKE', '%.pdf')
             ->select('id', 'record_type', 'record_name', 'document_name', 'file_path', 'created_at')
             ->get();
-    
+
         return response()->json($records);
     }
 
